@@ -91,6 +91,31 @@ header img{
     margin-right: 1.5%;
 }
 
+.userHeader_login {
+    display: flex;
+    gap: 5px; /* 버튼 간의 간격 */
+    margin-right: 1.5%;
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+
+.circular-img {
+	margin-left:10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block; /* 이미지를 블록 요소로 설정하여 부모의 영향을 받지 않도록 */
+    background-color: white; /* 기본 배경색 설정 */
+    border: 1px solid #BFBFBF;  /* 원형 테두리 추가 (선택 사항) */
+}
+
+#previewProfil{
+	width: 70px; /* 이미지 너비 */
+    height: 70px; /* 이미지 높이 */
+    border-radius: 50%; /* 원형 테두리 */
+}
+
 nav {
     width: 10%;
     height: 90%;
@@ -116,7 +141,7 @@ nav li{
 }
 
 nav li div{
-    border: 2px solid #cecdcd;
+    border: 2px solid #BFBFBF;
     border-radius: 50%; 
     width: 70px; 
     height: 70px;
@@ -132,29 +157,13 @@ nav li img{
     margin: 10px; /* 원 안에 공간 추가 */
 }
 
-.circular-img {
-	margin-left:10px;
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block; /* 이미지를 블록 요소로 설정하여 부모의 영향을 받지 않도록 */
-    background-color: white; /* 기본 배경색 설정 */
-    border: 1px solid #5D4037;  /* 원형 테두리 추가 (선택 사항) */
-}
-
-#previewProfil{
-	width: 70px; /* 이미지 너비 */
-    height: 70px; /* 이미지 높이 */
-    border-radius: 50%; /* 원형 테두리 */
-}
 
 section {
     width: 89%;
     height: 90%;
     background-color: white;
     float: left;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     overflow-y: auto; 
 }
 
