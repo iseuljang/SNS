@@ -5,6 +5,7 @@ html, body {
     height: 100%;
     background-color: white;
     font-size: 18px;
+    color:#333333;
 }
 header {
     background-color: white;
@@ -58,7 +59,6 @@ header img{
     border: 0;
     border-radius: 5px;
     outline: none;
-    color:#616060;
     font-weight:bold;
     font-size:18px;
 }
@@ -69,13 +69,12 @@ header img{
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 18px;
-    color: #cecdcd;
     display: none;
 }
 
 .sBtn{
     border-radius: 5px;
-    background-color: #b8b6b6;
+    background-color: #BFBFBF;
     color: white;
     font-size: 18px;
     font-weight: bold;
@@ -84,6 +83,7 @@ header img{
     border: none;
     cursor: pointer;
 }
+
 
 .userHeader {
     display: flex;
@@ -132,6 +132,23 @@ nav li img{
     margin: 10px; /* 원 안에 공간 추가 */
 }
 
+.circular-img {
+	margin-left:10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block; /* 이미지를 블록 요소로 설정하여 부모의 영향을 받지 않도록 */
+    background-color: white; /* 기본 배경색 설정 */
+    border: 1px solid #5D4037;  /* 원형 테두리 추가 (선택 사항) */
+}
+
+#previewProfil{
+	width: 70px; /* 이미지 너비 */
+    height: 70px; /* 이미지 높이 */
+    border-radius: 50%; /* 원형 테두리 */
+}
+
 section {
     width: 89%;
     height: 90%;
@@ -170,13 +187,60 @@ section {
 	text-decoration-line:none;
 	font-size:36px;
 	cursor:pointer;
-	color:black;
+	color:#333333;
 }
+
+#mypage_top {
+    display: flex;
+    flex-direction: column;      /* 요소들을 세로로 배치 */
+    align-items: center;         /* 가로 방향 중앙 정렬 */
+    justify-content: center;     /* 세로 방향 중앙 정렬 */
+    gap: 10px;                   /* 요소 간의 간격 설정 */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.mypage_page {
+    display: flex;
+    justify-content: center;     /* 링크를 가로로 중앙 정렬 */
+    margin-top: 20px;
+}
+
+.mypage_page a {
+    margin: 0 10px;              /* 링크 사이에 간격 추가 */
+    text-decoration-line:none;
+	font-size:24px;
+	cursor:pointer;
+	color:#333333;
+}
+
+.ssBtn{
+    margin: 10px 0;              /* 버튼 간격 조절 */
+    border-radius: 5px;
+    background-color: white;
+    color: #333333;
+    border:1px solid #BFBFBF;
+    font-size: 16px;
+    font-weight: bold;
+    width: 110px;
+    height: 30px;
+    cursor: pointer;
+}
+
 
 .article_inner {
     display: flex;
     flex-direction: column;       /* 세로로 배치 */
     justify-content: center;      /* 세로 방향 가운데 정렬 */
+    align-items: center;          /* 가로 방향 가운데 정렬 */
+    height: 100vh;                /* section 높이를 화면 전체로 설정 */
+    width: 100%;                  /* article_inner 너비를 100%로 설정 */
+    box-sizing: border-box;
+}
+
+.mypage_inner {
+    display: flex;
+    flex-direction: column;       /* 세로로 배치 */
     align-items: center;          /* 가로 방향 가운데 정렬 */
     height: 100vh;                /* section 높이를 화면 전체로 설정 */
     width: 100%;                  /* article_inner 너비를 100%로 설정 */
@@ -202,7 +266,6 @@ section {
     border: 0;
     border-radius: 5px;
     outline: none;
-    color:#616060;
     font-weight:bold;
     font-size:18px;
 }
@@ -215,7 +278,6 @@ section {
     border-radius: 10px;
     outline: none;
     background-color: white;
-    color:black;
     font-weight:bold;
     font-size:18px;
     margin-bottom:20px;
@@ -229,7 +291,7 @@ section {
 /* 버튼 스타일 */
 #pwChange {
     border-radius: 10px;
-    background-color: #808080;
+    background-color: #BFBFBF;
 	color:white;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border: none;

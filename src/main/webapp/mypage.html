@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNS</title>
+  <link rel="stylesheet" type="text/css" href="css/sns.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head> 
+<body>
+	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
+	<header>
+        <div class="search_inner">
+            <form action="index.html" method="get" name="searchFn" style="padding-bottom:30px;">
+                <div class="search-wrapper">
+                    <div id="seach-container"
+                    style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    background-color: white;
+                    border-radius: 20px;
+                    width:80%; height: 40px;
+                    margin-top: 1.5%; margin-left: 15%;
+                    ">
+                        <i class="fas fa-search" id="searchIcon"></i>
+                        <input type="text" name="searchValue" id="search" placeholder="검색">
+                        <i class="fas fa-times" id="clearBtn"></i>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- 로그인했을 경우 -->
+        <div class="userHeader">
+	        <!-- 알림 표시 -->
+	        <img src="https://img.icons8.com/?size=100&id=3334&format=png&color=000000">
+	        <!-- 메시지 표시 -->
+	        <img src="https://img.icons8.com/?size=100&id=37966&format=png&color=000000">
+	        <!-- 프로필이미지 -->
+        	<img id="previewProfil" class="circular-img" 
+		    	style="border:none; width:70px; height:70px;" 
+		    	src="https://img.icons8.com/?size=100&id=115346&format=png&color=000000">
+        </div>
+        <!-- 로그인하지 않았을 경우 -->
+        <!-- <div class="userHeader">
+            <button onclick="location.href='join.html'" class="sBtn">회원가입</button>
+            <button onclick="location.href='login.html'" class="sBtn">로그인</button>
+        </div> -->
+	</header>
+	<!-- nav 인덱스페이지로 이동, 글쓰기버튼, 다크모드&라이트모드 전환, 관리자의 경우 신고내역확인 -->
+	<nav>
+		<ul>
+			<li>
+                <!-- 인덱스페이지 이동 -->
+                <div>
+                    <a href="index.html">
+                        <img src="https://img.icons8.com/?size=100&id=86527&format=png&color=000000">
+                    </a>
+                </div>
+            </li>
+			<li>
+                <!-- 글쓰기버튼 -->
+                <div>
+                    <a href="write.html">
+                        <img src="https://img.icons8.com/?size=100&id=59864&format=png&color=000000">
+                    </a>
+                </div>
+            </li>
+			<li>
+                <!-- 다크모드&라이트모드 전환 -->
+                <div>
+                    <a href="">
+                        <img src="https://img.icons8.com/?size=100&id=101342&format=png&color=000000">
+                    </a>
+                </div>
+            </li>
+            <!-- 관리자의 경우 신고내역확인 -->
+            <!--
+			<li>
+                <div>
+                    <a href="complain.html">
+                        <img src="https://img.icons8.com/?size=100&id=8773&format=png&color=000000">
+                    </a>
+                </div>
+            </li> -->
+		</ul>
+	</nav>
+	<!--웹페이지 본문-->
+	<section>
+		<div class="mypage_inner">
+			<div id="mypage_top">
+				<!-- 프로필이미지 -->
+				<img id="previewProfil" class="circular-img" 
+				    	style="border:none; width:300px; height:300px;" 
+				    	src="https://img.icons8.com/?size=100&id=115346&format=png&color=000000">
+		    	<div>흰둥이</div>
+		    	<div>팔로워 수 10</div>
+		    	<div>
+		    		<!-- 내가 아닌 다른 회원페이지인 경우 -->
+		    		<button class="ssBtn">메시지</button>
+		    		<!-- 로그인한 회원의 마이페이지인 경우 -->
+		    		<button class="ssBtn">프로필 수정</button>
+				</div>
+				<div class="mypage_page">
+					<a href="mypage.html" style="text-decoration: underline;">북마크</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="mypage_write.html" style="color:gray;">내가쓴글</a>
+	            </div>
+			</div>
+			<!-- 게시글출력되는곳 -->
+			<div id="indexDiv">
+	            <!-- 1번째 줄 -->
+	            <div class="listDiv">
+	                <!-- 이미지 -->
+	            </div>
+	            <div class="listDiv">
+	                <!-- 이미지 -->
+	            </div>
+	            <div class="listDiv">
+	                <!-- 이미지 -->
+	            </div>
+	            <div class="listDiv">
+	                <!-- 이미지 -->
+	            </div>
+	            <div class="listDiv">
+	                <!-- 이미지 -->
+	            </div>
+	        </div> 
+        </div>
+	</section>
+</body>
+</html>
