@@ -6,6 +6,7 @@ html, body {
     background-color: white;
     font-size: 18px;
     color:#333333;
+    font-weight:bold;
 }
 header {
     background-color: white;
@@ -164,7 +165,11 @@ section {
     background-color: white;
     float: left;
     /* border: 1px solid black; */
-    overflow-y: auto; 
+}
+
+.scrollable {
+    overflow-y: auto; /* 세로 스크롤 */
+    height: 100%;     /* 스크롤 가능한 높이 설정 */
 }
 
 #indexDiv {
