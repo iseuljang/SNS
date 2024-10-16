@@ -9,7 +9,7 @@
 	<script src="js/jquery-3.7.1.js"></script> 
 </head> 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    window.onload = function(){
         // localStorage에서 저장된 모드를 불러옴
         const currentMode = localStorage.getItem('mode') || 'light';
         if (currentMode === 'dark') {
@@ -23,7 +23,14 @@
             const mode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
             localStorage.setItem('mode', mode);
         });
-    });
+        
+        $(".icon").mouseover(function() {
+            $(this).addClass('round');  // round 클래스 추가
+        }).mouseout(function() {
+            $(this).removeClass('round');  // round 클래스 제거
+        });
+    }
+        
 </script>
 <body>
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
@@ -48,13 +55,19 @@
         <!-- 로그인했을 경우 -->
         <div class="userHeader_login">
 	        <!-- 알림 표시 -->
-	        <img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676">
+	        <div class="icon">
+		        <img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676">
+	        </div>
 	        <!-- 메시지 표시 -->
-	        <img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
+	        <div class="icon">
+	        	<img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
+	        </div>
 	        <!-- 프로필이미지 -->
-        	<img id="previewProfil" class="circular-img" 
-		    	style="border:none; width:70px; height:70px;" 
-		    	src="https://img.icons8.com/?size=100&id=115346&format=png&color=000000">
+	        <a href="mypage.html">
+	        	<img id="previewProfil" class="circular-img" 
+			    	style="border:none; width:70px; height:70px;" 
+			    	src="https://img.icons8.com/?size=100&id=115346&format=png&color=000000">
+	    	</a>
         </div>
         <!-- 로그인하지 않았을 경우 -->
         <!-- <div class="userHeader">
@@ -110,7 +123,7 @@
 			</ul>
 		</nav>
 		<!--웹페이지 본문-->
-		<section class="scrollable">
+		<section>
 			<div class="mypage_inner">
 				<div id="mypage_top">
 					<!-- 프로필이미지 -->
@@ -131,8 +144,74 @@
 		            </div>
 				</div>
 				<!-- 게시글출력되는곳 -->
-				<div id="indexDiv">
+				<div id="indexDiv" class="scrollable">
 		            <!-- 1번째 줄 -->
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <!-- 2번째 줄 -->
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <!-- 3번째 줄 -->
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <!-- 4번째 줄 -->
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
+		            <div class="listDiv">
+		                <!-- 이미지 -->
+		            </div>
 		            <div class="listDiv">
 		                <!-- 이미지 -->
 		            </div>
