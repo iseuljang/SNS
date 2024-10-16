@@ -9,7 +9,7 @@
 	<script src="js/jquery-3.7.1.js"></script> 
 </head>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+	window.onload = function(){
         // localStorage에서 저장된 모드를 불러옴
         const currentMode = localStorage.getItem('mode') || 'light';
         if (currentMode === 'dark') {
@@ -23,7 +23,7 @@
             const mode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
             localStorage.setItem('mode', mode);
         });
-    });
+	}
 </script>
 <body> 
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->

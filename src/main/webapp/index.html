@@ -9,7 +9,7 @@
   <script src="js/jquery-3.7.1.js"></script> 
 </head> 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+	window.onload = function(){
         // localStorage에서 저장된 모드를 불러옴
         const currentMode = localStorage.getItem('mode') || 'light';
         if (currentMode === 'dark') {
@@ -23,7 +23,37 @@
             const mode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
             localStorage.setItem('mode', mode);
         });
-    });
+        
+        /* view 페이지 띄우는 모달 */
+     	// 모달 띄우기 버튼
+        $(".listDiv").click(function() {
+            $("#modal").fadeIn(); // 모달 창 보이게 하기
+        });
+
+        $(window).click(function(event) {
+            if ($(event.target).is("#modal")) {
+                $("#modal").fadeOut(); // 모달 창 숨기기
+            }
+        });
+        
+        /* 회원가입,로그인 페이지 띄우는 모달 */
+     	// 모달 띄우기 버튼
+        $(".userHeader a").click(function() {
+            $("#user_modal").fadeIn(); // 모달 창 보이게 하기
+            var clickedId = $(this).attr('id');
+            if (clickedId === "join") {
+                $("#user_modalBody").html("<h2>회원가입</h2>"); // 회원가입 텍스트 넣기
+            } else if (clickedId === "login") {
+                $("#user_modalBody").html("<h2>로그인</h2>"); // 로그인 텍스트 넣기
+            }
+        });
+        
+        $(window).click(function(event) {
+            if ($(event.target).is("#user_modal")) {
+                $("#user_modal").fadeOut(); // 모달 창 숨기기
+            }
+        });
+	}
 </script>
 <body>
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
@@ -55,8 +85,8 @@
         <!-- </div> -->
         <!-- 로그인하지 않았을 경우 -->
         <div class="userHeader">
-            <a href="join.html">회원가입</a> | 
-			<a href="login.html">로그인</a>
+            <a href="#" id="join">회원가입</a> | 
+			<a href="#" id="login">로그인</a>
         </div>
 	</header>
 	<!-- nav 인덱스페이지로 이동, 글쓰기버튼, 다크모드&라이트모드 전환, 관리자의 경우 신고내역확인 -->
@@ -177,6 +207,22 @@
 	            </div>
 	        </div> 
 		</section>
+        <!-- view 페이지 모달창 -->
+		<div id="modal" style="display:none;">
+		    <div class="modal-content">
+		        <div id="modalBody">
+		            <!-- 게시글 내용이 여기에 표시됨 -->
+		        </div>
+		    </div>
+		</div>
+		<!-- 회원가입,로그인 모달창 -->
+		<div id="user_modal" style="display:none;">
+		    <div class="user_modal-content">
+		        <div id="user_modalBody">
+		            <!-- 게시글 내용이 여기에 표시됨 -->
+		        </div>
+		    </div>
+		</div>
 		<!-- 오른쪽 여백페이지 -->
 		<aside></aside>
 	</main>
