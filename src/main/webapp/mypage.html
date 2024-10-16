@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SNS</title>
-  <link rel="stylesheet" type="text/css" href="css/sns.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SNS</title>
+	<link rel="stylesheet" type="text/css" href="css/sns.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+	<script src="js/jquery-3.7.1.js"></script> 
 </head> 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // localStorage에서 저장된 모드를 불러옴
+        const currentMode = localStorage.getItem('mode') || 'light';
+        if (currentMode === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // 다크모드 토글
+        document.getElementById('modeToggle').addEventListener('click', function(event) {
+            document.body.classList.toggle('dark-mode');
+            // 현재 모드를 localStorage에 저장
+            const mode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('mode', mode);
+        });
+    });
+</script>
 <body>
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
 	<header>
@@ -17,7 +35,7 @@
                     style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                     background-color: white;
                     border-radius: 20px;
-                    width:80%; height: 40px;
+                    width:80%; height: 42px;
                     margin-top: 1.5%; margin-left: 7%;
                     ">
                         <i class="fas fa-search" id="searchIcon"></i>
@@ -66,8 +84,8 @@
 	            </li>
 				<li>
 	                <!-- 다크모드&라이트모드 전환 -->
-	                <div>
-	                    <a href="">
+	                <div id="modeToggle">
+	                    <a href="#">
 	                        <img src="https://img.icons8.com/?size=100&id=101342&format=png&color=767676">
 	                    </a>
 	                </div>
