@@ -10,19 +10,21 @@
 </head> 
 <script>
 	window.onload = function(){
-        // localStorage에서 저장된 모드를 불러옴
+        /* localStorage에서 저장된 모드를 불러옴 */
         const currentMode = localStorage.getItem('mode') || 'light';
+        const modeText = document.getElementById('modeText');
         if (currentMode === 'dark') {
             document.body.classList.add('dark-mode');
+            modeText.textContent = '라이트모드';
         }
 
-        // 다크모드 토글
-        document.getElementById('modeToggle').addEventListener('click', function(event) {
-            document.body.classList.toggle('dark-mode');
-            // 현재 모드를 localStorage에 저장
-            const mode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-            localStorage.setItem('mode', mode);
-        });
+        /* 다크모드 토글 */
+        document.getElementById('modeToggle').addEventListener('click', function() {
+	        document.body.classList.toggle('dark-mode');
+	        const newMode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+	        localStorage.setItem('mode', newMode);
+	        modeText.textContent = newMode === 'dark' ? '라이트모드' : '다크모드';
+    	});
         
         /* view 페이지 띄우는 모달 */
      	// 모달 띄우기 버튼
@@ -53,6 +55,8 @@
                 $("#user_modal").fadeOut(); // 모달 창 숨기기
             }
         });
+        
+        
 	}
 </script>
 <body>
@@ -95,45 +99,60 @@
 			<ul>
 				<li>
 	                <!-- 인덱스페이지 이동 -->
-	                <div>
-	                    <a href="index.html">
-	                        <img src="https://img.icons8.com/?size=100&id=86527&format=png&color=767676" alt="인덱스로 이동">
-	                    </a>
-	                </div>
+	                <div class="menu-item">
+		                <a href="index.html">
+		                    <img src="https://img.icons8.com/?size=100&id=86527&format=png&color=767676" alt="인덱스로 이동">
+		                </a>
+		                <div class="hover-menu">
+		                    <p>홈이동</p>
+		                </div>
+		            </div>
 	            </li>
 				<li>
 	                <!-- 글쓰기버튼 -->
-	                <div>
+	                <div class="menu-item">
 	                    <a href="write.html">
 	                        <img src="https://img.icons8.com/?size=100&id=59864&format=png&color=767676" alt="글쓰기">
 	                    </a>
+	                    <div class="hover-menu">
+		                    <p>글쓰기</p>
+		                </div>
 	                </div>
 	            </li>
 				<li>
 	                <!-- 다크모드&라이트모드 전환 -->
-	                <div id="modeToggle">
+	                <div class="menu-item" id="modeToggle">
 	                    <a href="#">
 	                        <img src="https://img.icons8.com/?size=100&id=101342&format=png&color=767676" alt="다크모드 전환">
 	                    </a>
+	                    <div class="hover-menu">
+		                    <p id="modeText">다크모드</p>
+		                </div>
 	                </div>
 	            </li>
                 <!-- 로그인한 경우 로그아웃 -->
 				<!-- 
 				<li>
-	                <div>
+	                <div class="menu-item">
 	                    <a href="logout.html">
 	                        <img class="logout" src="https://img.icons8.com/?size=100&id=BvRKVanAagI0&format=png&color=767676" alt="로그아웃">
 	                    </a>
+	                    <div class="hover-menu">
+		                    <p>로그아웃</p>
+		                </div>
 	                </div>
 	            </li> 
 	            -->
 	            <!-- 관리자의 경우 신고내역확인 -->
 	            <!--
 				<li>
-	                <div>
+	                <div class="menu-item">
 	                    <a href="complain.html">
 	                        <img src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" alt="관리자 신고 관리">
 	                    </a>
+	                    <div class="hover-menu">
+		                    <p>신고관리</p>
+		                </div>
 	                </div>
 	            </li> -->
 			</ul>
@@ -219,7 +238,7 @@
 		<div id="user_modal" style="display:none;">
 		    <div class="user_modal-content">
 		        <div id="user_modalBody">
-		            <!-- 게시글 내용이 여기에 표시됨 -->
+		            <!-- 회원가입,로그인페이지 여기에 표시됨 -->
 		        </div>
 		    </div>
 		</div>
