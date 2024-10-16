@@ -8,9 +8,24 @@ html, body {
     color:#333333;
     font-weight:bold;
 }
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* 수평 스크롤 방지 */
+}
+
+main {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* main 영역에 스크롤 방지 */
+}
+
 header {
     background-color: white;
-    width: 100%;
+    width: 90%;
     height: 10%;
     /* border: 1px solid black; */
     display: flex; /* 가로로 정렬 */
@@ -73,23 +88,26 @@ header img{
     display: none;
 }
 
-.sBtn{
-    border-radius: 5px;
-    background-color: #BFBFBF;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    width: 100px;
-    height: 40px;
+.userHeader a {
+    text-decoration-line: none;
+    background: none;
+    color: #333333;
     border: none;
     cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
 }
 
+.userHeader a:hover {
+    text-decoration: underline;
+    text-underline-offset: 6px; 
+}
 
 .userHeader {
     display: flex;
-    gap: 10px; /* 버튼 간의 간격 */
+    gap: 20px; 
     margin-right: 1.5%;
+    width:200px;
 }
 
 .userHeader_login {
@@ -141,30 +159,42 @@ nav li{
     margin-top: 20px; /* 이미지들 간의 간격 조절 */
 }
 
-nav li div{
+nav li div {
     border: 2px solid #BFBFBF;
-    border-radius: 50%; 
-    width: 70px; 
+    border-radius: 50%;
+    width: 70px;
     height: 70px;
     display: flex;
     justify-content: center;
-    align-items: center; 
-    margin-left: 30%;
+    align-items: center;
+    margin-left: 30%; /* 원하는 위치에서 시작되도록 조정 */
 }
 
-nav li img{
+nav li img {
     width: 40px; 
     height: 40px;
-    margin: 10px; /* 원 안에 공간 추가 */
+    display: block; /* 이미지를 블록 요소로 설정 */
+    margin: 0; /* 불필요한 여백 제거 */
+}
+
+.logout{
+	margin-left:7px;
 }
 
 
 section {
-    width: 89%;
+    width: 80%;
     height: 90%;
     background-color: white;
     float: left;
+    overflow: hidden; /* section에 스크롤 방지 */
     /* border: 1px solid black; */
+}
+
+aside {
+    width: 10%;
+    height: 90%;
+    float: right;
 }
 
 .scrollable {
@@ -175,26 +205,24 @@ section {
 #indexDiv {
     display: flex;
     flex-wrap: wrap; /* 넘치면 다음 줄로 이동 */
-    justify-content: space-between; /* 요소 간 균등한 간격 */
-    width: 100%; /* 부모 너비에 맞게 설정 */
-    margin: 0 auto; /* 가운데 정렬 */
+    justify-content: space-between;
+    width: 100%;
+    max-height: 80vh; /* 최대 높이 설정, 화면을 넘지 않게 함 */
+    overflow-y: auto; /* 스크롤 가능하게 설정 */
 }
-
 
 .listDiv {
     width: 250px;
     height: 250px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: white;
     border-radius: 20px;
-    margin-top: 30px; /* 요소 간 세로 간 */
-    margin-right: 5px;
-    margin-left: 5px;
+    margin-top: 30px;
     cursor: pointer;
+    margin: 30px 15px; /* 상하 30px, 좌우 15px 간격 추가 */
 }
 
 .pwChange_title a{
@@ -229,7 +257,7 @@ section {
 }
 
 .ssBtn{
-    margin: 10px 0;              /* 버튼 간격 조절 */
+    margin: 10px 0;              
     border-radius: 5px;
     background-color: white;
     color: #333333;
@@ -245,11 +273,11 @@ section {
 .article_inner {
     display: flex;
     flex-direction: column;       /* 세로로 배치 */
-    justify-content: center;      /* 세로 방향 가운데 정렬 */
     align-items: center;          /* 가로 방향 가운데 정렬 */
     height: 100vh;                /* section 높이를 화면 전체로 설정 */
     width: 100%;                  /* article_inner 너비를 100%로 설정 */
     box-sizing: border-box;
+    margin-top: 150px;
 }
 
 .mypage_inner {
