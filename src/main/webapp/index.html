@@ -5,8 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SNS</title>
   <link rel="stylesheet" type="text/css" href="css/sns.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="js/jquery-3.7.1.js"></script> 
 </head> 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // localStorage에서 저장된 모드를 불러옴
+        const currentMode = localStorage.getItem('mode') || 'light';
+        if (currentMode === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // 다크모드 토글
+        document.getElementById('modeToggle').addEventListener('click', function(event) {
+            document.body.classList.toggle('dark-mode');
+            // 현재 모드를 localStorage에 저장
+            const mode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('mode', mode);
+        });
+    });
+</script>
 <body>
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
 	<header>
@@ -49,7 +67,7 @@
 	                <!-- 인덱스페이지 이동 -->
 	                <div>
 	                    <a href="index.html">
-	                        <img src="https://img.icons8.com/?size=100&id=86527&format=png&color=767676">
+	                        <img src="https://img.icons8.com/?size=100&id=86527&format=png&color=767676" alt="인덱스로 이동">
 	                    </a>
 	                </div>
 	            </li>
@@ -57,15 +75,15 @@
 	                <!-- 글쓰기버튼 -->
 	                <div>
 	                    <a href="write.html">
-	                        <img src="https://img.icons8.com/?size=100&id=59864&format=png&color=767676">
+	                        <img src="https://img.icons8.com/?size=100&id=59864&format=png&color=767676" alt="글쓰기">
 	                    </a>
 	                </div>
 	            </li>
 				<li>
 	                <!-- 다크모드&라이트모드 전환 -->
-	                <div>
-	                    <a href="">
-	                        <img src="https://img.icons8.com/?size=100&id=101342&format=png&color=767676">
+	                <div id="modeToggle">
+	                    <a href="#">
+	                        <img src="https://img.icons8.com/?size=100&id=101342&format=png&color=767676" alt="다크모드 전환">
 	                    </a>
 	                </div>
 	            </li>
@@ -74,7 +92,7 @@
 				<li>
 	                <div>
 	                    <a href="logout.html">
-	                        <img class="logout" src="https://img.icons8.com/?size=100&id=BvRKVanAagI0&format=png&color=767676">
+	                        <img class="logout" src="https://img.icons8.com/?size=100&id=BvRKVanAagI0&format=png&color=767676" alt="로그아웃">
 	                    </a>
 	                </div>
 	            </li> 
@@ -84,7 +102,7 @@
 				<li>
 	                <div>
 	                    <a href="complain.html">
-	                        <img src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676">
+	                        <img src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" alt="관리자 신고 관리">
 	                    </a>
 	                </div>
 	            </li> -->
