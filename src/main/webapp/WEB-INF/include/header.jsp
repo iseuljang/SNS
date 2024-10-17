@@ -73,33 +73,49 @@ $(document).ready(function() {
         }
     });
 
-    // 기타 초기화 코드
     $("#uid").focus();
 
-    // 파일 업로드 기능 관련 초기화
+ // 파일 업로드 초기화
     $(".deleteFile").css("display", "none");
     $("#preview").css("display", "none");
+
+    // 파일이 선택될 때의 동작
     $("#file").on('change', function(){
-        var fileName = $("#file").val();
-        $(".upload-name").val(fileName);
-        $(".deleteFile").show();
-        $("#preview").show();
-        $("input[name='deleteFile']").prop('checked', false);
-    });
+        var fileName = $("#file").val().split('\\').pop(); // 경로 제거하고 파일명만 추출
+        if(fileName) {
+            $(".upload-name").val(fileName);
+            $(".deleteFile").show();
+            $("#preview").show();
+            $("input[name='deleteFile']").prop('checked', false);
 
-    $(".upload-name").on('click', function() {
-        $("#file").click();
-    });
-
-    $("input[name='deleteFile']").click(function() {
-        if($(this).is(':checked')) {
-            $(".upload-name").val("첨부파일");
-            $("#file").val("");
-            $(".deleteFile").css("display", "none");
-            $("#preview").css("display", "none");
-            document.getElementById('preview').src = "";
+            // 파일 미리보기 처리 (이미지일 경우)
+            var file = this.files[0];
+            if (file && file.type.startsWith("image/")) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
         }
     });
+
+    // 파일 업로드 창을 열도록 하는 동작
+    $(".upload-name").on('click', function() {
+        $("#file").click();  // 파일 선택 창 열기
+    });
+
+    // 파일 삭제 동작
+    $("input[name='deleteFile']").on('change', function() {
+        if($(this).is(':checked')) {
+            $(".upload-name").val("첨부파일");
+            $("#file").val("");  // 파일 선택 취소
+            $(".deleteFile").css("display", "none");
+            $("#preview").css("display", "none");
+            document.getElementById('preview').src = "";  // 미리보기 초기화
+        }
+    });
+
 });
 
 function readURL(input) {
