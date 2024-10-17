@@ -65,11 +65,20 @@ $(document).ready(function() {
                 DarkMode();
             }
         });
+        
+        
+        // 모달창이 열리면 header와 nav 색상 변경
+        $("header").css("z-index", "0"); 
+        $("nav").css("z-index", "0"); 
     });
 
     $(window).click(function(event) {
         if ($(event.target).is("#user_modal")) {
             $("#user_modal").fadeOut();
+            
+       		// 모달창이 닫힐 때 header와 nav 색상 원래대로 되돌리기
+            $("header").css("z-index", "1000");
+            $("nav").css("z-index", "1001");
         }
     });
 
@@ -116,6 +125,8 @@ $(document).ready(function() {
         }
     });
 
+    
+    
 });
 
 function readURL(input) {
@@ -129,6 +140,7 @@ function readURL(input) {
         document.getElementById('preview').src = "";
     }
 }
+
 </script>
 <body>
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->

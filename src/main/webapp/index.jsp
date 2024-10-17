@@ -4,17 +4,18 @@
 <%@ include file="/WEB-INF/include/nav.jsp" %>
 <script>
 	window.onload = function(){
-		/* view 페이지 띄우는 모달 */
-			// 모달 띄우기 버튼
-		$(".listDiv").click(function() {
-		    $("#modal").fadeIn(); // 모달 창 보이게 하기
-		});
-		
-		$(window).click(function(event) {
-		    if ($(event.target).is("#modal")) {
-		        $("#modal").fadeOut(); // 모달 창 숨기기
-		    }
-		});
+		 /* view 페이지 띄우는 모달 */
+	    $(".listDiv").click(function() {
+	        $("body").addClass("modal-open");  // 모달 열리면 body에 modal-open 클래스 추가
+	        $("#modal").fadeIn();  // 모달 창 보이게 하기
+	    });
+
+	    $(window).click(function(event) {
+	        if ($(event.target).is("#modal")) {
+	            $("body").removeClass("modal-open");  // 모달 닫히면 body에서 modal-open 클래스 제거
+	            $("#modal").fadeOut();  // 모달 창 숨기기
+	        }
+	    });
 	}
    	
 </script>

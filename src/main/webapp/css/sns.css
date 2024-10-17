@@ -13,24 +13,35 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    overflow-x: hidden; /* 수평 스크롤 방지 */
 }
 
 main {
     display: flex;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* main 영역에 스크롤 방지 */
 }
 
-header {
+/* header {
     background-color: white;
     width: 94%;
     height: 10%;
-    /* border: 1px solid black; */
-    display: flex; /* 가로로 정렬 */
-    align-items: center; /* 수직 가운데 정렬 */
-    justify-content: space-between; /* 양 끝으로 배치 */
+    display: flex; 가로로 정렬
+    align-items: center; 수직 가운데 정렬
+    justify-content: space-between; 양 끝으로 배치
+} */
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    z-index: 1000; /* 다른 요소보다 위에 표시되게 설정 */
+    /* background-color: white; */ 
+    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */ /* 그림자 추가 */
+    display: flex; 
+    align-items: center;
+    justify-content: space-between; 
 }
 
 header img{
@@ -108,7 +119,7 @@ header img{
 .userHeader {
     display: flex;
     gap: 20px; 
-    /* margin-right: 1.5%; */
+    margin-right: 5%; 
     width:240px;
 }
 
@@ -195,12 +206,23 @@ header img{
     border-radius: 50%; /* 원형 테두리 */
 }
 
-nav {
+/* nav {
     width: 5%;
     height: 90%;
     background-color: white;
     float: left;
-    /* border: 1px solid black; */
+} */
+
+nav {
+	width: 5%;
+    height: 90%;
+    /* background-color: white; */
+    float: left;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 5%;
+    z-index: 1001; 
 }
 
 nav ul{
@@ -292,12 +314,13 @@ nav li div:hover{
 
 
 section {
+	margin-left: 5%; 
+	margin-top: 80px; /* header + nav의 높이만큼 마진 추가 */
     width: 90%;
     height: 90%;
+    /* height: calc(100vh - 120px); */
     background-color: white;
     float: left;
-    overflow: hidden; /* section에 스크롤 방지 */
-    /* border: 1px solid black; */
 }
 
 aside {
@@ -306,10 +329,10 @@ aside {
     float: right;
 }
 
-.scrollable {
-    overflow-y: auto; /* 세로 스크롤 */
-    height: 100%;     /* 스크롤 가능한 높이 설정 */
-}
+/* .scrollable {
+    overflow-y: auto; 
+    height: 100%;     
+} */
 
 #indexDiv {
     display: flex;
@@ -317,7 +340,7 @@ aside {
     justify-content: space-between;
     width: 100%;
     max-height: 80vh; /* 최대 높이 설정, 화면을 넘지 않게 함 */
-    overflow-y: auto; /* 스크롤 가능하게 설정 */
+    /* overflow-y: auto; */ /* 스크롤 가능하게 설정 */
 }
 
 .listDiv {
@@ -666,10 +689,12 @@ body.dark-mode .modal-content {
     height: 100%;  /* 부모 div 높이 */
 }
 
+
 body.dark-mode .user_modal-content {
     background-color: #333333;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
+
 
 /* 수정 페이지 첨부파일 삭제여부 css */
 .deleteFile {
