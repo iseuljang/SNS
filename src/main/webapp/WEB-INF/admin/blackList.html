@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNS</title>
+  <link rel="stylesheet" type="text/css" href="css/sns.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head>
+<body>
+	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
+	<header>
+        <div class="search_inner">
+            <form action="index.html" method="get" name="searchFn" style="padding-bottom:30px;">
+                <div class="search-wrapper">
+                    <div class="input-container" id="seach-container"
+                    style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    background-color: white;
+                    border-radius: 20px;
+                    width:80%; height: 42px;
+                    margin-top: 1.5%; margin-left: 7%;
+                    ">
+                        <i class="fas fa-search" id="searchIcon"></i>
+                        <input type="text" name="searchValue" id="search" placeholder="검색">
+                        <i class="fas fa-times" id="clearBtn"></i>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- 로그인했을 경우 -->
+        <!-- <div class="userHeader"> -->
+        <!-- 알림 표시 -->
+        <!-- <img src="https://img.icons8.com/?size=100&id=3334&format=png&color=000000"> -->
+        <!-- 메시지 표시 -->
+        <!-- <img src="https://img.icons8.com/?size=100&id=37966&format=png&color=000000"> -->
+        <!-- 프로필이미지 -->
+        <!-- </div> -->
+        <!-- 로그인하지 않았을 경우 -->
+        <div class="userHeader">
+            <a href="#" id="join">회원가입</a> | 
+			<a href="#" id="login">로그인</a>
+        </div>
+	</header>
+	<!-- nav 인덱스페이지로 이동, 글쓰기버튼, 다크모드&라이트모드 전환, 관리자의 경우 신고내역확인 -->
+	<main>
+	<nav>
+		<ul>
+			<li>
+                <!-- 인덱스페이지 이동 -->
+                <div>
+                    <a href="index.html">
+                        <img src="https://img.icons8.com/?size=100&id=86527&format=png&color=000000">
+                    </a>
+                </div>
+            </li>
+			<li>
+                <!-- 글쓰기버튼 -->
+                <div>
+                    <a href="write.html">
+                        <img src="https://img.icons8.com/?size=100&id=59864&format=png&color=000000">
+                    </a>
+                </div>
+            </li>
+			<li>
+                <!-- 다크모드&라이트모드 전환 -->
+                <div>
+                    <a href="">
+                        <img src="https://img.icons8.com/?size=100&id=101342&format=png&color=000000">
+                    </a>
+                </div>
+            </li>
+            <!-- 관리자의 경우 신고내역확인 -->
+            <!--
+			<li>
+                <div>
+                    <a href="complain.html">
+                        <img src="https://img.icons8.com/?size=100&id=8773&format=png&color=000000">
+                    </a>
+                </div>
+            </li> -->
+		</ul>
+	</nav>
+	<!--웹페이지 본문-->
+	<section>
+        <div class="bcSpan">
+            <span class="bUnderline" > 블랙리스트 </span>
+            <span class="cUnderline" style="color: lightgray;"> 신고 게시글 </span>
+        </div>
+        <div class="complainTable">
+          
+            <table class="inner_table">
+                <thead>
+                	<tr>
+	                    <th>신고 번호</th>
+	                    <th>닉네임</th>
+	                    <th>이메일</th>
+	                    <th>가입일</th>
+	                    <th>신고 횟수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10</td>
+                        <td>hong</td>
+                        <td>hong@hong.com</td>
+                        <td>10.14</td>
+                        <td>100번</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>hong</td>
+                        <td>hong@hong.com</td>
+                        <td>10.14</td>
+                        <td>100번</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>hong</td>
+                        <td>hong@hong.com</td>
+                        <td>10.14</td>
+                        <td>100번</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>hong</td>
+                        <td>hong@hong.com</td>
+                        <td>10.14</td>
+                        <td>100번</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>hong</td>
+                        <td>hong@hong.com</td>
+                        <td>10.14</td>
+                        <td>100번</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+	</section>
+		<!-- 오른쪽 여백페이지 -->
+		<aside></aside>
+	</main>
+</body>
+</html>
