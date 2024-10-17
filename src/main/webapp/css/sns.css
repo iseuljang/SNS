@@ -154,12 +154,18 @@ header img{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
     border-radius: 5px;
-    width: 60px;
-    height:20px;
     z-index: 1;
     justify-content: center;
     align-items: center;
     text-align: center;
+/*     width: 60px;
+    height:20px; */
+    width: 3vw; /* 화면 너비의 3%로 설정 */
+    height: auto; /* 내용에 맞게 높이를 자동 설정 */
+    font-size: 2vw;
+    white-space: nowrap; /* 줄바꿈하지 않음 */
+    overflow: hidden; /* 박스를 넘는 글자를 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 말줄임표(...) 처리 */
 }
 
 .userHeader_login .icon:hover .login-hover-menu {
@@ -255,11 +261,17 @@ nav li div:hover{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
     border-radius: 5px;
-    width: 80px;
-    height:20px;
     z-index: 1;
     justify-content: center; /* 가로 가운데 정렬 */
     align-items: center; /* 세로 가운데 정렬 */
+/*     width: 80px;
+    height:20px; */
+    width: 4vw; /* 화면 너비의 20%로 설정 */
+    height: auto; /* 내용에 맞게 높이를 자동 설정 */
+    font-size: 2.5vw;
+    white-space: nowrap; /* 줄바꿈하지 않음 */
+    overflow: hidden; /* 박스를 넘는 글자를 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 말줄임표(...) 처리 */
 }
 
 .menu-item:hover .hover-menu {
@@ -429,7 +441,8 @@ aside {
 /* 버튼 스타일 */
 #pwChange {
     border-radius: 10px;
-    background-color: #BFBFBF;
+    /* background-color: #BFBFBF; */
+    background-color: #767676;
 	color:white;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border: none;
@@ -525,6 +538,7 @@ body.dark-mode .login-hover-menu{
     padding: 20px;
     border: none;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    /* box-shadow: rgba(0, 0, 0, 0.3) 0px -2px 16px; */
     width: 70%; /* 창 크기 조절 */
     height: 60%;
     border-radius: 20px;
