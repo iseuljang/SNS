@@ -17,7 +17,7 @@
 <script>
 $(document).ready(function() {
     // 다크모드 초기화 함수
-    function initializeDarkMode() {
+    function DarkMode() {
         const currentMode = localStorage.getItem('mode') || 'light';
         const modeText = document.getElementById('modeText');
         if (currentMode === 'dark') {
@@ -38,7 +38,7 @@ $(document).ready(function() {
     }
 
     // 페이지 로드 시 다크모드 초기화
-    initializeDarkMode();
+    DarkMode();
 
     // 회원가입, 로그인 모달
     $(".userHeader a").click(function() {
@@ -62,7 +62,7 @@ $(document).ready(function() {
                 });
 
                 // 다크모드 초기화 다시 실행
-                initializeDarkMode();
+                DarkMode();
             }
         });
     });
