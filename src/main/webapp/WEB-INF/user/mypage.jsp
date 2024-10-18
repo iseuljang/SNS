@@ -4,12 +4,6 @@
 <%@ include file="../include/nav.jsp" %>
 <script>
     window.onload = function(){
-        $(".icon").mouseover(function() {
-            $(this).addClass('round');  // round 클래스 추가
-        }).mouseout(function() {
-            $(this).removeClass('round');  // round 클래스 제거
-        });
-        
         /* view 페이지 띄우는 모달 */
      	// 모달 띄우기 버튼
         $(".listDiv").click(function() {

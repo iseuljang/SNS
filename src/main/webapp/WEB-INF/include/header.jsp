@@ -59,6 +59,12 @@ $(document).ready(function() {
 
     // 페이지 로드 시 다크모드 초기화
     DarkMode();
+    
+    $(".icon").mouseover(function() {
+        $(this).addClass('round');  // round 클래스 추가
+    }).mouseout(function() {
+        $(this).removeClass('round');  // round 클래스 제거
+    });
 
     // 회원가입, 로그인 모달
     $(".userHeader a").click(function() {
@@ -523,11 +529,15 @@ function readURL(input) {
 		if(loginUser != null){
 		%>
         <!-- 로그인했을 경우 -->
-        <div class="userHeader">
+        <div class="userHeader_login">
 	        <!-- 알림 표시 -->
-	        <img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676">
+	        <div class="icon">
+	      	  <img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676">
+	        </div>
 	        <!-- 메시지 표시 -->
-	        <img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
+	        <div class="icon">
+	       	  <img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
+	        </div>
 	        <!-- 프로필이미지 -->
         	<img id="previewProfil" class="circular-img" 
         	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
