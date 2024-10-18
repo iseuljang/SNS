@@ -59,10 +59,9 @@ if(session.getAttribute("loginUser") != null) {
                 </div>
             </li> 
             <%
-			}
-			%>
+            	if(loginUserNav.getUauthor().equals("A")){
+           		%>
             <!-- 관리자의 경우 신고내역확인 -->
-            <!--
 			<li>
                 <div class="menu-item">
                     <a href="complain.jsp">
@@ -72,6 +71,10 @@ if(session.getAttribute("loginUser") != null) {
 	                    <p>신고관리</p>
 	                </div>
                 </div>
-            </li> -->
+            </li>
+           		<%
+            	}
+			}
+			%>
 		</ul>
 	</nav>
