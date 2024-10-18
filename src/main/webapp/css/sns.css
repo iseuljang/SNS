@@ -75,7 +75,7 @@ header img{
 #clearBtn {
     cursor: pointer;
     position: absolute; /* 위치를 절대적으로 설정 */
-    right: 10px; /* 오른쪽에 고정 */
+    right: 550px; /* 오른쪽에 고정 */
     top: 50%;
     transform: translateY(-50%);
     font-size: 18px;
@@ -100,14 +100,10 @@ header img{
     font-size:18px;
 }
 
-#search-container clearBtn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 18px;
-    display: none;
+body.dark-mode .profileicon {
+    background-color: #666666 !important;
 }
+
 
 .userHeader a {
     text-decoration-line: none;
@@ -140,8 +136,10 @@ header img{
 }
 
 .userHeader_login .icon {
-    width: 3.5vw; 
-    height: 3.5vw; 
+    /* width: 3.5vw; 
+    height: 3.5vw; */ 
+    width: 70px; 
+    height: 70px; 
     display: flex;
     justify-content: center; /* 수평 가운데 정렬 */
     align-items: center; /* 수직 가운데 정렬 */
@@ -218,6 +216,7 @@ header img{
 body.dark-mode #previewProfil{
 	filter: none; 
 }
+
 
 /* nav {
     width: 5%;

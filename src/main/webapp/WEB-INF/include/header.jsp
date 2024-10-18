@@ -392,7 +392,7 @@ $(document).ready(function() {
    	        		result = result.trim();
 	   	            switch(result) {
 		                 case "success":
-		                	 alert("로그인에 성공");
+		                	 /* alert("로그인에 성공"); */
 		   	                 window.location.href = "<%= request.getContextPath() %>";
 		                     break;
 		                 case "error":
@@ -545,13 +545,35 @@ function readURL(input) {
 		        </div>
 	        </div>
 	        <!-- 프로필이미지 -->
+	        <%
+	        if(userPname != null && !userPname.equals("")){
+        	%>
         	<img id="previewProfil" class="circular-img" 
+        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
+	            style="border:none;" 
+	            src="<%= request.getContextPath()%>/upload/<%= userPname %>"
+           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
+        	<%-- <img id="previewProfil" class="circular-img" 
         	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
 	            style="border:none;" 
 	            src="<%= userPname != null && !userPname.equals("") 
 	            ? request.getContextPath()+"/upload/" + userPname 
            		: "https://img.icons8.com/?size=100&id=115346&format=png&color=000000" %>" 
-           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
+           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" /> --%>
+        	<%
+	        }else{
+	        	String firstNick = loginUser.getUnick().substring(0, 1);
+        	%>
+	        <div class="icon profileicon" 
+	        onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
+	        style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
+	        display: flex; justify-content: center; align-items: center;
+	         font-size: 24px; font-weight: bold; width: 70px; height: 70px;">
+		        <%= firstNick %>
+        	</div>
+        	<%
+	        }
+	        %>
         </div>
 		<%
 		}else{

@@ -22,6 +22,9 @@
 	<div class="mypage_inner">
 		<div id="mypage_top">
 			<!-- 프로필이미지 -->
+			<%
+	        if(userPname != null && !userPname.equals("")){
+        	%>
         	<img id="previewProfil" class="circular-img" 
         	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
 	            style="border:none; width:300px; height:300px;" 
@@ -29,6 +32,20 @@
 	            ? request.getContextPath()+"/upload/" + userPname 
            		: "https://img.icons8.com/?size=100&id=115346&format=png&color=000000" %>" 
            		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
+         	<%
+	        }else{
+	        	String firstNick = loginUser.getUnick().substring(0, 1);
+        	%>
+	        <div class="icon profileicon"
+	        onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
+	        style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
+	        display: flex; justify-content: center; align-items: center;
+	         font-size: 100px; font-weight: bold; width: 300px; height: 300px;">
+		        <%= firstNick %>
+        	</div>
+        	<%
+	        }
+	        %>
 	    	<div>흰둥이</div>
 	    	<div>팔로워 수 10</div>
 	    	<div>
