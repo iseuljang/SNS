@@ -560,7 +560,7 @@ body.dark-mode {
     color: #ffffff;
 }
 
-body.dark-mode header,
+/* body.dark-mode header, */
 body.dark-mode nav,
 body.dark-mode section,
 body.dark-mode aside {

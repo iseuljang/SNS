@@ -22,9 +22,13 @@
 	<div class="mypage_inner">
 		<div id="mypage_top">
 			<!-- 프로필이미지 -->
-			<img id="previewProfil" class="circular-img" 
-			    	style="border:none; width:300px; height:300px;" 
-			    	src="https://img.icons8.com/?size=100&id=115346&format=png&color=000000">
+        	<img id="previewProfil" class="circular-img" 
+        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
+	            style="border:none; width:300px; height:300px;" 
+	            src="<%= userPname != null && !userPname.equals("") 
+	            ? request.getContextPath()+"/upload/" + userPname 
+           		: "https://img.icons8.com/?size=100&id=115346&format=png&color=000000" %>" 
+           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
 	    	<div>흰둥이</div>
 	    	<div>팔로워 수 10</div>
 	    	<div>
