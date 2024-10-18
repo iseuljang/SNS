@@ -5,7 +5,7 @@
 		<a>로그인</a>
     </div>
     <div class="user_inner">
-        <form action="login.do" method="post" id="loginFn">
+        <form action="login.do" method="post" id="loginFn" name="loginFn">
             <table>
                 <tr>
                     <td>

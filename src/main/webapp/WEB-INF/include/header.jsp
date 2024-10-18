@@ -7,9 +7,19 @@
 <%
 String author= "";
 String loginNo= "";
+String userPname= "";
 UserVO loginUser = null;
-if(session.getAttribute("loginUser") != null){
-	loginUser = (UserVO)session.getAttribute("loginUser");
+if(session.getAttribute("loginUser") != null) {
+    loginUser = (UserVO)session.getAttribute("loginUser");
+    if(loginUser.getPname() != null) {
+        System.out.print("loginUser : " + loginUser.getPname());
+        userPname = loginUser.getPname();
+        loginNo = loginUser.getUno();
+    }else {
+        System.out.print("loginUser : 이름 없음");
+    }
+}else {
+    System.out.print("loginUser : 로그인되지 않음");
 }
 %>
 <!DOCTYPE html>
@@ -120,7 +130,7 @@ $(document).ready(function() {
     $("#login_uid").focus();
     
     function resetEvents() {
-        $("#uid, #upw, #upwcheck, #unick, #uemail").on("input", function() {
+        $("#uid, #upw, #upwcheck, #unick, #uemail, #login_uid, #login_upw").on("input", function() {
             DoReset();
         });
 
@@ -316,14 +326,20 @@ $(document).ready(function() {
 	            data: new FormData(form),  // 폼 데이터 전송
 	            processData: false,  // 자동 데이터 처리 방지
 	            contentType: false,  // 요청 시 Content-Type 설정 방지
-	            success: function(response) {
-	                if (response.status === "success") {
-	                    // 회원가입 성공 시 로그인 페이지를 모달창으로 오픈
-	                    openLoginModal();
-	                } else {
-	                    // 오류 메시지 처리
-	                    $(".msg").html("회원가입에 실패했습니다. 다시 시도해주세요.");
-	                }
+	            success: function(result) {
+					result = result.trim();
+   	            	
+	   	            switch(result) {
+		                 case "success":
+		                	 openLoginModal();
+		                     break;
+		                 case "error":
+		                	 $(".msg").html("회원가입에 실패했습니다. 다시 시도해주세요.");
+		                     break;
+		                 default :
+		                	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+		                     break;
+		             }
 	            }
 	        });
 	    }
@@ -358,24 +374,54 @@ $(document).ready(function() {
 		if(confirm("로그인하시겠습니까?") == true){
    	        // 폼 데이터 비동기적으로 전송
    	        var form = document.getElementById("loginFn");
-   	        
+   	        console.log(document.loginFn.uid.value);
    	        $.ajax({
+   	        	url:"<%= request.getContextPath() %>/user/login.do",
+   	        	type:"post",
+   	        	data:{
+   	        		uid: $("#login_uid").val(),
+   	        		upw: $("#login_upw").val()
+   	        	},
+   	        	success:function(result){
+   	        		result = result.trim();
+	   	            switch(result) {
+		                 case "success":
+		                	 alert("로그인에 성공");
+		   	                 window.location.href = "<%= request.getContextPath() %>";
+		                     break;
+		                 case "error":
+		                	 openLoginModal();
+	   	                     alert("로그인에 실패하셨습니다.");
+		                     break;
+		                 default :
+		                	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+		                     break;
+		             }
+   	        	}
+   	        });
+   	       <%--  $.ajax({
    	            url: "<%= request.getContextPath() %>/user/login.do",  // 요청 URL
    	            type: "post",  // 요청 방식
    	            data: new FormData(form),  // 폼 데이터 전송
    	            processData: false,  // 자동 데이터 처리 방지
    	            contentType: false,  // 요청 시 Content-Type 설정 방지
-   	            success: function(response) {
-   	                if(response.status === "error") {
-   	                    openLoginModal();
-   	                    alert("로그인에 실패하셨습니다.");
-   	                }else {
-   	                    // 로그인 성공
-   	                    alert("로그인에 성공");
-   	                    window.location.href = "<%= request.getContextPath() %>";  
-   	                }
+   	            success: function(result) {
+   	            	result = result.trim();
+	   	            switch(result) {
+		                 case "success":
+		                	 alert("로그인에 성공");
+		   	                 window.location.href = "<%= request.getContextPath() %>";
+		                     break;
+		                 case "error":
+		                	 openLoginModal();
+	   	                     alert("로그인에 실패하셨습니다.");
+		                     break;
+		                 default :
+		                	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+		                     break;
+		             }
    	            }
-   	        });
+   	        }); --%>
 		}
 	}
 
@@ -483,38 +529,13 @@ function readURL(input) {
 	        <!-- 메시지 표시 -->
 	        <img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
 	        <!-- 프로필이미지 -->
-	        <%
-		    if(!loginUser.getPname().equals("")) {
-		        String userPname = loginUser.getPname();
-		        // 이미지 파일 확장자 체크
-		        String[] imageExtensions = { "jpg", "jpeg", "png", "gif", "bmp" };
-		        String fileExtension = userPname.substring(userPname.lastIndexOf(".") + 1).toLowerCase();
-		        boolean isImage = false;
-		
-		        // 파일 확장자가 이미지인지 체크
-		        for (String ext : imageExtensions) {
-		            if (fileExtension.equals(ext)) {
-		                isImage = true;
-		                break;
-		            }
-		        }
-		        // 이미지 파일일 경우 미리보기 제공
-		        if(isImage){
-	            %>
-	            <img id="previewProfil" class="circular-img" style="border:none;" 
-	            src="<%= request.getContextPath() %>/upload/<%= userPname %>" alt="첨부된 이미지" />
-	            <%
-		        }
-		    }else{
-		    	%>
-				<!-- <img id="previewProfil" class="circular-img" src="https://img.icons8.com/?size=100&id=fX8vkLDeFBha&format=png&color=000000" /> -->
-		    	<!-- <img id="previewProfil" class="circular-img" style="border:none;" src="https://img.icons8.com/?size=100&id=ulp2NT1Q9vQ8&format=png&color=FF7F50" /> -->
-		    	<img id="previewProfil" class="circular-img" 
-		    	style="border:none; width:120px; height:120px;" 
-		    	src="https://img.icons8.com/?size=100&id=115346&format=png&color=000000">
-		    	<%
-		    }
-		    %>
+        	<img id="previewProfil" class="circular-img" 
+        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
+	            style="border:none;" 
+	            src="<%= userPname != null && !userPname.equals("") 
+	            ? request.getContextPath()+"/upload/" + userPname 
+           		: "https://img.icons8.com/?size=100&id=115346&format=png&color=000000" %>" 
+           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
         </div>
 		<%
 		}else{

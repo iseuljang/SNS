@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="sns.vo.*" %>
+<%
+UserVO loginUserNav = null;
+if(session.getAttribute("loginUser") != null) {
+	loginUserNav = (UserVO) session.getAttribute("loginUser");
+}
+%>
 <!-- nav 인덱스페이지로 이동, 글쓰기버튼, 다크모드&라이트모드 전환, 관리자의 경우 신고내역확인 -->
 <main>
 	<nav>
@@ -37,8 +44,10 @@
 	                </div>
                 </div>
             </li>
-               <!-- 로그인한 경우 로그아웃 -->
-			<!-- 
+            <%
+			if(loginUserNav != null){
+			%>
+            <!-- 로그인한 경우 로그아웃 -->
 			<li>
                 <div class="menu-item">
                     <a href="logout.jsp">
@@ -49,7 +58,9 @@
 	                </div>
                 </div>
             </li> 
-            -->
+            <%
+			}
+			%>
             <!-- 관리자의 경우 신고내역확인 -->
             <!--
 			<li>

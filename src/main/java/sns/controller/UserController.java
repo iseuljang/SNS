@@ -30,6 +30,7 @@ public class UserController {
 			if(request.getMethod().equals("GET")) {
 				login(request,response);
 			}else if (request.getMethod().equals("POST")) {
+				
 				loginOk(request,response);
 			}
 		}else if(comments[comments.length-1].equals("logout.do")) {
@@ -69,6 +70,7 @@ public class UserController {
 			
 			String sql = "select * from user where uid = ? and upw = md5(?) and ustate='E' ";
 			psmt = conn.prepareStatement(sql);
+			System.out.println(sql);
 			psmt.setString(1, uid);
 			psmt.setString(2, upw);
 			
@@ -80,16 +82,21 @@ public class UserController {
 				loginUser.setUnick(rs.getString("unick"));
 				loginUser.setUauthor(rs.getString("uauthor"));
 				loginUser.setPname(rs.getString("pname"));
-				loginUser.setUid(uid);
 				
 				//로그인 정보 session에 저장
 				HttpSession session = request.getSession();
 				session.setAttribute("loginUser", loginUser);
-				response.sendRedirect(request.getContextPath());
+				/* response.sendRedirect(request.getContextPath()); */
+				
+		        response.setContentType("text/html;charset=UTF-8");
+		        PrintWriter out = response.getWriter();  
+	            out.print("success");  
+		        out.flush();
+		        out.close();
 			}else {
-				response.setContentType("application/json;charset=UTF-8");
-		        PrintWriter out = response.getWriter();
-		        out.print("{\"status\":\"error\"}");
+				response.setContentType("text/html;charset=UTF-8");
+		        PrintWriter out = response.getWriter();  
+	            out.print("error");  
 		        out.flush();
 		        out.close();
 			}
@@ -114,7 +121,7 @@ public class UserController {
 	public void mypage(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		UserVO loginUser = (UserVO)session.getAttribute("user");
+		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
 		String uno = loginUser.getUno();
 		
 		Connection conn = null;			//DB 연결
@@ -136,7 +143,6 @@ public class UserController {
 				user.setUno(rs.getString("uno"));
 				user.setUid(rs.getString("uid"));
 				user.setUnick(rs.getString("unick"));
-				user.setUpw(rs.getString("upw"));
 				user.setUemail(rs.getString("uemail"));
 				user.setUstate(rs.getString("ustate"));
 				user.setUauthor(rs.getString("uauthor"));
@@ -245,17 +251,16 @@ public class UserController {
 			
 			psmt.executeUpdate();
 			
-			// 회원가입 성공 시 JSON 응답
-	        response.setContentType("application/json;charset=UTF-8");
-	        PrintWriter out = response.getWriter();
-	        out.print("{\"status\":\"success\"}");
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();  
+            out.print("success");  
 	        out.flush();
 	        out.close();
 		}catch(Exception e){
 			e.printStackTrace();
-	        response.setContentType("application/json;charset=UTF-8");
-	        PrintWriter out = response.getWriter();
-	        out.print("{\"status\":\"error\"}");
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();  
+            out.print("error");  
 	        out.flush();
 	        out.close();
 		}finally{

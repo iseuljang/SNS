@@ -38,6 +38,7 @@ public class FrontController extends HttpServlet {
 			BoardController board = new BoardController(request,response,comments);
 			//SampleController 에게 처리 전달
 		}else if(comments[0].equals("user")) {
+			System.out.println(request.getParameter("uid"));
 			UserController user = new UserController(request,response,comments);
 			//SampleController 에게 처리 전달
 		}
