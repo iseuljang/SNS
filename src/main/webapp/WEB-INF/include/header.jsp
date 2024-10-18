@@ -532,11 +532,17 @@ function readURL(input) {
         <div class="userHeader_login">
 	        <!-- 알림 표시 -->
 	        <div class="icon">
-	      	  <img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676">
+      	   		<img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676">
+      	   		<div class="login-hover-menu">
+		            <p>알림</p>
+		        </div>
 	        </div>
 	        <!-- 메시지 표시 -->
 	        <div class="icon">
-	       	  <img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
+	       		<img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
+	       		<div class="login-hover-menu">
+		            <p>메시지</p>
+		        </div>
 	        </div>
 	        <!-- 프로필이미지 -->
         	<img id="previewProfil" class="circular-img" 
