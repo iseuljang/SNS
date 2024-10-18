@@ -2,6 +2,7 @@ package sns.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,6 +42,10 @@ public class UserController {
 			}else if (request.getMethod().equals("POST")) {
 				joinOk(request,response);
 			}
+		}else if(comments[comments.length-1].equals("idCheck.do")) {
+			idCheck(request,response);
+		}else if(comments[comments.length-1].equals("nickCheck.do")) {
+			nickCheck(request,response);
 		}
 	}
 	
@@ -62,7 +67,7 @@ public class UserController {
 		try{
 			conn = DBConn.conn();
 			
-			String sql = "select * from user where uid=? and upw=?";
+			String sql = "select * from user where uid = ? and upw = md5(?) and ustate='E' ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, uid);
 			psmt.setString(2, upw);
@@ -74,6 +79,7 @@ public class UserController {
 				loginUser.setUno(rs.getString("uno"));
 				loginUser.setUnick(rs.getString("unick"));
 				loginUser.setUauthor(rs.getString("uauthor"));
+				loginUser.setPname(rs.getString("pname"));
 				loginUser.setUid(uid);
 				
 				//로그인 정보 session에 저장
@@ -81,8 +87,11 @@ public class UserController {
 				session.setAttribute("loginUser", loginUser);
 				response.sendRedirect(request.getContextPath());
 			}else {
-				//로그인 실패할 경우
-				response.sendRedirect(request.getContextPath()+"/login.do");
+				response.setContentType("application/json;charset=UTF-8");
+		        PrintWriter out = response.getWriter();
+		        out.print("{\"status\":\"error\"}");
+		        out.flush();
+		        out.close();
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -105,7 +114,7 @@ public class UserController {
 	public void mypage(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
+		UserVO loginUser = (UserVO)session.getAttribute("user");
 		String uno = loginUser.getUno();
 		
 		Connection conn = null;			//DB 연결
@@ -161,40 +170,44 @@ public class UserController {
 	public void joinOk(HttpServletRequest request
 			, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("UTF-8");
-		String uploadPath = request.getServletContext().getRealPath("/upload");
+		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
+		String uploadPath = "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 
 		int size = 10 * 1024 * 1024;
 		MultipartRequest multi;
-		try
-		{
-			multi = 
-				new MultipartRequest(request,uploadPath,size,
-					"UTF-8",new DefaultFileRenamePolicy());
-		}catch(Exception e)
-		{
-			response.sendRedirect("join.do");
-			return;
+		try {
+		    // 파일 업로드 처리
+		    multi = new MultipartRequest(request, uploadPath, size, "UTF-8", new DefaultFileRenamePolicy());
+		} catch (Exception e) {
+		    // 파일 업로드 실패 시 처리
+		    response.sendRedirect(request.getContextPath());
+		    return;
 		}
 
-		//업로드된 파일명을 얻는다
+		// 업로드된 파일명 얻기
 		Enumeration files = multi.getFileNames();
-		String filename = null;			//원본파일
-		String phyname = null;			//바뀐이름
+		String filename = null;  // 원본 파일 이름
+		String phyname = null;   // 서버에 저장될 파일 이름
 
 		if (files.hasMoreElements()) {
 		    String fileid = (String) files.nextElement();
-		    filename = multi.getFilesystemName(fileid);
+		    filename = multi.getFilesystemName(fileid);  // 원본 파일 이름 가져오기
 
-			if (filename != null) {
+		    if (filename != null) {
 		        System.out.println("업로드된 파일 이름: " + filename);
-		        phyname = UUID.randomUUID().toString(); // UUID 생성
-		        String srcName = uploadPath + "/" + filename;
+		        
+		        // 물리 파일 이름 생성 (UUID 사용)
+		        phyname = UUID.randomUUID().toString();  
+		        
+		        // 파일 경로 설정
+		        String srcName = uploadPath + "/" + filename;  
 		        String targetName = uploadPath + "/" + phyname;
 		        
+		        // 파일 이름 변경 (UUID로 저장)
 		        File srcFile = new File(srcName);
 		        File targetFile = new File(targetName);
-		        
+
 		        boolean renamed = srcFile.renameTo(targetFile);
 		        if (!renamed) {
 		            System.out.println("파일 이름 변경 실패");
@@ -209,6 +222,10 @@ public class UserController {
 		String unick = multi.getParameter("unick");
 		String uemail = multi.getParameter("uemail");
 
+		// 파일 이름이 없으면 빈 값 처리
+		if (phyname == null) phyname = "";
+		if (filename == null) filename = "";
+		
 		Connection conn = null;			
 		PreparedStatement psmt = null;
 
@@ -223,18 +240,109 @@ public class UserController {
 			psmt.setString(2, upw);
 			psmt.setString(3, unick);
 			psmt.setString(4, uemail);
-			if(phyname == null) phyname = "";
-			psmt.setString(5, phyname);
-			if(filename == null) filename = "";
-			psmt.setString(6, filename);
+			psmt.setString(5, phyname);  // 물리 파일 이름 (서버에 저장된 파일 이름)
+		    psmt.setString(6, filename);  // 원본 파일 이름 (사용자가 업로드한 파일 이름)
 			
 			psmt.executeUpdate();
-			response.sendRedirect(request.getContextPath()+"/login.do");
+			
+			// 회원가입 성공 시 JSON 응답
+	        response.setContentType("application/json;charset=UTF-8");
+	        PrintWriter out = response.getWriter();
+	        out.print("{\"status\":\"success\"}");
+	        out.flush();
+	        out.close();
+		}catch(Exception e){
+			e.printStackTrace();
+	        response.setContentType("application/json;charset=UTF-8");
+	        PrintWriter out = response.getWriter();
+	        out.print("{\"status\":\"error\"}");
+	        out.flush();
+	        out.close();
+		}finally{
+			try {
+				DBConn.close(psmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void idCheck(HttpServletRequest request
+			, HttpServletResponse response) throws UnsupportedEncodingException {
+		request.setCharacterEncoding("UTF-8");
+		String uid = request.getParameter("uid");
+
+		Connection conn = null;			
+		PreparedStatement psmt = null;
+		ResultSet rs = null;	
+
+
+		try{
+			conn = DBConn.conn();
+			
+			String sql = "select uid from user "
+					+ " where uid=? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, uid);
+			
+			rs = psmt.executeQuery();
+			
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();  // 클라이언트로 응답을 보낼 준비
+	        if(rs.next()){
+	            out.print("01");  // 중복된 아이디
+	        } else {
+	            out.print("00");  // 사용 가능한 아이디
+	        }
+	        out.flush();
+	        out.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
 			try {
-				DBConn.close(psmt, conn);
+				DBConn.close(rs,psmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void nickCheck(HttpServletRequest request
+			, HttpServletResponse response) throws UnsupportedEncodingException {
+		request.setCharacterEncoding("UTF-8");
+		String unick = request.getParameter("unick");
+
+		Connection conn = null;			
+		PreparedStatement psmt = null;
+		ResultSet rs = null;	
+
+
+		try{
+			conn = DBConn.conn();
+			
+			String sql = "select unick from user "
+					+ " where unick=? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, unick);
+			
+			rs = psmt.executeQuery();
+			
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();  // 클라이언트로 응답을 보낼 준비
+	        if(rs.next()){
+	            out.print("01");  
+	        } else {
+	            out.print("02");  
+	        }
+	        out.flush();
+	        out.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try {
+				DBConn.close(rs,psmt, conn);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

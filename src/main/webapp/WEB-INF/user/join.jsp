@@ -128,10 +128,9 @@
 	</form>
 </div> -->
 
-<!--  -->
 <div>
     <div class="user_title">
-		<a href="#">회원가입</a>
+		<a>회원가입</a>
     </div>
     <div class="user_inner">
         <form action="join.do" method="post" id="joinFn" enctype="multipart/form-data">
@@ -140,7 +139,7 @@
                    <td>
                        <div class="user-container">
                            <i class="fas fa-user" id="user_itag1"></i>
-                           <input type="text" name="uid" id="uid" placeholder="아이디" onkeydown="DoReset();">
+                           <input type="text" name="uid" id="uid" placeholder="아이디">
                        </div>
                    </td>
                </tr>
@@ -148,7 +147,7 @@
                    <td>
                        <div class="user-container">
                            <i class="fas fa-lock" id="user_itag2"></i>
-                           <input type="password" name="upw" id="upw" placeholder="비밀번호" onkeydown="DoReset();">
+                           <input type="password" name="upw" id="upw" placeholder="비밀번호">
                        </div>
                    </td>
                </tr>
@@ -156,7 +155,7 @@
                    <td>
                        <div class="user-container">
                            <i class="fas fa-check" id="user_itag3"></i>
-                      		<input type="password" name="upwcheck" id="upwcheck" placeholder="비밀번호확인" onkeydown="DoReset();">
+                      		<input type="password" name="upwcheck" id="upwcheck" placeholder="비밀번호확인">
                        </div>
                    </td>
                </tr>
@@ -164,7 +163,7 @@
                    <td>
                        <div class="user-container">
                            <i class="fas fa-user" id="user_itag4"></i>
-                     	   <input type="text" name="unick" id="unick" placeholder="닉네임" onkeydown="DoReset();">
+                     	   <input type="text" name="unick" id="unick" placeholder="닉네임">
                        </div>
                    </td>
                </tr>
@@ -206,19 +205,19 @@
                    <td>
                        <div class="user-container">
                            <i class="fas fa-envelope" id="user_itag6"></i>
-                     	   <input type="email" name="uemail" id="uemail" placeholder="이메일" onkeydown="DoReset();">
+                     	   <input type="email" name="uemail" id="uemail" placeholder="이메일">
                      	   <button type="button" class="usersBtn">인증하기</button>
                        </div>
                    </td>
                </tr>
                 <tr>
                 	<td style="text-align: center;">
-                    	<span id="msg" style="color:green;"></span>
+                    	<span class="msg" style="color:green;"></span>
                 	</td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">
-                        <button type="button" class="userBtn" onclick="DoJoin();">가입하기</button>
+                        <button type="button" class="userBtn" id="joinBtn" onclick="DoJoin();">가입하기</button>
                         <button type="reset"  class="userBtn">취소</button>
                     </td>
                 </tr>
