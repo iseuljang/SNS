@@ -46,7 +46,7 @@
         	<%
 	        }
 	        %>
-	    	<div>흰둥이</div>
+	    	<div><%= loginUser.getUnick() %></div>
 	    	<div>팔로워 수 10</div>
 	    	<div>
 	    		<!-- 내가 아닌 다른 회원페이지인 경우 -->

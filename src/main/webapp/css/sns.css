@@ -99,7 +99,7 @@ header img{
     font-weight:bold;
     font-size:18px;
 }
-
+/* 프로필 사진 없을때 닉네임 한글자만 표현되는곳 다크모드시 */
 body.dark-mode .profileicon {
     background-color: #666666 !important;
 }

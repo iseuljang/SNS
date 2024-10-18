@@ -567,7 +567,7 @@ function readURL(input) {
 	        <div class="icon profileicon" 
 	        onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
 	        style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
-	        display: flex; justify-content: center; align-items: center;
+	        display: flex; justify-content: center; align-items: center; margin-left:10px;
 	         font-size: 24px; font-weight: bold; width: 70px; height: 70px;">
 		        <%= firstNick %>
         	</div>
