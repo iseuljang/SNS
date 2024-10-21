@@ -121,6 +121,21 @@ body.dark-mode .profileicon {
     text-underline-offset: 6px; 
 }
 
+#findIdPw a{
+	text-decoration-line: none;
+    background: none;
+    color: #333333;
+    border: none;
+    cursor: pointer;
+    font-size: 33px;
+    font-weight: bold;
+}
+
+#findIdPw a:hover {
+    text-decoration: underline;
+    text-underline-offset: 6px; 
+}
+
 .userHeader {
     display: flex;
     gap: 20px; 

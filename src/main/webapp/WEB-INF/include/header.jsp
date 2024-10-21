@@ -110,6 +110,7 @@ $(document).ready(function() {
         }
     });
     
+    
     $("#search").keyup(function(event){
 		if(event.keyCode == 13)	{	
 			//Enter문자가 눌려짐. keyCode 아스키코드. 13이 enter 
@@ -509,6 +510,37 @@ function readURL(input) {
     }
 }
 
+
+function findPage(type) {
+    var url = (type === "findId") 
+    ? "<%= request.getContextPath() %>/user/findId.do" 
+	: (type === "findPw") 
+		? "<%= request.getContextPath() %>/user/findPw.do" 
+		: "<%= request.getContextPath() %>/user/pwChange.do";
+    
+    $.ajax({
+        url: url,
+        type: "get",
+        success: function(data) {
+            $("#user_modalBody").html(data); // 모달 내부에 페이지 로드
+            
+            // 동적으로 로드된 스크립트 실행
+            $('script').each(function() {
+                if (this.src) {
+                    $.getScript(this.src);
+                } else {
+                    eval($(this).text());
+                }
+            });
+            
+            // 필요한 이벤트 재설정
+            resetEvents();
+            
+            // 다크모드 적용 (있는 경우)
+            DarkMode();
+        }
+    });
+}
 
 //------------------ 인증번호 발송 버튼 -------------------
 function SendMail() {

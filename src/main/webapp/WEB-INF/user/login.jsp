@@ -32,9 +32,7 @@
                     <td>
                         <button type="button" onclick="DoLogin();" class="userBtn" id="loginBtn">로그인하기</button>
                         <br>
-                        <a href="<%= request.getContextPath() %>/findid.do">
-                            <button type="button" class="userBtn">아이디/비밀번호 찾기</button>
-                        </a>
+                        <button type="button" class="userBtn" onclick="findPage('findId');">아이디/비밀번호 찾기</button>
                     </td>
                 </tr>
             </table>

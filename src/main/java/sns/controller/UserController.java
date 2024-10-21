@@ -58,6 +58,12 @@ public class UserController {
 			}else if (request.getMethod().equals("POST")) {
 				profileModifyOk(request,response);
 			}
+		}else if(comments[comments.length-1].equals("findId.do")) {
+			findId(request,response);
+		}else if(comments[comments.length-1].equals("findPw.do")) {
+			findPw(request,response);
+		}else if(comments[comments.length-1].equals("pwChange.do")) {
+			pwChange(request,response);
 		}
 	}
 	
@@ -544,4 +550,17 @@ public class UserController {
 	    }
 	}
 
+	public void findId(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/user/findId.jsp").forward(request, response);
+	}
+	
+	public void findPw(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/user/findPw.jsp").forward(request, response);
+	}
+	public void pwChange(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/user/pwChange.jsp").forward(request, response);
+	}
 }
