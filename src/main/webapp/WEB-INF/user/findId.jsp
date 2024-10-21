@@ -16,10 +16,10 @@
 			<tr>
 				<td>
 					<div class="user-container">
-	               <i class="fas fa-envelope" id="user_itag6"></i>
-	          	   <input type="email" name="uemail" id="uemail" placeholder="이메일">
-	          	   <button type="button" class="usersBtn" onclick="SendMail();">인증하기</button>
-	            </div>
+		               <i class="fas fa-envelope" id="user_itag6"></i>
+		          	   <input type="email" name="uemail" id="uemail" placeholder="이메일">
+		          	   <button type="button" class="usersBtn" onclick="SendMail();">인증하기</button>
+		            </div>
 				</td>
 			</tr>
 			<tr>
