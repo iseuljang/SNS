@@ -50,7 +50,7 @@ if(session.getAttribute("loginUser") != null) {
             <!-- 로그인한 경우 로그아웃 -->
 			<li>
                 <div class="menu-item">
-                    <a href="logout.jsp">
+                    <a href="<%= request.getContextPath() %>/user/logout.do">
                         <img class="logout" src="https://img.icons8.com/?size=100&id=BvRKVanAagI0&format=png&color=767676" alt="로그아웃">
                     </a>
                     <div class="hover-menu">

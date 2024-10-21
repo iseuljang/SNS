@@ -35,6 +35,7 @@ if(session.getAttribute("loginUser") != null) {
 <script>
 let IsDuplicate = false;
 let NickDuplicate = false;
+let emailcode = false;
 $(document).ready(function() {
     // 다크모드 초기화 함수
     function DarkMode() {
@@ -311,15 +312,19 @@ $(document).ready(function() {
 	    // 이메일 입력 확인
 	    let mail = document.getElementById("uemail");
 	    var emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-	    if (mail.value == "") {
+	    if(mail.value == "") {
 	        $(".msg").html("이메일을 입력해주세요");
 	        mail.focus();
 	        return false;
-	    } else if (!emailPattern.test(mail.value)) {
+	    }else if (!emailPattern.test(mail.value)) {
 	        $(".msg").html("유효한 이메일 주소를 입력하세요");
 	        mail.focus();
 	        return false;
-	    }
+	    }if(emailcode == false)	{
+	    	$(".msg").html("이메일 인증을 해주세요.");
+			$("#code").focus();
+			return false;
+		}
 
 	    // 회원가입 요청 전에 확인 메시지
 	    if (confirm("회원가입을 완료하시겠습니까?") == true) {
@@ -502,6 +507,63 @@ function readURL(input) {
     } else {
         document.getElementById('preview').src = "";
     }
+}
+
+
+//------------------ 인증번호 발송 버튼 -------------------
+function SendMail() {
+	var email = $("#uemail").val();
+	var pattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+	
+	if(!pattern.test($("#uemail").val())) {
+		$(".msg").html("올바른 메일주소를 입력해주세요");
+		$("#uemail").focus();
+		return;
+	}else if($("#uemail").val().length < 5)	{
+		$(".msg").html("메일주소를 5자 이상 입력해주세요.");
+		$("#uemail").focus();
+		return;
+	}
+	
+	$.ajax({
+		url: "<%= request.getContextPath() %>/user/sendmail.do",
+		type : "post",
+		data : {uemail : email},
+		dataType: "html",
+		success : function(result) {
+			result = result.trim();
+			alert(result);
+		}			
+	});		
+}
+// ----------- 이메일 코드인증 확인 버튼 --------------
+function DoEmail() {
+	if($("#code").val() == "") {
+		$(".msg").html("인증코드를 입력하세요.");
+		$("#code").focus();
+		return;
+		emailcode = false;
+	}		
+	
+	// 받아온 코드값과 입력한 코드값을 비교
+	$.ajax({
+		url: "<%= request.getContextPath() %>/user/getcode.do",
+		type : "post",
+		dataType: "html",
+		success : function(result) {
+			result = result.trim();
+			if($("#code").val() == result) {
+				console.log(result);				
+				$(".msg").html("인증이 완료되었습니다.");
+				emailcode = true;
+			}else {
+				console.log(result);	
+				$(".msg").html("인증코드가 일치하지 않습니다.");
+				$("#code").focus();
+				emailcode = false;
+			}
+		}			
+	});		
 }
 
 </script>

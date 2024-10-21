@@ -19,6 +19,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import sns.util.DBConn;
+import sns.util.Sendmail;
 import sns.vo.UserVO;
 
 public class UserController {
@@ -47,6 +48,16 @@ public class UserController {
 			idCheck(request,response);
 		}else if(comments[comments.length-1].equals("nickCheck.do")) {
 			nickCheck(request,response);
+		}else if(comments[comments.length-1].equals("sendmail.do")) {
+			sendmail(request,response);
+		}else if(comments[comments.length-1].equals("getcode.do")) {
+			getcode(request,response);
+		}else if(comments[comments.length-1].equals("profileModify.do")) {
+			if(request.getMethod().equals("GET")) {
+				profileModify(request,response);
+			}else if (request.getMethod().equals("POST")) {
+				profileModifyOk(request,response);
+			}
 		}
 	}
 	
@@ -353,4 +364,184 @@ public class UserController {
 			}
 		}
 	}
+	
+	public void sendmail(HttpServletRequest request
+			, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+
+		String email = request.getParameter("uemail");
+
+		if(email == null || email.equals("")) {
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();  
+			out.print("올바른 메일주소가 아닙니다.");
+			return;
+		}
+		//-------------------- 이메일 주소로 인증번호 전송 ----------------------- 
+		//이메일 객체 생성
+		Sendmail sender = new Sendmail();
+		//인증코드를 얻는다.
+		String code = sender.AuthCode(6);
+		sender.setFrom("gyr0204@naver.com");
+		sender.setAccount("gyr0204", "zxcv1234!!");
+
+		//받는이를 유저가 입력한 이메일 주소로 설정
+		sender.setTo(email);
+
+		sender.setMail("회원가입 인증코드입니다.", "인증코드 : " + code);
+
+		if(sender.sendMail() == true)	{
+			// 해당 주소로 메일 전송이 성공했을 경우
+			HttpSession session = request.getSession();
+			session.setAttribute("code", code);
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();  
+			out.println("메일을 발송하였습니다.");
+		}else {
+			// 실패했을 경우
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();  
+			out.println("메일 발송에 실패하였습니다.");
+		}
+	}
+	
+	public void getcode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	    HttpSession session = request.getSession();
+	    String code = (String) session.getAttribute("code");
+
+	    response.setContentType("text/html;charset=UTF-8");
+	    PrintWriter out = response.getWriter();
+	    out.print(code); // 세션에 저장된 인증코드를 클라이언트로 반환
+	}
+	
+	public void profileModify(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/user/profileModify.jsp").forward(request, response);
+	}
+	
+	public void profileModifyOk(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	    request.setCharacterEncoding("UTF-8");
+	    String uploadPath = "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
+	    System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
+	    
+	    int size = 10 * 1024 * 1024; // 최대 10MB 파일 허용
+	    MultipartRequest multi;
+
+	    try {
+	        multi = new MultipartRequest(request, uploadPath, size, "UTF-8", new DefaultFileRenamePolicy());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.sendRedirect(request.getContextPath());
+	        return;
+	    }
+
+	    // 업로드된 파일명 가져오기
+	    Enumeration<String> files = multi.getFileNames();
+	    String filename = null; // 원본파일
+	    String phyname = null; // 바뀐이름
+
+	    if (files.hasMoreElements()) {
+	        String fileid = files.nextElement();
+	        filename = multi.getFilesystemName(fileid);
+	        
+	        if (filename != null) {
+	            System.out.println("업로드된 파일 이름: " + filename);
+	            phyname = UUID.randomUUID().toString(); // UUID 생성
+	            File srcFile = new File(uploadPath + "/" + filename);
+	            File targetFile = new File(uploadPath + "/" + phyname);
+	            
+	            if (!srcFile.renameTo(targetFile)) {
+	                System.out.println("파일 이름 변경 실패");
+	            } else {
+	                System.out.println("파일 이름 변경 성공: " + phyname);
+	            }
+	        }
+	    }
+	    
+	    HttpSession session = request.getSession();
+	    UserVO user = (UserVO) session.getAttribute("loginUser");
+	    String uno = user.getUno();
+	    String upw = multi.getParameter("upw");
+	    
+	    if (upw == null || upw.trim().isEmpty()) {
+	        System.out.println("비밀번호가 전송되지 않았습니다.");
+	        PrintWriter out = response.getWriter();
+	        out.println("<script>alert('비밀번호를 입력하세요.'); history.back();</script>");
+	        return;
+	    }
+	    
+	    String unick = multi.getParameter("unick");
+	    String deleteFile = multi.getParameter("deleteFile");
+	    deleteFile = (deleteFile == null || deleteFile.isEmpty()) ? "N" : deleteFile;
+
+	    String sql = "SELECT * FROM user WHERE uno = ? AND upw = md5(?) AND state = 'E'";
+	    
+	    try (Connection conn = DBConn.conn(); 
+	         PreparedStatement psmt = conn.prepareStatement(sql)) {
+	        
+	        psmt.setString(1, uno);
+	        psmt.setString(2, upw);
+	        
+	        System.out.println("비밀번호 확인 SQL: " + sql);
+	        
+	        try (ResultSet rs = psmt.executeQuery()) {
+	            if (rs.next()) {
+	                // 프로필 삭제 처리
+	                if ("Y".equals(deleteFile)) {
+	                    String sqlDelete = "UPDATE user SET pname = '', fname = '' WHERE uno = ?";
+	                    try (PreparedStatement psmtFile = conn.prepareStatement(sqlDelete)) {
+	                        psmtFile.setInt(1, Integer.parseInt(uno));
+	                        int deleteCount = psmtFile.executeUpdate();
+	                        System.out.println("프로필 삭제 SQL: " + sqlDelete);
+	                        System.out.println("프로필 삭제 결과: " + deleteCount);
+	                        
+	                        // 세션에서 프로필 정보 제거
+	                        user.setPname("");
+	                        user.setFname("");
+	                    }
+	                } else if (filename != null) {
+	                    // 파일 업로드 처리
+	                    String sqlFile = "UPDATE user SET pname = ?, fname = ? WHERE uno = ?";
+	                    try (PreparedStatement psmtFile = conn.prepareStatement(sqlFile)) {
+	                        psmtFile.setString(1, phyname);
+	                        psmtFile.setString(2, filename);
+	                        psmtFile.setInt(3, Integer.parseInt(uno));
+
+	                        int fileUpdateCount = psmtFile.executeUpdate();
+	                        System.out.println("프로필 업데이트 SQL: " + sqlFile);
+	                        System.out.println("프로필 업데이트 결과: " + fileUpdateCount);
+	                        
+	                        if (fileUpdateCount > 0) {
+	                            user.setPname(phyname);
+	                            user.setFname(filename);
+	                        }
+	                    }
+	                }
+
+	                // 닉네임 업데이트 처리
+	                if (unick != null && !unick.trim().isEmpty()) {
+	                    String sqlUpdate = "UPDATE user SET unick = ? WHERE uno = ?";
+	                    try (PreparedStatement psmtUpdate = conn.prepareStatement(sqlUpdate)) {
+	                        psmtUpdate.setString(1, unick);
+	                        psmtUpdate.setInt(2, Integer.parseInt(uno));
+
+	                        int nickUpdateCount = psmtUpdate.executeUpdate();
+	                        System.out.println("닉네임 업데이트 SQL: " + sqlUpdate);
+	                        System.out.println("닉네임 업데이트 결과: " + nickUpdateCount);
+	                        
+	                        if (nickUpdateCount > 0) {
+	                            user.setUnick(unick);
+	                        }
+	                    }
+	                }
+	                
+	                // 세션에 변경된 사용자 정보 저장
+	                session.setAttribute("loginUser", user);
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
 }

@@ -28,9 +28,7 @@
         	<img id="previewProfil" class="circular-img" 
         	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
 	            style="border:none; width:300px; height:300px;" 
-	            src="<%= userPname != null && !userPname.equals("") 
-	            ? request.getContextPath()+"/upload/" + userPname 
-           		: "https://img.icons8.com/?size=100&id=115346&format=png&color=000000" %>" 
+	            src="<%= request.getContextPath()+"/upload/" + userPname %>" 
            		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
          	<%
 	        }else{
@@ -53,7 +51,7 @@
 	    		<!-- <button class="ssBtn">메시지</button>
 	    		<button class="ssBtn">팔로우</button> -->
 	    		<!-- 로그인한 회원의 마이페이지인 경우 -->
-	    		<button class="ssBtn">프로필 수정</button>
+	    		<button class="ssBtn" onclick="location.href='profileModify.do'">프로필 수정</button>
 			</div>
 			<div class="mypage_page">
 				<a href="mypage.jsp" style="text-decoration: underline; text-underline-offset: 6px;">북마크</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

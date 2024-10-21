@@ -602,7 +602,8 @@ body.dark-mode #user_itag4,
 body.dark-mode #user_itag5,
 body.dark-mode #user_itag6,
 body.dark-mode #user_itag7,
-body.dark-mode #user_itag8 {
+body.dark-mode #user_itag8,
+body.dark-mode #user_itag9 {
     color: #333333; /* 다크 모드에서의 아이콘 색상 */
 }
 
@@ -787,7 +788,34 @@ body.dark-mode .user_modal-content {
     color: #767676;
     cursor: pointer;
 }
-/* ----------------------------------------------------------------------- */
+
+/* 수정 페이지 첨부파일 삭제여부 css */
+.deleteFile {
+    padding: 6px;
+}
+
+.deleteFile input[type=checkbox] {
+    display: none; /* 기본 라디오 버튼 숨김 */
+}
+
+.deleteFile input[type=checkbox] + label {
+    display: inline-block;
+    cursor: pointer;
+    height: 20px;
+    border-radius: 5px;
+    line-height: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 0 10px; /* 여백 추가 */
+    color: #767676; /* 기본 글자색 */
+}
+
+.deleteFile input[type=checkbox]:checked + label {
+    background-color: #767676; /* 체크된 상태의 배경색 */
+    color: white; /* 체크된 상태의 글자색 */
+}
+/* ------------------------------------------------------------------------------------------- */
 
 
 /* ----- 이동윤 작성 css(로그인) ------ */
