@@ -157,7 +157,7 @@ function readURL(input) {
 						<tr>
 							<td>
 								<div class="profileListBtn">
-									<input class="usersBtn" type="button" value="수정">
+									<input class="usersBtn" type="submit" value="수정">
 									&nbsp;&nbsp;
 									<input class="usersBtn" type="reset" id="resetBtn" value="취소">
 								</div>

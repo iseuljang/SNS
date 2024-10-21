@@ -525,7 +525,7 @@ public class UserController {
 	    String deleteFile = multi.getParameter("deleteFile");
 	    deleteFile = (deleteFile == null || deleteFile.isEmpty()) ? "N" : deleteFile;
 
-	    String sql = "SELECT * FROM user WHERE uno = ? AND upw = md5(?) AND state = 'E'";
+	    String sql = "SELECT * FROM user WHERE uno = ? AND upw = md5(?) AND ustate = 'E'";
 	    
 	    try (Connection conn = DBConn.conn(); 
 	         PreparedStatement psmt = conn.prepareStatement(sql)) {
