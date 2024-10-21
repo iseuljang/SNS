@@ -12,14 +12,14 @@ UserVO loginUser = null;
 if(session.getAttribute("loginUser") != null) {
     loginUser = (UserVO)session.getAttribute("loginUser");
     if(loginUser.getPname() != null) {
-        System.out.print("loginUser : " + loginUser.getPname());
+        System.out.println("loginUser : " + loginUser.getPname());
         userPname = loginUser.getPname();
         loginNo = loginUser.getUno();
     }else {
-        System.out.print("loginUser : 이름 없음");
+        System.out.println("loginUser : 이름 없음");
     }
 }else {
-    System.out.print("loginUser : 로그인되지 않음");
+    System.out.println("loginUser : 로그인되지 않음");
 }
 %>
 <!DOCTYPE html>

@@ -440,8 +440,8 @@ public class UserController {
 			psmt.setString(1, uno);
 			
 			rs = psmt.executeQuery();
-			
 			if(rs.next()){
+				System.out.println("profileModify rs : rs.next() ½ÇÇàµÊ");
 				UserVO userModify = new UserVO();
 				userModify.setUno(rs.getString("uno"));
 				userModify.setUid(rs.getString("uid"));

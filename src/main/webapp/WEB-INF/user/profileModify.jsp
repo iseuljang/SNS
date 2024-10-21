@@ -13,7 +13,7 @@ if(session.getAttribute("userModify") != null) {
 	userUnick = userModify.getUnick();
 	userUemail = userModify.getUemail();
 }else {
-    System.out.print("userModify : 로그인되지 않음");
+    System.out.println("userModify : 로그인되지 않음");
 }
 
 System.out.println("userUid: "+userUid);
