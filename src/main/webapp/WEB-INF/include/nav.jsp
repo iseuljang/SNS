@@ -22,6 +22,9 @@ if(session.getAttribute("loginUser") != null) {
 	                </div>
 	            </div>
             </li>
+            <%
+			if(loginUserNav != null){
+			%>
 			<li>
                 <!-- 글쓰기버튼 -->
                 <div class="menu-item">
@@ -33,6 +36,9 @@ if(session.getAttribute("loginUser") != null) {
 	                </div>
                 </div>
             </li>
+      		<%
+			}
+			%>
 			<li>
                 <!-- 다크모드&라이트모드 전환 -->
                 <div class="menu-item" id="modeToggle">
@@ -58,13 +64,13 @@ if(session.getAttribute("loginUser") != null) {
 	                </div>
                 </div>
             </li> 
-            <%
-            	if(loginUserNav.getUauthor().equals("A")){
-           		%>
+          	<%
+	           	if(loginUserNav.getUauthor().equals("A")){
+	        %>
             <!-- 관리자의 경우 신고내역확인 -->
 			<li>
                 <div class="menu-item">
-                    <a href="complain.jsp">
+                    <a href="<%= request.getContextPath() %>/admin/blackList.do">
                         <img src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" alt="관리자 신고 관리">
                     </a>
                     <div class="hover-menu">
@@ -72,7 +78,7 @@ if(session.getAttribute("loginUser") != null) {
 	                </div>
                 </div>
             </li>
-           		<%
+          	<%
             	}
 			}
 			%>

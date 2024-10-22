@@ -5,8 +5,12 @@
 <!--웹페이지 본문-->
 <section>
        <div class="bcSpan">
-           <span class="bUnderline" style="color: lightgray;"> 블랙리스트 </span>
-           <span class="cUnderline" > 신고 게시글 </span>
+           <a href="<%= request.getContextPath() %>/admin/blackList.do">
+           		<span class="bUnderline" style="color: lightgray;"> 블랙리스트 </span>
+           </a>
+           <a href="<%= request.getContextPath() %>/admin/complainList.do">
+          	 	<span class="cUnderline" > 신고 게시글 </span>
+           </a>
        </div>
        <div class="complainTable">
          

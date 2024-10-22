@@ -22,11 +22,18 @@ public class BoardController {
 		
 		if(comments[comments.length-1].equals("write.do")) {
 			write(request,response);
+		}else if(comments[comments.length-1].equals("view.do")) {
+			view(request,response);
 		}
 	}
 	
 	public void write(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/board/write.jsp").forward(request, response);
+	}
+	
+	public void view(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
 	}
 }

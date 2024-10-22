@@ -41,6 +41,9 @@ public class FrontController extends HttpServlet {
 			System.out.println(request.getParameter("uid"));
 			UserController user = new UserController(request,response,comments);
 			//SampleController 에게 처리 전달
+		}else if(comments[0].equals("admin")) {
+			ComplaintBoardController complain = new ComplaintBoardController(request,response,comments);
+			//SampleController 에게 처리 전달
 		}
 	}
 

@@ -5,7 +5,7 @@ String uid = "";
 if(request.getAttribute("uid") != null) {
 	uid = (String)request.getAttribute("uid");
 }else{
-	uid = "가입한 아이디가 조회되지 않습니다";
+	uid = "아이디가 존재하지 않습니다";
 }
 %>
 <!--웹페이지 본문-->

@@ -370,6 +370,48 @@ aside {
     /* overflow-y: auto; */ /* 스크롤 가능하게 설정 */
 }
 
+.view_div{
+	width: 100%; /* 모달 창의 너비에 맞춤 */
+    height: 100%; /* 모달 창의 높이에 맞춤 */
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.view_inner{
+	width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between; /* 좌우로 채움 */
+}
+
+.view_left{
+	width: 45%;
+}
+
+.view_right{
+	width: 55%;
+}
+
+.icon-container {
+    display: flex; /* 자식 요소들을 가로로 배치 */
+    align-items: center; /* 세로 가운데 정렬 */
+    gap: 10px; /* 아이콘과 이미지 사이의 간격 설정 */
+}
+
+.view_profil{
+	display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
+    gap: 10px; /* 요소 간의 간격 설정 */
+}
+
+.comment_inner{
+    margin-top: 20px;
+    border-top: 1px solid #ccc; /* 댓글 구역 구분선 */
+    padding-top: 10px;
+}
+
 .listDiv {
     width: 250px;
     height: 250px;
@@ -666,6 +708,12 @@ body.dark-mode .login-hover-menu{
     width: 70%; /* 창 크기 조절 */
     height: 60%;
     border-radius: 20px;
+    
+    display: flex;
+    flex-direction: column; /* 내용이 세로로 쌓이게 설정 */
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center;
+    box-sizing: border-box; /* 패딩 포함한 크기 계산 */
 }
 
 body.dark-mode .modal-content {
@@ -995,13 +1043,13 @@ section > h2 {
 /*--------------------------<송지은 write.html/modify.html>-----------------------------------------*/
 
 .writeDiv{
-		width: 100%;
-		height: 100%;
+		width: 80%;
+		/* height: 100%; */
 		display: flex;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 		background-color: white;
 		border-radius: 40px;
-		margin-top: 130px;
+		margin-top: 100px;
 		margin-bottom: 120px;
 		margin-right: 90px;
 		margin-left: 140px;
@@ -1312,7 +1360,7 @@ section > h2 {
     border-radius: 40px 40px 40px 40px;
     overflow: hidden;
     justify-items: center;
-    height: 80%;
+    height:600px;
 }
 .inner_table{
     margin-left: 20px;

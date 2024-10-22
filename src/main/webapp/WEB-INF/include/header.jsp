@@ -66,6 +66,40 @@ $(document).ready(function() {
     }).mouseout(function() {
         $(this).removeClass('round');  // round 클래스 제거
     });
+    
+    /* view 페이지 띄우는 모달 */
+ 	// 모달 띄우기 버튼
+    $(".listDiv").click(function() {
+        $("#modal").fadeIn(); // 모달 창 보이게 하기
+        
+        $.ajax({
+            url: "<%= request.getContextPath() %>/board/view.do",
+            type: "get",
+            success: function(data) {
+                $("#modalBody").html(data);
+				
+                // 동적으로 로드된 스크립트 실행
+                $('script').each(function() {
+                    if (this.src) {
+                        $.getScript(this.src);
+                    } else {
+                        eval($(this).text());
+                    }
+                });
+                
+                resetEvents();
+
+                // 다크모드 초기화 다시 실행
+                DarkMode();
+            }
+        });
+    });
+
+    $(window).click(function(event) {
+        if ($(event.target).is("#modal")) {
+            $("#modal").fadeOut(); // 모달 창 숨기기
+        }
+    });
 
     // 회원가입, 로그인 모달
     $(".userHeader a").click(function() {
@@ -259,6 +293,10 @@ $(document).ready(function() {
 	        $(".msg").html("아이디는 4글자 이상 입력해주세요");
 	        id.focus();
 	        return false;
+	    }else if (id.value.length > 12) {
+	        $(".msg").html("아이디는 12글자 이하로 입력해주세요");
+	        id.focus();
+	        return false;
 	    } else if (!/^[a-z0-9]+$/.test(id.value)) {
 	        $(".msg").html("아이디는 영어 소문자와 숫자만 가능합니다");
 	        id.focus();
@@ -271,12 +309,16 @@ $(document).ready(function() {
 
 	    // 비밀번호 검사
 	    let pass = document.getElementById("upw");
-	    if (pass.value == "") {
+	    if(pass.value == "") {
 	        $(".msg").html("비밀번호를 입력해주세요");
 	        pass.focus();
 	        return false;
-	    } else if (pass.value.length < 4) {
+	    }else if(pass.value.length < 4) {
 	        $(".msg").html("비밀번호는 4글자 이상 입력해주세요");
+	        pass.focus();
+	        return false;
+	    }else if(pass.value.length > 20) {
+	        $(".msg").html("비밀번호는 20글자 이하로 입력해주세요");
 	        pass.focus();
 	        return false;
 	    }
@@ -301,6 +343,10 @@ $(document).ready(function() {
 	        return false;
 	    } else if (userNick.value.length < 2) {
 	        $(".msg").html("닉네임은 2글자 이상 입력해주세요");
+	        userNick.focus();
+	        return false;
+	    }else if (userNick.value.length > 20) {
+	        $(".msg").html("닉네임은 20글자 이하로 입력해주세요");
 	        userNick.focus();
 	        return false;
 	    } else if (NickDuplicate == true) {
@@ -544,46 +590,6 @@ function findPage(type) {
     });
 }
 
-function findId() {
-    // 이메일 입력 확인
-    let mail = document.getElementById("uemail");
-    var emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if(mail.value == "") {
-        $(".msg").html("이메일을 입력해주세요");
-        mail.focus();
-        return false;
-    }else if (!emailPattern.test(mail.value)) {
-        $(".msg").html("유효한 이메일 주소를 입력하세요");
-        mail.focus();
-        return false;
-    }if(emailcode == false)	{
-    	$(".msg").html("이메일 인증을 해주세요.");
-		$("#code").focus();
-		return false;
-	}
-
-    $.ajax({
-        url: "<%= request.getContextPath() %>/user/findId.do",  // 요청 URL
-        type: "post",  
-        data: {uemail : mail},  
-        success: function(result) {
-			result = result.trim();
-         	
-            switch(result) {
-              case "success":
-            	 findPage("findIdResult");
-                 break;
-              case "error":
-             	 $(".msg").html("아이디 찾기에 실패했습니다. 다시 시도해주세요.");
-                  break;
-              default :
-             	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
-                 break;
-         	 }
-        }
-    });
-}
-
 //------------------ 인증번호 발송 버튼 -------------------
 function SendMail() {
 	var email = $("#uemail").val();
@@ -728,6 +734,14 @@ function DoEmail() {
 	    <div class="user_modal-content">
 	        <div id="user_modalBody">
 	            <!-- 회원가입,로그인페이지 여기에 표시됨 -->
+	        </div>
+	    </div>
+	</div>
+	<!-- view 페이지 모달창 -->
+	<div id="modal" style="display:none;">
+	    <div class="modal-content">
+	        <div id="modalBody">
+	            <!-- 게시글 내용이 여기에 표시됨 -->
 	        </div>
 	    </div>
 	</div>
