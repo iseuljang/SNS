@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-String uid = (String)request.getAttribute("uid");
+String uid = "";
+if(request.getAttribute("uid") != null) {
+	uid = (String)request.getAttribute("uid");
+}else{
+	uid = "가입한 아이디가 조회되지 않습니다";
+}
 %>
 <!--웹페이지 본문-->
 <div>
@@ -15,12 +20,12 @@ String uid = (String)request.getAttribute("uid");
 		</a>
     </div>
 	<div class="user_inner">
-		<h2>가입한 아이디</h2>
+		<h3>조회결과</h3>
 		<table>
 			<tr>
 			    <td>
 			        <div class="user-container">
-			            <i class="fas fa-user" id="user_itag7"></i>
+			            <i class="fas fa-user" id="user_itag7"></i>&nbsp;
 			            <span id="login_uid"><%= uid %></span>
 			        </div>
 			    </td>

@@ -12,7 +12,7 @@
 		</a>
     </div>
 	<div class="user_inner">
-		<form action="findId.do" method="post">
+		<!-- <form action="findId.do" method="post"> -->
 			<table>
 				<tr>
 					<td>
@@ -39,10 +39,11 @@
                 </tr>
 				<tr>
 					<td>
-						<input class="userBtn" type="button" value="아이디찾기" onclick="findId();">
+						<!-- <input class="userBtn" type="button" value="아이디찾기" onclick="findId();"> -->
+						<input class="userBtn" type="button" value="아이디찾기" onclick="findPage('findIdResult');">
 					</td>
 				</tr>
 			</table>
-		</form>
+		<!-- </form> -->
 	</div>
 </div>
