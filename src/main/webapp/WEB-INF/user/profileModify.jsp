@@ -54,8 +54,28 @@ window.onload = function(){
 	
 	
 	$('#resetBtn').click(function(){
-		$('#profilePreview').attr('src', '<%= request.getContextPath() %>/upload/<%= userPname %>');
+	    // 파일 선택 초기화
+	    $('#file').val('');
+	    
+	    // 프로필 이미지 미리보기 원래대로 복원
+	    $('#profilePreview').attr('src', '<%= request.getContextPath() %>/upload/<%= userPname %>');
+	    $('#profilePreview').css('visibility', 'visible');
+	    
+	    // 삭제 체크박스 해제 및 숨김
+	    $("input[name='deleteFile']").prop('checked', false);
+	    $(".deleteFile").css("visibility", "visible");
+
+	    // 파일 선택 해제시 기본 프로필 이미지 설정
+	    if ('<%= userPname %>' === "") {
+	        $("#profilePreview").css("visibility", "hidden");
+	        $("#defaultProfile").css("display", "flex");
+	    } else {
+	        $("#profilePreview").css("display", "block");
+	        $("#defaultProfile").css("display", "none");
+	    }
 	});
+
+	
 }
 
 function readURL(input) {
@@ -150,7 +170,7 @@ function readURL(input) {
 							<td>
 								<div class="user-container">
 									<i class="fas fa-lock" id="user_itag2"></i>
-									<input class="profileList" type="text" name="upw" placeholder="비밀번호">
+									<input class="profileList" type="text" name="upw" id="upw" placeholder="비밀번호">
 								</div>
 							</td>
 						</tr>
