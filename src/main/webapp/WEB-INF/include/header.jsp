@@ -156,7 +156,6 @@ $(document).ready(function() {
     
     
     /* 회원가입 */
-    /* 회원가입 폼 제출 처리 */
     function openLoginModal() {
         $("#user_modal").fadeIn();
         
@@ -512,11 +511,17 @@ function readURL(input) {
 
 
 function findPage(type) {
-    var url = (type === "findId") 
-    ? "<%= request.getContextPath() %>/user/findId.do" 
-	: (type === "findPw") 
-		? "<%= request.getContextPath() %>/user/findPw.do" 
-		: "<%= request.getContextPath() %>/user/pwChange.do";
+	let url = "";
+	if(type === "findId") {
+	    url = "<%= request.getContextPath() %>/user/findId.do";
+	}else if(type === "findPw") {
+	    url = "<%= request.getContextPath() %>/user/findPw.do";
+	}else if(type === "pwChange") {
+	    url = "<%= request.getContextPath() %>/user/pwChange.do";
+	}else{
+		url = "<%= request.getContextPath() %>/user/findIdResult.do";
+	}
+
     
     $.ajax({
         url: url,
@@ -533,11 +538,48 @@ function findPage(type) {
                 }
             });
             
-            // 필요한 이벤트 재설정
             resetEvents();
-            
-            // 다크모드 적용 (있는 경우)
             DarkMode();
+        }
+    });
+}
+
+function findId() {
+    // 이메일 입력 확인
+    let mail = document.getElementById("uemail");
+    var emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if(mail.value == "") {
+        $(".msg").html("이메일을 입력해주세요");
+        mail.focus();
+        return false;
+    }else if (!emailPattern.test(mail.value)) {
+        $(".msg").html("유효한 이메일 주소를 입력하세요");
+        mail.focus();
+        return false;
+    }if(emailcode == false)	{
+    	$(".msg").html("이메일 인증을 해주세요.");
+		$("#code").focus();
+		return false;
+	}
+
+    $.ajax({
+        url: "<%= request.getContextPath() %>/user/findId.do",  // 요청 URL
+        type: "post",  
+        data: {uemail : mail},  
+        success: function(result) {
+			result = result.trim();
+         	
+            switch(result) {
+              case "success":
+            	 findPage("findIdResult");
+                 break;
+              case "error":
+             	 $(".msg").html("아이디 찾기에 실패했습니다. 다시 시도해주세요.");
+                  break;
+              default :
+             	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+                 break;
+         	 }
         }
     });
 }
