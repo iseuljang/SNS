@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="java.sql.*" %>
 <%
-String uid = "";
-if(request.getAttribute("uid") != null) {
-	uid = (String)request.getAttribute("uid");
-}else{
-	uid = "아이디가 존재하지 않습니다";
+List<String> idList = new ArrayList<>();
+if(request.getAttribute("idList") != null) {
+	idList = (List<String>)request.getAttribute("idList");
 }
 %>
 <!--웹페이지 본문-->
@@ -22,6 +22,10 @@ if(request.getAttribute("uid") != null) {
 	<div class="user_inner">
 		<h3>조회결과</h3>
 		<table>
+			<%
+			if(idList.size() > 0){
+				for(String uid : idList){
+			%>
 			<tr>
 			    <td>
 			        <div class="user-container">
@@ -30,6 +34,21 @@ if(request.getAttribute("uid") != null) {
 			        </div>
 			    </td>
 			</tr>
+			<%
+				}
+			}else{
+			%>
+			<tr>
+			    <td>
+			        <div class="user-container">
+			            <i class="fas fa-user" id="user_itag7"></i>&nbsp;
+			            <span id="login_uid">아이디가 존재하지 않습니다</span>
+			        </div>
+			    </td>
+			</tr>
+			<%
+			}
+			%>
 			<tr>
 				<td>
 					<input class="userBtn" type="button" value="비밀번호찾기" onclick="findPage('findPw');">

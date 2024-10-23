@@ -556,7 +556,7 @@ function readURL(input) {
 }
 
 
-function findPage(type) {
+<%-- function findPage(type) {
 	let url = "";
 	if(type === "findId") {
 	    url = "<%= request.getContextPath() %>/user/findId.do";
@@ -566,6 +566,23 @@ function findPage(type) {
 	    url = "<%= request.getContextPath() %>/user/pwChange.do";
 	}else{
 		url = "<%= request.getContextPath() %>/user/findIdResult.do";
+		
+		// 이메일 입력 확인
+	    let mail = document.getElementById("uemail");
+	    var emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+	    if(mail.value == "") {
+	        $(".msg").html("이메일을 입력해주세요");
+	        mail.focus();
+	        return false;
+	    }else if (!emailPattern.test(mail.value)) {
+	        $(".msg").html("유효한 이메일 주소를 입력하세요");
+	        mail.focus();
+	        return false;
+	    }if(emailcode == false)	{
+	    	$(".msg").html("이메일 인증을 해주세요.");
+			$("#code").focus();
+			return false;
+		}
 	}
 
     
@@ -584,11 +601,65 @@ function findPage(type) {
                 }
             });
             
-            resetEvents();
+            DarkMode();
+        }
+    });
+} --%>
+
+function findPage(type) {
+    let url = "";
+    let mail = "";
+    if (type === "findId") {
+        url = "<%= request.getContextPath() %>/user/findId.do";
+    } else if (type === "findPw") {
+        url = "<%= request.getContextPath() %>/user/findPw.do";
+    } else if (type === "pwChange") {
+        url = "<%= request.getContextPath() %>/user/pwChange.do";
+    } else {
+        url = "<%= request.getContextPath() %>/user/findIdResult.do";
+        
+        // 이메일 입력 확인
+        mail = document.getElementById("uemail").value;
+        var emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+        
+        if(mail.value == "") {
+            $(".msg").html("이메일을 입력해주세요");
+            mail.focus();
+            return false;
+        }else if(!emailPattern.test(mail)) {
+            $(".msg").html("유효한 이메일 주소를 입력하세요");
+            mail.focus();
+            return false;
+        }
+        if (emailcode == false) {
+            $(".msg").html("이메일 인증을 해주세요.");
+            $("#code").focus();
+            return false;
+        }
+
+    }
+
+    $.ajax({
+        url: url,
+        type: (type === "findId" || type === "findPw" || type === "pwChange") ? "GET" : "POST",  // GET 또는 POST 방식 선택
+        data: (type === "findId" || type === "findPw" || type === "pwChange") ? {} : {uemail:mail},  // GET 요청의 경우 빈 객체, POST 요청에서는 이메일만 포함
+        success: function(data) {
+            $("#user_modalBody").html(data);  // 모달 내부에 페이지 로드
+            
+            // 동적으로 로드된 스크립트 실행
+            $('script').each(function() {
+                if (this.src) {
+                    $.getScript(this.src);
+                } else {
+                    eval($(this).text());
+                }
+            });
+
             DarkMode();
         }
     });
 }
+
 
 //------------------ 인증번호 발송 버튼 -------------------
 function SendMail() {

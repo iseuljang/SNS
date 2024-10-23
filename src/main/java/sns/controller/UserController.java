@@ -7,7 +7,9 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -65,7 +67,9 @@ public class UserController {
 				findIdOk(request,response);
 			}
 		}else if(comments[comments.length-1].equals("findIdResult.do")) {
-			findIdResult(request,response);
+			if (request.getMethod().equals("POST")) {
+				findIdResult(request,response);
+			}
 		}else if(comments[comments.length-1].equals("findPw.do")) {
 			findPw(request,response);
 		}else if(comments[comments.length-1].equals("pwChange.do")) {
@@ -608,10 +612,37 @@ public class UserController {
 	
 	public void findIdOk(HttpServletRequest request
 			, HttpServletResponse response) throws IOException {
+		/*
+		 * Connection conn = null; //DB 연결 PreparedStatement psmt = null; //SQL 등록 및 실행.
+		 * 보안이 더 좋음! ResultSet rs = null; //조회 결과를 담음
+		 * 
+		 * String email = request.getParameter("uemail"); //try 영역 try{ conn =
+		 * DBConn.conn();
+		 * 
+		 * String sql = "select uid from user where uemail=?"; psmt =
+		 * conn.prepareStatement(sql); psmt.setString(1, email);
+		 * 
+		 * rs = psmt.executeQuery(); if(rs.next()){
+		 * System.out.println("findIdOk rs : rs.next() 실행됨"); String uid =
+		 * rs.getString("uid"); request.setAttribute("uid",uid);
+		 * 
+		 * response.setContentType("text/html;charset=UTF-8"); PrintWriter out =
+		 * response.getWriter(); out.print("success"); out.flush(); out.close(); }else {
+		 * response.setContentType("text/html;charset=UTF-8"); PrintWriter out =
+		 * response.getWriter(); out.print("error"); out.flush(); out.close(); }
+		 * }catch(Exception e){ e.printStackTrace(); PrintWriter out =
+		 * response.getWriter(); out.print("error"); out.flush(); out.close(); }finally{
+		 * try { DBConn.close(rs, psmt, conn); }catch(Exception e) {
+		 * e.printStackTrace(); } }
+		 */
+	}
+	
+	public void findIdResult(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = null;			//DB 연결
 		PreparedStatement psmt = null;	//SQL 등록 및 실행. 보안이 더 좋음!
 		ResultSet rs = null;			//조회 결과를 담음
-
+		List<String> idList = new ArrayList<>();
 		String email = request.getParameter("uemail");
 		//try 영역
 		try{
@@ -622,29 +653,15 @@ public class UserController {
 			psmt.setString(1, email);
 			
 			rs = psmt.executeQuery();
-			if(rs.next()){
+			while(rs.next()){
 				System.out.println("findIdOk rs : rs.next() 실행됨");
-				String uid = rs.getString("uid");
-				request.setAttribute("uid",uid);
-				
-				response.setContentType("text/html;charset=UTF-8");
-		        PrintWriter out = response.getWriter();  
-	            out.print("success");  
-		        out.flush();
-		        out.close();
-			}else {
-				response.setContentType("text/html;charset=UTF-8");
-		        PrintWriter out = response.getWriter();  
-	            out.print("error");  
-		        out.flush();
-		        out.close();
+				idList.add(rs.getString("uid"));
 			}
+			request.setAttribute("idList",idList);
+			
+			request.getRequestDispatcher("/WEB-INF/user/findIdResult.jsp").forward(request, response);
 		}catch(Exception e){
 			e.printStackTrace();
-			PrintWriter out = response.getWriter();  
-            out.print("error");  
-	        out.flush();
-	        out.close();
 		}finally{
 			try {
 				DBConn.close(rs, psmt, conn);
@@ -652,11 +669,6 @@ public class UserController {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public void findIdResult(HttpServletRequest request
-			, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/user/findIdResult.jsp").forward(request, response);
 	}
 	
 	public void findPw(HttpServletRequest request
