@@ -356,18 +356,30 @@ aside {
     float: right;
 }
 
-/* .scrollable {
-    overflow-y: auto; 
-    height: 100%;     
-} */
-
 #indexDiv {
     display: flex;
     flex-wrap: wrap; /* 넘치면 다음 줄로 이동 */
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    justify-content: flex-start;
     width: 100%;
-    /* max-height: 80vh */; /* 최대 높이 설정, 화면을 넘지 않게 함 */
+    /* max-height: 100vh; */  /* 최대 높이 설정, 화면을 넘지 않게 함 */
     /* overflow-y: auto; */ /* 스크롤 가능하게 설정 */
+}
+
+.listDiv {
+    width: 250px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 20px;
+    margin-top: 30px;
+    cursor: pointer;
+    margin: 30px 15px; /* 상하 30px, 좌우 15px 간격 추가 */
+    position: relative; /* 부모 요소의 위치를 기준으로 설정 */
+    transition: visibility 0.2s ease-out, opacity 0.2s ease-out;
 }
 
 .view_div{
@@ -394,6 +406,62 @@ aside {
 	width: 55%;
 }
 
+/* menuA 스타일 */
+#modal #menuA {
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    display: inline-block;
+    position: relative;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+/* menutableA 스타일 */
+#modal #menutableA {
+    position: absolute; /* 절대 위치 지정 */
+    background-color: white;
+    display: none;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 160px;
+    top: 100%; /* #menuA의 바로 아래 위치 */
+    left: 0; /* #menuA의 왼쪽과 맞춤 */
+    z-index: 1000;
+}
+
+#modal #menutableA button {
+    border-radius: 5px;
+    background-color: white;
+    border: none;
+    font-size: 18px;
+    width: 120px;
+    height: 40px;
+    cursor: pointer;
+}
+
+#modal #menutableA button:hover {
+    background-color: #767676;
+    color: white;
+}
+
+#modal .menu-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 90%;
+    padding: 10px;
+    background-color: white;
+    color: #767676;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+
 .icon-container {
     display: flex; /* 자식 요소들을 가로로 배치 */
     align-items: center; /* 세로 가운데 정렬 */
@@ -410,22 +478,6 @@ aside {
     margin-top: 20px;
     border-top: 1px solid #ccc; /* 댓글 구역 구분선 */
     padding-top: 10px;
-}
-
-.listDiv {
-    width: 250px;
-    height: 250px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    border-radius: 20px;
-    margin-top: 30px;
-    cursor: pointer;
-    margin: 30px 15px; /* 상하 30px, 좌우 15px 간격 추가 */
-    position: relative; /* 부모 요소의 위치를 기준으로 설정 */
-    transition: visibility 0.2s ease-out, opacity 0.2s ease-out;
 }
 
 .pwChange_title a{

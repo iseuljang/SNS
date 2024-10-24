@@ -170,7 +170,7 @@ function readURL(input) {
 							<td>
 								<div class="user-container">
 									<i class="fas fa-lock" id="user_itag2"></i>
-									<input class="profileList" type="text" name="upw" id="upw" placeholder="비밀번호">
+									<input class="profileList" type="password" name="upw" id="upw" placeholder="비밀번호">
 								</div>
 							</td>
 						</tr>

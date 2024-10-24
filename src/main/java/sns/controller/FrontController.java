@@ -36,14 +36,11 @@ public class FrontController extends HttpServlet {
 		//5. 만들어진 문자열 배열의 첫번째 문자열이 어떤 컨트롤러로 기능을 요청해야할지 결정한다.
 		if(comments[0].equals("board")) {
 			BoardController board = new BoardController(request,response,comments);
-			//SampleController 에게 처리 전달
 		}else if(comments[0].equals("user")) {
 			System.out.println(request.getParameter("uid"));
 			UserController user = new UserController(request,response,comments);
-			//SampleController 에게 처리 전달
 		}else if(comments[0].equals("admin")) {
 			ComplaintBoardController complain = new ComplaintBoardController(request,response,comments);
-			//SampleController 에게 처리 전달
 		}
 	}
 

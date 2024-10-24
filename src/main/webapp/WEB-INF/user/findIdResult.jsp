@@ -17,7 +17,7 @@ if(request.getAttribute("idList") != null) {
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a id="findPw" onclick="findPage('findPw');" style="color:gray;">
 			비밀번호찾기
-		</a>
+		</a> 
     </div>
 	<div class="user_inner">
 		<h3>조회결과</h3>

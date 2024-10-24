@@ -33,7 +33,6 @@ public class UserController {
 			if(request.getMethod().equals("GET")) {
 				login(request,response);
 			}else if (request.getMethod().equals("POST")) {
-				
 				loginOk(request,response);
 			}
 		}else if(comments[comments.length-1].equals("logout.do")) {
@@ -204,7 +203,7 @@ public class UserController {
 			, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
-		String uploadPath = "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
+		String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 
 		int size = 10 * 1024 * 1024;
@@ -482,7 +481,11 @@ public class UserController {
 	
 	public void profileModifyOk(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    request.setCharacterEncoding("UTF-8");
-	    String uploadPath = "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
+		/*
+		 * String uploadPath =
+		 * "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
+		 */
+	    String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
 	    System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 	    
 	    int size = 10 * 1024 * 1024; // 최대 10MB 파일 허용
@@ -598,6 +601,11 @@ public class UserController {
 	                
 	                // 세션에 변경된 사용자 정보 저장
 	                session.setAttribute("loginUser", user);
+					/*
+					 * request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request,
+					 * response);
+					 */
+	                response.sendRedirect(request.getContextPath()+"/user/mypage.do");
 	            }
 	        }
 	    } catch (Exception e) {
