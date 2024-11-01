@@ -250,4 +250,102 @@
     - 환경마다 네트워크 및 보안 요구 사항이 다를 수 있다는 점을 파악할 수 있었습니다. 특히 외부 SMTP 서버를 사용할 때 보안 설정을 명확히 해야 한다는 사실을 깨달았습니다.
       TLS 및 SSL 프로토콜의 명시적 설정이 필요할 수 있고 이로 인해 서버와의 호환성 문제를 줄이고, 이메일 전송 성공률을 높일 수 있다는 것을 알았습니다
 
+4️⃣ 회원가입 후 로그인모달 열릴때 알림 오류
+  - 문제 배경
+    - 회원가입 모달창에서 회원가입 성공할 경우 로그인모달창이 열리는데 성공임에도 실패메시지가 출력되는 오류 발생
+  - 해결 방법
+    - class msg를 똑같이 사용하며 이전 회원가입 시 발생했던 에러 메시지가 그대로 남아있는 문제였고, 회원가입 완료 후 로그인 모달 창을 열 때 .msg 요소의 내용을 초기화하여 문제 해결
+  - 코드 비교
+    - 수정전 함수
+      ```
+      function openLoginModal() {
+          $("#user_modal").fadeIn();
+                           
+          $.ajax({
+              url: "<%= request.getContextPath() %>/user/login.do",
+              type: "get",
+              success: function(data) {
+                  $("#user_modalBody").html(data);
+                             
+                  resetEvents();
+                  DarkMode();
+              }
+          });
+      }
+      function DoJoin() {
+        ...
+        var form = document.getElementById("joinFn");
+      
+        $.ajax({
+            url: "<%= request.getContextPath() %>/user/join.do",  // 요청 URL
+            type: "post",  // 요청 방식
+            data: new FormData(form),  // 폼 데이터 전송
+            processData: false,  // 자동 데이터 처리 방지
+            contentType: false,  // 요청 시 Content-Type 설정 방지
+            success: function(result) {
+    		      	result = result.trim();
+    	            	
+                switch(result) {
+                     case "success":
+                    	 openLoginModal();
+                         break;
+                     case "error":
+                    	 $(".msg").html("회원가입에 실패했습니다. 다시 시도해주세요.");
+                         break;
+                     default :
+                    	 alert("실패했습니다. 나중에 다시 시도해 주세요.");
+                         break;
+                 }
+            }
+        });
+      }
+      ```
+    - 수정후 함수
+      ```
+      function openLoginModal() {
+          $("#user_modal").fadeIn();
+          $(".msg").html(""); 
+          
+          $.ajax({
+              url: "<%= request.getContextPath() %>/user/login.do",
+              type: "get",
+              success: function(data) {
+                  $("#user_modalBody").html(data);
+                             
+                  resetEvents();
+                  DarkMode();
+              }
+          });
+      }
+      function DoJoin() {
+        ...
+        var form = document.getElementById("joinFn");
+      
+        $.ajax({
+            url: "<%= request.getContextPath() %>/user/join.do",  // 요청 URL
+            type: "post",  // 요청 방식
+            data: new FormData(form),  // 폼 데이터 전송
+            processData: false,  // 자동 데이터 처리 방지
+            contentType: false,  // 요청 시 Content-Type 설정 방지
+            success: function(result) {
+    		      	result = result.trim();
+    	            	
+                switch(result) {
+                     case "success":
+                    	 openLoginModal();
+                         break;
+                     case "error":
+                    	 $(".msg").html("회원가입에 실패했습니다. 다시 시도해주세요.");
+                         break;
+                     default :
+                    	 alert("실패했습니다. 나중에 다시 시도해 주세요.");
+                         break;
+                 }
+            }
+        });
+      }
+      ```
+ - 해당 경험을 통해 알게 된 점
+    - 모달 창 전환 시 이전 상태를 초기화하는 것이 중요하다는 점을 확인하였습니다
+
       
