@@ -215,6 +215,39 @@
     - 페이지의 스크롤과 모달창 등 여러 UI 요소가 겹치는 경우, z-index 설정에 따라 예상치 못한 오류가 발생할 수 있음을 알게 되었습니다
 
 
-
+3️⃣ 이메일 발송 오류
+  - 문제 배경
+    - 이메일 발송할 때 워크스페이스 위치에 따라 이메일 발송 성공,실패가 달라짐
+  - 해결 방법
+    - TLS 활성화: mail.smtp.starttls.enable을 "true"로 추가하여 TLS를 활성화.
+      SSL 프로토콜 버전 명시: mail.smtp.ssl.protocols에 "TLSv1.2"를 추가하여 Java가 이 특정 버전을 사용하도록 명시함으로써 서버와의 프로토콜 호환성을 보장
+      포트 값의 문자열 변환: 포트 번호를 문자열로 변경하여 코드의 일관성을 확보하고 포트 관련 오류 발생 가능성을 줄임
+  - 코드 비교
+    - 수정전 Sendmail.java
+      ```
+      Properties clsProp = new Properties();
+            clsProp.put("mail.smtp.host", "smtp.naver.com");
+            clsProp.put("mail.smtp.port", 465);
+            clsProp.put("mail.smtp.auth", "true");
+            clsProp.put("mail.smtp.ssl.enable", "true"); 
+            clsProp.put("mail.smtp.ssl.trust", "smtp.naver.com");
+      ```
+    - 수정후 Sendmail.java
+      ```
+      Properties clsProp = new Properties();
+            clsProp.put("mail.smtp.host", "smtp.naver.com");
+            clsProp.put("mail.smtp.port", "465");
+            clsProp.put("mail.smtp.auth", "true");
+            clsProp.put("mail.smtp.ssl.enable", "true"); 
+            // TLS 활성화
+            clsProp.put("mail.smtp.starttls.enable", "true");
+            // SSL 프로토콜 명시
+            clsProp.put("mail.smtp.ssl.protocols", "TLSv1.2");
+            
+            clsProp.put("mail.smtp.ssl.trust", "smtp.naver.com");
+      ```
+ - 해당 경험을 통해 알게 된 점
+    - 환경마다 네트워크 및 보안 요구 사항이 다를 수 있다는 점을 파악할 수 있었습니다. 특히 외부 SMTP 서버를 사용할 때 보안 설정을 명확히 해야 한다는 사실을 깨달았습니다.
+      TLS 및 SSL 프로토콜의 명시적 설정이 필요할 수 있고 이로 인해 서버와의 호환성 문제를 줄이고, 이메일 전송 성공률을 높일 수 있다는 것을 알았습니다
 
       
