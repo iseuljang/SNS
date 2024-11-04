@@ -60,19 +60,25 @@ public class UserController {
 				profileModifyOk(request,response);
 			}
 		}else if(comments[comments.length-1].equals("findId.do")) {
-			if(request.getMethod().equals("GET")) {
-				findId(request,response);
-			}else if (request.getMethod().equals("POST")) {
-				findIdOk(request,response);
-			}
+			findId(request,response);
 		}else if(comments[comments.length-1].equals("findIdResult.do")) {
 			if (request.getMethod().equals("POST")) {
 				findIdResult(request,response);
 			}
 		}else if(comments[comments.length-1].equals("findPw.do")) {
-			findPw(request,response);
+			if(request.getMethod().equals("GET")) {
+				findPw(request,response);
+			}else if (request.getMethod().equals("POST")) {
+				findPwOk(request,response);
+			}
 		}else if(comments[comments.length-1].equals("pwChange.do")) {
-			pwChange(request,response);
+			if (request.getMethod().equals("POST")) {
+				pwChangeOk(request,response);
+			}
+		}else if(comments[comments.length-1].equals("checkMSG.do")) {
+			if(request.getMethod().equals("GET")) {
+				checkMSG(request,response);
+			}
 		}
 	}
 	
@@ -147,8 +153,8 @@ public class UserController {
 	public void mypage(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
-		String uno = loginUser.getUno();
+		/* UserVO loginUser = (UserVO)session.getAttribute("loginUser"); */
+		String uno = request.getParameter("uno");
 		
 		Connection conn = null;			//DB 연결
 		PreparedStatement psmt = null;	//SQL 등록 및 실행. 보안이 더 좋음!
@@ -175,13 +181,13 @@ public class UserController {
 				user.setUrdate(rs.getString("urdate"));
 				user.setPname(rs.getString("pname"));
 				user.setFname(rs.getString("fname"));
-				
 				request.setAttribute("user",user);
+				
 				
 				request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
 			}else {
 				//회원조회 실패할 경우
-				response.sendRedirect(request.getContextPath()+"/login.do");
+				response.sendRedirect(request.getContextPath());
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -203,7 +209,11 @@ public class UserController {
 			, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
-		String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		/*
+		 * String uploadPath =
+		 * "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		 */
+		String uploadPath = request.getServletContext().getRealPath("/upload");
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 
 		int size = 10 * 1024 * 1024;
@@ -466,7 +476,7 @@ public class UserController {
 				request.getRequestDispatcher("/WEB-INF/user/profileModify.jsp").forward(request, response);
 			}else {
 				//회원조회 실패할 경우
-				response.sendRedirect(request.getContextPath()+"/login.do");
+				response.sendRedirect(request.getContextPath()+"/user/login.do");
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -485,7 +495,8 @@ public class UserController {
 		 * String uploadPath =
 		 * "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
 		 */
-	    String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		/* String uploadPath = "C:\\DEV\\GIT\\ -SNS\\sns\\src\\main\\webapp\\upload"; */
+	    String uploadPath = request.getServletContext().getRealPath("/upload"); 
 	    System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 	    
 	    int size = 10 * 1024 * 1024; // 최대 10MB 파일 허용
@@ -605,7 +616,7 @@ public class UserController {
 					 * request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request,
 					 * response);
 					 */
-	                response.sendRedirect(request.getContextPath()+"/user/mypage.do");
+	                response.sendRedirect(request.getContextPath()+"/user/mypage.do?uno="+uno);
 	            }
 	        }
 	    } catch (Exception e) {
@@ -616,33 +627,6 @@ public class UserController {
 	public void findId(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/user/findId.jsp").forward(request, response);
-	}
-	
-	public void findIdOk(HttpServletRequest request
-			, HttpServletResponse response) throws IOException {
-		/*
-		 * Connection conn = null; //DB 연결 PreparedStatement psmt = null; //SQL 등록 및 실행.
-		 * 보안이 더 좋음! ResultSet rs = null; //조회 결과를 담음
-		 * 
-		 * String email = request.getParameter("uemail"); //try 영역 try{ conn =
-		 * DBConn.conn();
-		 * 
-		 * String sql = "select uid from user where uemail=?"; psmt =
-		 * conn.prepareStatement(sql); psmt.setString(1, email);
-		 * 
-		 * rs = psmt.executeQuery(); if(rs.next()){
-		 * System.out.println("findIdOk rs : rs.next() 실행됨"); String uid =
-		 * rs.getString("uid"); request.setAttribute("uid",uid);
-		 * 
-		 * response.setContentType("text/html;charset=UTF-8"); PrintWriter out =
-		 * response.getWriter(); out.print("success"); out.flush(); out.close(); }else {
-		 * response.setContentType("text/html;charset=UTF-8"); PrintWriter out =
-		 * response.getWriter(); out.print("error"); out.flush(); out.close(); }
-		 * }catch(Exception e){ e.printStackTrace(); PrintWriter out =
-		 * response.getWriter(); out.print("error"); out.flush(); out.close(); }finally{
-		 * try { DBConn.close(rs, psmt, conn); }catch(Exception e) {
-		 * e.printStackTrace(); } }
-		 */
 	}
 	
 	public void findIdResult(HttpServletRequest request
@@ -664,8 +648,8 @@ public class UserController {
 			while(rs.next()){
 				System.out.println("findIdOk rs : rs.next() 실행됨");
 				idList.add(rs.getString("uid"));
+				request.setAttribute("idList",idList);
 			}
-			request.setAttribute("idList",idList);
 			
 			request.getRequestDispatcher("/WEB-INF/user/findIdResult.jsp").forward(request, response);
 		}catch(Exception e){
@@ -683,8 +667,122 @@ public class UserController {
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/user/findPw.jsp").forward(request, response);
 	}
-	public void pwChange(HttpServletRequest request
+	
+	public void findPwOk(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/user/pwChange.jsp").forward(request, response);
+		Connection conn = null;			//DB 연결
+		PreparedStatement psmt = null;	//SQL 등록 및 실행. 보안이 더 좋음!
+		ResultSet rs = null;			//조회 결과를 담음
+		
+		String uid = request.getParameter("uid");
+		String email = request.getParameter("uemail");
+		
+		System.out.println("findPwOk uid:" + uid + ", email : " + email);
+		
+		//try 영역
+		try{
+			conn = DBConn.conn();
+			
+			String sql = "select * from user where uemail=? and uid=?";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, email);
+			psmt.setString(2, uid);
+			
+			rs = psmt.executeQuery();
+			
+			request.setAttribute("uid", uid);
+			request.setAttribute("uemail", email);
+			request.getRequestDispatcher("/WEB-INF/user/pwChange.jsp").forward(request, response);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try {
+				DBConn.close(rs, psmt, conn);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
+	
+	public void pwChangeOk(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		Connection conn = null;			//DB 연결
+		PreparedStatement psmt = null;	//SQL 등록 및 실행. 보안이 더 좋음!
+		ResultSet rs = null;			//조회 결과를 담음
+		
+		String uid = request.getParameter("uid");
+		String email = request.getParameter("uemail");
+		String upw = request.getParameter("upw");
+		System.out.println("pwChangeOk");
+		System.out.println("pwChangeOk uid : " + uid + ", email:" + email + ", upw:" + upw);
+		//try 영역
+		try{
+			conn = DBConn.conn();
+			
+			String sql = "update user set upw=md5(?) where uemail=? and uid=?";
+			System.out.println("pwUpdate sql:" + sql);
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, upw);
+			psmt.setString(2, email);
+			psmt.setString(3, uid);
+			
+			int result = psmt.executeUpdate();
+			
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();  // 클라이언트로 응답을 보낼 준비
+	        if(result > 0){
+	            out.print("success");  
+	        } else {
+	            out.print("error");  
+	        }
+	        out.flush();
+	        out.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try {
+				DBConn.close(rs, psmt, conn);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	public void checkMSG(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/user/checkMSG.jsp").forward(request, response);
+	// DB 연결 조건
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		// SB연결과 작성 사이 
+		try {
+			// DB연결
+			conn = DBConn.conn();
+			// SQL 작성 
+			String sql = " select u.*, m.* from message m innerjoin user u on u.uno = m.uno ";
+			
+			
+			
+			
+			
+		}catch(Exception e ){
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	
+	}
+
+
 }

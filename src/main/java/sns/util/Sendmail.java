@@ -45,8 +45,13 @@ public class Sendmail {
             clsProp.put("mail.smtp.port", "465");
             clsProp.put("mail.smtp.auth", "true");
             clsProp.put("mail.smtp.ssl.enable", "true"); 
+            // TLS 활성화
+            clsProp.put("mail.smtp.starttls.enable", "true");
+            // SSL 프로토콜 명시
+            clsProp.put("mail.smtp.ssl.protocols", "TLSv1.2");
+            
             clsProp.put("mail.smtp.ssl.trust", "smtp.naver.com");
-
+            
             Session clsSession = Session.getInstance(clsProp, new Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(id, pw);

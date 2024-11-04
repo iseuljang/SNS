@@ -37,14 +37,17 @@ public class FrontController extends HttpServlet {
 		if(comments[0].equals("board")) {
 			BoardController board = new BoardController(request,response,comments);
 		}else if(comments[0].equals("user")) {
-			System.out.println(request.getParameter("uid"));
 			UserController user = new UserController(request,response,comments);
 		}else if(comments[0].equals("admin")) {
-			ComplaintBoardController complain = new ComplaintBoardController(request,response,comments);
+			AdminController admin = new AdminController(request,response,comments);
+			//SampleController 에게 처리 전달
+		}else if(comments[0].equals("reply")) {
+			CommentController reply = new CommentController(request,response,comments);
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("test post!!"+request.getParameter("title"));
 		doGet(request, response);
 	}
 }
