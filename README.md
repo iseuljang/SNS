@@ -37,7 +37,8 @@
     + 개발 : 댓글 CRUD, 검색, 팔로우하기
   + 팀원 이동윤
     + 기획 : 프로젝트설계서 작성, HTML, CSS 제작, 시퀀스(글쓰기)
-    + 개발 : 알림, 메시지 보내기,받기, 마이페이지에서 좋아요 누른 게시글 조회
+    + 개발 : 알림, 마이페이지에서 좋아요 누른 게시글 조회
+    + 미구현 : 메시지 보내기,받기
 
 <br>
 
@@ -423,13 +424,480 @@
  - 해당 경험을 통해 알게 된 점
     - 모달 창 전환 시 이전 상태를 초기화하는 것이 중요하다는 점을 확인하였습니다
 
+5️⃣ 마이페이지 오류
+  - 문제 배경
+    - 여러 사람이 마이페이지의 기능을 구현하면서 기존 user 테이블에서 데이터를 조회하는게 아니라 board에서 조회하는 쿼리로 변경되어 마이페이지의 회원이 작성한 글이 없을 때, <br>
+     board 변수가 null 상태가 되면서 해당 데이터를 처리하는 로직에서 예외가 발생하였고, 이로 인해 전체 페이지가 정상적으로 표시되지 않았습니다.
+  - 해결 방법
+    - type 파라미터 추가를 통한 조건별 데이터 처리
+    - SQL 코드 분리
+    - 데이터가 null인 경우의 처리 로직 추가
+  - 코드 비교
+    - 수정전 함수
+      -  mypage controller 함수 일부
+      ```
+      String sql  =" SELECT * "
+        +"    , (select count(*) from follow f where f.uno = ? and tuno = ? ) as isfollow "
+        +" FROM board b "
+        +" INNER JOIN user u "
+        +" ON b.uno = u.uno"
+        +" INNER JOIN attach a"
+        +" ON b.bno = a.bno "
+        +" WHERE u.uno =? and state = 'E' ";
+
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, loginUser.getUno());
+			psmt.setString(2, uno);
+			psmt.setString(3, uno);
+			ArrayList<BoardVO> board = new ArrayList<>();
+			rs = psmt.executeQuery();
+			String isfollow="";
+			// 수정할 부분
+			while (rs.next()) {
+				UserVO user = new UserVO();
+				user.setUno(rs.getString("uno"));
+				user.setUid(rs.getString("uid"));
+				user.setUnick(rs.getString("unick"));
+				user.setUemail(rs.getString("uemail"));
+				user.setUstate(rs.getString("ustate"));
+				user.setUauthor(rs.getString("uauthor"));
+				user.setUrdate(rs.getString("urdate"));
+				user.setPname(rs.getString("pname"));
+				user.setFname(rs.getString("fname"));
+				isfollow = rs.getString("isfollow");
+				System.out.println("isfollow : " + isfollow);
+				request.setAttribute("user", user);
+				request.setAttribute("isfollow", isfollow);
+
+				BoardVO vo = new BoardVO();
+				vo.setBno(rs.getInt("bno"));
+				vo.setUno(rs.getInt("uno"));
+				vo.setTitle(rs.getString("title"));
+				vo.setContent(rs.getString("content"));
+				vo.setRdate(rs.getString("rdate"));
+				vo.setState(rs.getString("state"));
+				vo.setUnick(rs.getString("unick"));
+				vo.setPname(rs.getString("a.pname"));
+				vo.setFname(rs.getString("a.fname"));
+				board.add(vo);
+			}
+      // 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
+      String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
+
+      psmtFollow = conn.prepareStatement(sqlFollow);
+      psmtFollow.setInt(1, Integer.parseInt(uno));
+
+      rsFollow = psmtFollow.executeQuery();
+
+      int cnt = 0;
+      if (rsFollow.next()) {
+        cnt = rsFollow.getInt("cnt");
+      }
+      request.setAttribute("fcnt", cnt);
+      request.setAttribute("board", board);
+      
+      request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
+
+        ```
+      -  myPageWrite
+        ```
+      public void myPageWrite(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+    		request.setCharacterEncoding("UTF-8");
+    		String Struno = request.getParameter("uno");
+    		if (Struno == null) {
+    			return;
+    		}
+    		int uno = Integer.parseInt(Struno);
+    		System.out.println("uno ====================================" + uno);
+    
+    		Connection conn = null;
+    		PreparedStatement psmt = null;
+    		ResultSet rs = null;
+    		String sql = "";
+    
+    		PreparedStatement psmtFollow = null;
+    		ResultSet rsFollow = null;
+    
+    
+    		try {
+    			conn = DBConn.conn();
+    			sql = " SELECT * FROM board b " + " INNER JOIN user u " + " ON b.uno = u.uno" + " INNER JOIN attach a "
+    					+ " ON b.bno = a.bno" + " where u.uno =? ";
+    			psmt = conn.prepareStatement(sql);
+    			psmt.setInt(1, uno);
+    			rs = psmt.executeQuery();
+    			ArrayList<BoardVO> board = new ArrayList<>();
+    			while (rs.next()) {
+    				UserVO user = new UserVO();
+    				user.setUno(rs.getString("uno"));
+    				user.setUid(rs.getString("uid"));
+    				user.setUnick(rs.getString("unick"));
+    				user.setUemail(rs.getString("uemail"));
+    				user.setUstate(rs.getString("ustate"));
+    				user.setUauthor(rs.getString("uauthor"));
+    				user.setUrdate(rs.getString("urdate"));
+    				user.setPname(rs.getString("pname"));
+    				user.setFname(rs.getString("fname"));
+    				request.setAttribute("user", user);
+    
+    				BoardVO vo = new BoardVO();
+    				vo.setBno(rs.getInt("bno"));
+    				vo.setUno(rs.getInt("uno"));
+    				vo.setTitle(rs.getString("title"));
+    				vo.setContent(rs.getString("content"));
+    				vo.setRdate(rs.getString("rdate"));
+    				vo.setState(rs.getString("state"));
+    				vo.setUnick(rs.getString("unick"));
+    				vo.setPname(rs.getString("a.pname"));
+    				vo.setFname(rs.getString("a.fname"));
+    				board.add(vo);
+    			}
+    
+    			// 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
+    			String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
+    
+    			psmtFollow = conn.prepareStatement(sqlFollow);
+    			psmtFollow.setInt(1,uno);
+    
+    			rsFollow = psmtFollow.executeQuery();
+    
+    			int cnt = 0;
+    			if (rsFollow.next()) {
+    				cnt = rsFollow.getInt("cnt");
+    			}
+    			request.setAttribute("fcnt", cnt);
+    			request.setAttribute("board", board);
+    			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		} finally {
+    			try {
+    				DBConn.close(rs, psmt, conn);
+    			} catch (Exception e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+        ```
+      -  myPageBookmark
+        ```
+      public void myPageBookmark(HttpServletRequest request, HttpServletResponse response)
+  			throws ServletException, IOException {
+  
+  		request.setCharacterEncoding("UTF-8");
+  		String Struno = request.getParameter("uno");
+  		if (Struno == null) {
+  			return;
+  		}
+  		int uno = Integer.parseInt(Struno);
+  		System.out.println("uno ====================================" + uno);
+  
+  		Connection conn = null;
+  		PreparedStatement psmt = null;
+  		ResultSet rs = null;
+  		String sql = "";
+  
+  		PreparedStatement psmtFollow = null;
+  		ResultSet rsFollow = null;
+  
+  
+  		try {
+  			conn = DBConn.conn();
+  			sql = " SELECT *"
+  			sql = " SELECT *,u.uno as uuno"
+  				+ "  FROM board b"
+  				+ " INNER JOIN love l"
+  				+ "    ON b.bno = l.bno"
+  				+ " INNER JOIN user u"
+  				+ "	   ON l.uno = u.uno"
+  				+ " INNER JOIN attach a"
+  				+ "	   ON b.bno = a.bno"
+  				+ " where u.uno = ? ";
+  			psmt = conn.prepareStatement(sql);
+  			psmt.setInt(1, uno);
+  			rs = psmt.executeQuery();
+  			ArrayList<BoardVO> board = new ArrayList<>();
+  			while (rs.next()) {
+  				UserVO user = new UserVO();
+  				user.setUno(rs.getString("uno"));
+  				user.setUno(rs.getString("uuno"));
+  				user.setUid(rs.getString("uid"));
+  				user.setUnick(rs.getString("unick"));
+  				user.setUemail(rs.getString("uemail"));
+  				user.setUstate(rs.getString("ustate"));
+  				user.setUauthor(rs.getString("uauthor"));
+  				user.setUrdate(rs.getString("urdate"));
+  				user.setPname(rs.getString("pname"));
+  				user.setFname(rs.getString("fname"));
+  				request.setAttribute("user", user);
+  
+  				BoardVO vo = new BoardVO();
+  				vo.setBno(rs.getInt("bno"));
+  				vo.setUno(rs.getInt("uno"));
+  				vo.setTitle(rs.getString("title"));
+  				vo.setContent(rs.getString("content"));
+  				vo.setRdate(rs.getString("rdate"));
+  				vo.setState(rs.getString("state"));
+  				vo.setUnick(rs.getString("unick"));
+  				vo.setPname(rs.getString("a.pname"));
+  				vo.setFname(rs.getString("a.fname"));
+  				board.add(vo);
+  			}
+  
+  			// 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
+  			String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
+  
+  			psmtFollow = conn.prepareStatement(sqlFollow);
+  			psmtFollow.setInt(1,uno);
+  
+  			rsFollow = psmtFollow.executeQuery();
+  
+  			int cnt = 0;
+  			if (rsFollow.next()) {
+  				cnt = rsFollow.getInt("cnt");
+  			}
+  			request.setAttribute("fcnt", cnt);
+  			request.setAttribute("board", board);
+  			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
+  
+  		} catch (Exception e) {
+  			e.printStackTrace();
+  		} finally {
+    			try {
+    				DBConn.close(rs, psmt, conn);
+    			} catch (Exception e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    		}
+  	  }
+      ```
+    - 수정후
+      - mypage
+      ```
+      public void mypage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    		HttpSession session = request.getSession();
+    		UserVO loginUser = null;
+    		if(session.getAttribute("loginUser") != null && !session.getAttribute("loginUser").equals("")) {
+    			loginUser = (UserVO)session.getAttribute("loginUser");
+    		}
+    		String uno = request.getParameter("uno");
+    		String type = "bookmark";
+    		if(request.getParameter("type") != null && !request.getParameter("type").equals("")) {
+    			type = request.getParameter("type");
+    		}
+    		request.setCharacterEncoding("UTf-8");
+    
+    		Connection conn = null; // DB 연결
+    		PreparedStatement psmt = null; // SQL 등록 및 실행. 보안이 더 좋음!
+    		ResultSet rs = null; // 조회 결과를 담음
+    
+    		PreparedStatement psmtFollow = null;
+    		ResultSet rsFollow = null;
+    		// try 영역
+    		try {
+    			conn = DBConn.conn();
+    			String sql = "";
+    			if(loginUser != null) {
+    				sql = "select *,(select count(*) from follow f where f.uno = ? and tuno = ? ) as isfollow from user where uno=?"; 
+    				psmt = conn.prepareStatement(sql);
+    				psmt.setString(1, loginUser.getUno()); 
+    				psmt.setString(2, uno);
+    				psmt.setString(3, uno);
+    			}else {
+    				sql = "select * from user where uno=?";
+    				psmt = conn.prepareStatement(sql);
+    				psmt.setString(1, uno); 
+    			}
+    			rs = psmt.executeQuery();
+    			String isfollow="";
+    			// 수정할 부분
+    			if(rs.next()) {
+    				UserVO user = new UserVO();
+    				user.setUno(rs.getString("uno"));
+    				user.setUid(rs.getString("uid"));
+    				user.setUnick(rs.getString("unick"));
+    				user.setUemail(rs.getString("uemail"));
+    				user.setUstate(rs.getString("ustate"));
+    				user.setUauthor(rs.getString("uauthor"));
+    				user.setUrdate(rs.getString("urdate"));
+    				user.setPname(rs.getString("pname"));
+    				user.setFname(rs.getString("fname"));
+    				if(loginUser != null) {
+    					isfollow = rs.getString("isfollow");
+    					System.out.println("isfollow : " + isfollow);
+    					request.setAttribute("isfollow", isfollow);
+    				}
+    				request.setAttribute("user", user);
+    			}
+    			if(loginUser != null) {
+    				// 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
+    				String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
+    	
+    				psmtFollow = conn.prepareStatement(sqlFollow);
+    				psmtFollow.setInt(1, Integer.parseInt(uno));
+    	
+    				rsFollow = psmtFollow.executeQuery();
+    	
+    				int cnt = 0;
+    				if (rsFollow.next()) {
+    					cnt = rsFollow.getInt("cnt");
+    				}
+    				request.setAttribute("fcnt", cnt);
+    			}
+    			if(type.equals("bookmark")) {
+    				myPageBookmark(request, response);
+    			}else {
+    				myPageWrite(request, response);
+    			}
+    			
+    			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		} finally {
+    			try {
+    				DBConn.close(rs, psmt, conn);
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+      ```  
+      - myPageBookmark
+      ```
+      public void myPageBookmark(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    		
+    		request.setCharacterEncoding("UTF-8");
+    		String Struno = request.getParameter("uno");
+    		if (Struno == null) {
+    			return;
+    		}
+    		int uno = Integer.parseInt(Struno);
+    		System.out.println("uno ====================================" + uno);
+    
+    		Connection conn = null;
+    		PreparedStatement psmt = null;
+    		ResultSet rs = null;
+    		String sql = "";
+    
+    		try {
+    			conn = DBConn.conn();
+    			sql = " SELECT *,u.uno as uuno"
+    				+ "  FROM board b"
+    				+ " INNER JOIN love l"
+    				+ "    ON b.bno = l.bno"
+    				+ " INNER JOIN user u"
+    				+ "	   ON l.uno = u.uno"
+    				+ " INNER JOIN attach a"
+    				+ "	   ON b.bno = a.bno"
+    				+ " where u.uno = ?  and b.state='E' ";
+    			psmt = conn.prepareStatement(sql);
+    			psmt.setInt(1, uno);
+    			rs = psmt.executeQuery();
+    			ArrayList<BoardVO> board = new ArrayList<>();
+    			while (rs.next()) {
+    				BoardVO vo = new BoardVO();
+    				vo.setBno(rs.getInt("bno"));
+    				vo.setUno(rs.getInt("uno"));
+    				vo.setTitle(rs.getString("title"));
+    				vo.setContent(rs.getString("content"));
+    				vo.setRdate(rs.getString("rdate"));
+    				vo.setState(rs.getString("state"));
+    				vo.setUnick(rs.getString("unick"));
+    				vo.setPname(rs.getString("a.pname"));
+    				vo.setFname(rs.getString("a.fname"));
+    				board.add(vo);
+    			}
+    			
+    			request.setAttribute("board", board);
+    			
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		} finally {
+    			try {
+    				DBConn.close(rs, psmt, conn);
+    			} catch (Exception e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+      ```
+      - myPageWrite
+      ```
+      public void myPageWrite(HttpServletRequest request, HttpServletResponse response)
+  			throws ServletException, IOException {
+  		
+  		request.setCharacterEncoding("UTF-8");
+  		String Struno = request.getParameter("uno");
+  		if (Struno == null) {
+  			return;
+  		}
+  		int uno = Integer.parseInt(Struno);
+  		System.out.println("uno ====================================" + uno);
+  
+  		Connection conn = null;
+  		PreparedStatement psmt = null;
+  		ResultSet rs = null;
+  		String sql = "";
+  
+  		PreparedStatement psmtFollow = null;
+  		ResultSet rsFollow = null;
+  		
+  		
+  		try {
+  			conn = DBConn.conn();
+  			sql = " SELECT *,a.pname,a.fname "
+  					+ "  FROM board b"
+  					+ " INNER JOIN user u"
+  					+ "	   ON b.uno = u.uno"
+  					+ " INNER JOIN attach a"
+  					+ "	   ON b.bno = a.bno"
+  					+ " where u.uno = ? and b.state='E'";
+  			psmt = conn.prepareStatement(sql);
+  			psmt.setInt(1, uno);
+  			rs = psmt.executeQuery();
+  			ArrayList<BoardVO> board = new ArrayList<>();
+  			while (rs.next()) {
+  				BoardVO vo = new BoardVO();
+  				vo.setBno(rs.getInt("bno"));
+  				vo.setUno(rs.getInt("uno"));
+  				vo.setTitle(rs.getString("title"));
+  				vo.setContent(rs.getString("content"));
+  				vo.setRdate(rs.getString("rdate"));
+  				vo.setState(rs.getString("state"));
+  				vo.setUnick(rs.getString("unick"));
+  				vo.setPname(rs.getString("a.pname"));
+  				vo.setFname(rs.getString("a.fname"));
+  				board.add(vo);
+  			}
+  			request.setAttribute("board", board);
+  		} catch (Exception e) {
+  			e.printStackTrace();
+  		} finally {
+    			try {
+    				DBConn.close(rs, psmt, conn);
+    			} catch (Exception e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+      ```
+ - 해당 경험을 통해 알게 된 점
+    - 단일 컨트롤러에서 모든 데이터를 처리하려는 접근보다는, 상황에 맞는 파라미터(type 등)를 사용해 조건별로 필요한 데이터를 효율적으로 처리할 수 있다는 점을 알게 되었습니다
+    - null 값이 반환될 가능성을 항상 염두에 두고 기본값 설정이나 null 체크와 같은 예외 상황을 다루는 코드를 작성하는 것이 얼마나 중요한지 깨닫게 되었습니다. 
 <br>
 
 📝개선할 부분
 -
-  - 댓글작성자의 프로필 이미지가 없을 경우 닉네임의 첫글자가 나와야하지만 현재 그 부분이 적용되지 않았습니다
   - 게시글은 작성자, 내용, 제목에서 검색이 되어야하지만 제목으로만 검색되고 있습니다
   - 댓글 수정하고 취소를 누를경우 원래 댓글목록 상태로 돌아가야하지만 수정창이 유지되면서 내용만 reset 되고 있습니다
+  - 일정관리의 미흡함으로 메시지 보내고 받는 기능을 구현하지 못했습니다
  
 <br>
      
