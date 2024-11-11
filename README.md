@@ -675,6 +675,13 @@
     		}
   	  }
       ```
+      - mypage.jsp
+       ```html
+		<a href="mypage_bookmark.do?uno=<%= loginUser.getUno() %>&type=bookmark"
+		style="<%= "bookmark".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">북마크</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="mypage_write.do?uno=<%= loginUser.getUno() %>&type=written" 
+		style="<%= "written".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">내가쓴글</a>
+      ```
     - 수정후
       - mypage
       ```
@@ -887,6 +894,24 @@
     			}
     		}
     	}
+      ```
+      - mypage.jsp
+       ```java
+		String type = "bookmark";
+		if (request.getParameter("type") != null && !request.getParameter("type").equals("")) {
+		    type = request.getParameter("type");
+		}	
+       ```
+       ```html
+		<a href="mypage.do?uno=<%= loginUser.getUno() %>&type=bookmark"
+		   style="<%= "bookmark".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">
+		   북마크
+		</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+		<a href="mypage.do?uno=<%= loginUser.getUno() %>&type=written" 
+		   style="<%= "written".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">
+		   내가쓴글
+		</a>
       ```
  - 해당 경험을 통해 알게 된 점
     - 단일 컨트롤러에서 모든 데이터를 처리하려는 접근보다는, 상황에 맞는 파라미터(type 등)를 사용해 조건별로 필요한 데이터를 효율적으로 처리할 수 있다는 점을 알게 되었습니다
