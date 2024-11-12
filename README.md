@@ -306,8 +306,8 @@
   - 문제 배경
     - 이메일 발송할 때 워크스페이스 위치에 따라 이메일 발송 성공,실패가 달라짐
   - 해결 방법
-    - TLS 활성화: mail.smtp.starttls.enable을 "true"로 추가하여 TLS를 활성화.
-      SSL 프로토콜 버전 명시: mail.smtp.ssl.protocols에 "TLSv1.2"를 추가하여 Java가 이 특정 버전을 사용하도록 명시함으로써 서버와의 프로토콜 호환성을 보장
+    - TLS 활성화: mail.smtp.starttls.enable을 "true"로 추가하여 TLS를 활성화<br>
+      SSL 프로토콜 버전 명시: mail.smtp.ssl.protocols에 "TLSv1.2"를 추가하여 Java가 이 특정 버전을 사용하도록 명시함으로써 서버와의 프로토콜 호환성을 보장<br>
       포트 값의 문자열 변환: 포트 번호를 문자열로 변경하여 코드의 일관성을 확보하고 포트 관련 오류 발생 가능성을 줄임
   - 코드 비교
     - 수정전 Sendmail.java
