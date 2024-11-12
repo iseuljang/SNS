@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 import sns.util.DBConn;
+import sns.util.PagingUtil;
 import sns.vo.BoardVO;
 import sns.vo.UserVO;
 
@@ -49,8 +50,41 @@ public class AdminController {
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
+		// controller 영역 
+		PreparedStatement psmtTotal = null;
+		ResultSet rsTotal = null;
+
+		int nowPage = 1;
+		
+		if(request.getParameter("nowPage") != null)
+		{
+			nowPage = Integer.parseInt(request.getParameter("nowPage"));
+			System.out.println("nowPage========================== " + nowPage);
+		}	
+		
+
 		try{
-			conn =DBConn.conn();
+			
+			conn = DBConn.conn();
+			// 페이징
+			String sqlTotal =" SELECT COUNT(DISTINCT b.uno) as total "
+					+"   FROM complaint_board c  "
+					+"         LEFT JOIN board b ON c.bno = b.bno  "
+					+"         GROUP BY b.uno  "
+					+"         HAVING COUNT(b.uno) > 0; ";
+		
+			psmtTotal=conn.prepareStatement(sqlTotal);
+			rsTotal = psmtTotal.executeQuery();
+			
+			//전체 게시글 갯수 담을 변수
+			int total = 0; 
+			
+			if(rsTotal.next())
+			{
+				total = rsTotal.getInt("total");
+			}
+			PagingUtil paging = new PagingUtil(nowPage, total, 10);
+			
 			//데이터 출력에 필요한 게시글 데이터 조회 쿼리 영역
 			
 			/*
@@ -62,6 +96,7 @@ public class AdminController {
 			 	b.bno는 각 행에 대한 내용 >>> 따라서 서브쿼리에서 사용할 수 있음
 			 	그러나 별칭 c 는 각 행이 아닌 테이블 전체에 대한 내용이기 때문에 서브쿼리에 사용할 수 없음 
 			 */
+			
 			String sql = "";
 			sql = " select "
 			+ "    b.uno, "
@@ -71,9 +106,19 @@ public class AdminController {
 			+ "    count(b.uno) as report_count,  "
 			+ "    (select ustate from user where uno = b.uno) as state "
 			+ " from complaint_board c left join board b on c.bno = b.bno group by b.uno having count(b.uno) > 0 ";
-			System.out.println("sql : "+ sql);
+			 sql += " LIMIT ? , ?"; //limit 시작게시글번호(pagingUtil->start필드), 출력
+			 /* 갯수(pagingUtil->perPage필드)*/	
+			 System.out.println("sql" + sql);
+			 
+			 
+			 System.out.println("paging.getStartPage()::::"+paging.getStart());
+			 System.out.println("paging.getPerPage()::::"+paging.getPerPage());
+			
 			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, paging.getStart());
+			psmt.setInt(2, paging.getPerPage());
 			rs = psmt.executeQuery();
+			
 			ArrayList <UserVO> list = new ArrayList<>();
 			
 			while(rs.next()){
@@ -87,6 +132,7 @@ public class AdminController {
 				list.add(vo);
 				}
 			request.setAttribute("list", list);
+			request.setAttribute("paging", paging);
 			// board 작성한 
 			request.getRequestDispatcher("/WEB-INF/admin/blackList.jsp").forward(request, response);
 		}catch(Exception e){
@@ -104,14 +150,48 @@ public class AdminController {
 	public void complainList (HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		
+		// controller 영역 
+		PreparedStatement psmtTotal = null;
+		ResultSet rsTotal = null;
+
+		int nowPage = 1;
+		
+		if(request.getParameter("nowPage") != null)
+		{
+			nowPage = Integer.parseInt(request.getParameter("nowPage"));
+			System.out.println("nowPage========================== " + nowPage);
+		}	
+		
 		try {
 			conn = DBConn.conn();
-			String sql ="";
+			// 페이징
+			String sqlTotal = " select count(*) as total"
+					+"  from complaint_board c "
+					+"  inner join board b "
+					+"  on c.bno = b.bno "
+					+"  inner join user u "
+					+"  on c.uno = u.uno "
+					+"  where b.state = 'E' ";
+		
+			psmtTotal=conn.prepareStatement(sqlTotal);
+			rsTotal = psmtTotal.executeQuery();
 			
+			//전체 게시글 갯수 담을 변수
+			int total = 0; 
+			
+			if(rsTotal.next())
+			{
+				total = rsTotal.getInt("total");
+			}
+			PagingUtil paging = new PagingUtil(nowPage, total, 10);
+			
+						
+			String sql ="";
 			// sql 수정 
 			sql = " select "
 			+" c.bno, b.uno as uno, "
@@ -124,11 +204,19 @@ public class AdminController {
 			+" left join board b on c.bno = b.bno "
 			+" group by c.bno ";
 			
-			System.out.println("sql" + sql);
-			
+			 sql += " LIMIT ? , ?"; //limit 시작게시글번호(pagingUtil->start필드), 출력
+			 /* 갯수(pagingUtil->perPage필드)*/	
+			 System.out.println("sql" + sql);
 			
 			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1,paging.getStart()); 
+			psmt.setInt(2,paging.getPerPage());
+			
+			System.out.println("paging.getStartPage()::::"+paging.getStart());
+			System.out.println("paging.getPerPage()::::"+paging.getPerPage());
+			
 			rs = psmt.executeQuery();
+			
 			ArrayList<BoardVO> board = new ArrayList<>();
 			while(rs.next()){
 				BoardVO vo = new BoardVO();
@@ -140,7 +228,9 @@ public class AdminController {
 				vo.setBno(rs.getInt("Bno"));
 				board.add(vo);
 				}
+			
 			request.setAttribute("board", board);
+			request.setAttribute("paging", paging);
 			// board 작성한 
 			request.getRequestDispatcher("/WEB-INF/admin/complainList.jsp").forward(request, response);
 		}catch(Exception e){
@@ -190,12 +280,6 @@ public class AdminController {
 		    	state = "E";
 		    }
 		    
-			/*
-			 * request.setAttribute("state", state); request.setAttribute("bno", bno);
-			 * request.getRequestDispatcher("/WEB-INF/admin/loadComplain.jsp").forward(
-			 * request, response);
-			 */
-
 		    JSONObject jsonObj = new JSONObject(); 
 		    jsonObj.put("bno", bno); 
 		    jsonObj.put("state", state);
@@ -225,10 +309,28 @@ public class AdminController {
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		String sql = "";
+		String sqlA = "";
+		PreparedStatement psmtA = null;
 
-
+		String tuno = "";
+		PreparedStatement psmtT = null;
+		ResultSet rsT = null;
+		
+		PreparedStatement psmtL = null;
+		ResultSet rsL = null;
+		
 		try {
 		    conn = DBConn.conn();
+		    
+		    String sqlT = "select * from board where bno=?";
+		    psmtT = conn.prepareStatement(sqlT);
+		    psmtT.setString(1, bno);
+
+		    rsT = psmtT.executeQuery();
+
+		    if (rsT.next()) {
+		    	tuno = rsT.getString("uno");
+		    }
 
 		    sql = "select * from COMPLAINT_BOARD where uno = ? and bno = ?";
 		    psmt = conn.prepareStatement(sql);
@@ -243,14 +345,38 @@ public class AdminController {
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        psmt.executeUpdate();
+		        
+		        sqlA = "delete from alram where no = ? and type=? ";
+		        psmtA = conn.prepareStatement(sqlA);
+		        psmtA.setString(1, rs.getString("cpno"));
+		        psmtA.setString(2, "C");
+		        psmtA.executeUpdate();
 		    } else {
 		        // 신고가 없으면 insert
 		        sql = "insert into COMPLAINT_BOARD (uno, bno) values (?, ?)";
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        psmt.executeUpdate();
+		        
+	        	sql = "select last_insert_id() as cpno";
+		        
+		        psmtL = conn.prepareStatement(sql);
+		        String cpno = "";
+			    rsL = psmtL.executeQuery();
+			    if(rsL.next()) {
+			    	cpno = rsL.getString("cpno");
+			    }
+		        
+		        sqlA = "insert into alram (uno, no, type) values (?, ?, ?)";
+		        psmtA = conn.prepareStatement(sqlA);
+		        psmtA.setString(1, tuno);
+		        psmtA.setString(2, cpno);
+		        psmtA.setString(3, "C");
+		        psmtA.executeUpdate();
 		    }
-		    psmt.executeUpdate();
+		    
 
 		} catch (Exception e) {
 		    e.printStackTrace();

@@ -5,18 +5,16 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import sns.util.DBConn;
-import sns.vo.BoardVO;
-import sns.vo.CommentsVO;
+import sns.vo.UserVO;
 
 public class CommentController {
 	public CommentController(HttpServletRequest request, HttpServletResponse response, String[] comments)
@@ -143,10 +141,12 @@ public class CommentController {
 		// 응답의 Content-Type을 JSON으로 설정
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-
+		
+		HttpSession session = request.getSession();
+		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
 		// 폼 데이터 가져오기
 		int bno = Integer.parseInt(request.getParameter("bno"));
-		int uno = Integer.parseInt(request.getParameter("uno"));
+		int uno = Integer.parseInt(loginUser.getUno());
 		String content = request.getParameter("content");
 
 		// DB연결
@@ -189,6 +189,26 @@ public class CommentController {
 			e.printStackTrace();
 		}
 		System.out.println("cno : " + cno);
+		
+		
+		// 댓글이 등록되면, 댓글 알림을 알람 테이블에 작성합니다
+		try {
+
+			conn = DBConn.conn();
+			// uno는 알림을 받을 사람
+			// no는 댓글번호
+			// bno는 알람 목록 가져오는 sql에서 cno롤 찾음
+			String sql = " insert into alram ( uno, type, no ) value ((select uno from board where bno = ?), 'R', ?); ";
+
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, bno);
+			psmt.setInt(2, cno);
+
+			psmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// 댓글번호로 댓글 정보를 db에서 받아온다
 		// 댓글을 쓴 사람 번호로 프로필 이미지 파일명과 유저네임을 가져온다

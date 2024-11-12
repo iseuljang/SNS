@@ -56,9 +56,111 @@ public class BoardController {
 			deleteOk(request, response);
 		}else if (comments[comments.length-1].equals("loadMore.do")) {
 			loadMore(request, response);
-		}
-		
+		}else if(comments[comments.length-1].equals("followAdd.do")) {
+		followAdd(request,response);
+		} 
 	}
+
+	public void followAdd(HttpServletRequest request
+		, HttpServletResponse response) throws ServletException, IOException {
+	
+	request.setCharacterEncoding("UTF-8");
+	
+	HttpSession session = request.getSession();
+	UserVO loginUser = (UserVO)session.getAttribute("loginUser");
+	// 폼 데이터 가져오기
+	String uno = loginUser.getUno();
+	int tuno = Integer.parseInt(request.getParameter("tuno"));
+
+	Connection conn = null;
+	PreparedStatement psmt = null;
+	ResultSet rs = null;
+	String sql = "";
+
+
+	try {
+	    conn = DBConn.conn();
+
+	    sql = " SELECT count(*) as cnt FROM sns.follow where uno=? and tuno=? ";
+
+	    psmt = conn.prepareStatement(sql);
+	   
+		psmt.setString(1, uno);
+	    psmt.setInt(2, tuno);
+
+	    rs = psmt.executeQuery();
+	    
+	    int cnt = 0;
+	    if(rs.next()) cnt = rs.getInt("cnt");
+
+	    if (cnt>0) {
+	    	
+		    sql = " SELECT fno FROM sns.follow where uno=? and tuno=? ";
+		    psmt = conn.prepareStatement(sql);
+			psmt.setString(1, uno);
+		    psmt.setInt(2, tuno);
+		    rs = psmt.executeQuery();
+		    
+		    rs.next();
+		    int fno = rs.getInt("fno");
+	    	
+	        // 추천이 이미 존재하면 delete
+	    	sql = "delete from follow where uno = ? and tuno = ?";
+	        psmt = conn.prepareStatement(sql);
+	        psmt.setString(1, uno);
+	        psmt.setInt(2, tuno);
+	        psmt.executeUpdate();
+	        
+	    	sql = "delete from alram where no = ?";
+	        psmt = conn.prepareStatement(sql);
+	        psmt.setInt(1, fno);
+	        psmt.executeUpdate();
+	        
+	    } else {
+	        // 추천이 없으면 insert
+	        sql = "insert into follow (uno, tuno) values (?, ?)";
+	        System.out.println(sql);
+	        psmt = conn.prepareStatement(sql);
+	        psmt.setString(1, uno);
+	        psmt.setInt(2, tuno);
+	        System.out.println(psmt.executeUpdate());
+
+	        //팔로우테이블에 새로들어간 데이터의 pk를 가져온
+	        
+	        sql = " SELECT last_insert_id() as no ";
+
+		    psmt = conn.prepareStatement(sql);
+
+		    rs = psmt.executeQuery();
+		    
+		    rs.next();
+		    
+	        
+	        sql = "insert into alram (uno, no, type) values (?, ?, ?)";
+	        System.out.println(sql);
+	        psmt = conn.prepareStatement(sql);
+	        psmt.setInt(1, tuno);
+	        psmt.setInt(2, rs.getInt("no"));
+	        psmt.setString(3, "F");
+	        System.out.println(psmt.executeUpdate());
+	        
+	    }
+	    
+	    response.setCharacterEncoding("utf-8");
+	    response.setContentType("text/html;");
+	    response.getWriter().append("success").flush();
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	} finally {
+	    try {
+			DBConn.close(rs, psmt, conn);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
 	
 	public void write(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
@@ -208,8 +310,17 @@ public class BoardController {
 	public void view (HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		
+		HttpSession session = request.getSession();
+		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
+		String uno = "";
+		if(loginUser != null) {
+			uno = loginUser.getUno();
+		}
+		
 		String bno = request.getParameter("bno");
 		BoardVO vo = new BoardVO();
+		
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -223,8 +334,11 @@ public class BoardController {
 			conn = DBConn.conn();
 			String sql = " SELECT b.*,u.unick,a.pname,a.fname, "
 					+"   (select count(*) from love where bno = b.bno) as cnt, "
-					+"   (select pname from user where uno = b.uno) as upname "
-					+"   FROM board b "
+					+"   (select pname from user where uno = b.uno) as upname ";
+			
+			if(loginUser != null ) { sql += ",  (select count(*) from follow f where f.uno = ? and tuno = b.uno ) as isfollow "; }
+			
+			sql += "   FROM board b "
 					+ " inner join user u " 
 					+ " on b.uno = u.uno "
 					+ " inner join attach a " 
@@ -232,7 +346,13 @@ public class BoardController {
 					+"  WHERE b.bno=? and state='E' ";
 			
 			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1, Integer.parseInt(bno));
+			if(loginUser != null ) {
+				psmt.setInt(1, Integer.parseInt(uno));
+				psmt.setInt(2, Integer.parseInt(bno));
+			}else {
+				psmt.setInt(1, Integer.parseInt(bno));
+			}
+
 			rs = psmt.executeQuery();
 			
 			if(rs.next()) {
@@ -247,6 +367,9 @@ public class BoardController {
 				 vo.setFname(rs.getString("fname"));
 				 vo.setRecommend(rs.getInt("cnt"));
 				 vo.setUpname(rs.getString("upname"));
+				 if(loginUser != null ) {
+					 vo.setIsfollow(rs.getString("isfollow"));
+				 }
 				 
 				 //조회수 증가
 				 int hit = rs.getInt("hit");
@@ -303,6 +426,7 @@ public class BoardController {
 			}
 		}
 	}
+
 	
 	public void loadReco(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
@@ -338,12 +462,24 @@ public class BoardController {
 		    	lState = "E";
 		    }
 		    
+		    String countReco = "select count(*) as rCnt from love where bno = ?";
+	        psmt = conn.prepareStatement(countReco);
+	        psmt.setString(1, bno);
+	        rs = psmt.executeQuery();
+	        int rCnt = 0;
+	        if (rs.next()) {
+	        	rCnt = rs.getInt("rCnt");
+	        }
+		    
+		    
 		    JSONObject jsonObj = new JSONObject(); 
 		    jsonObj.put("bno", bno); 
 		    jsonObj.put("lState", lState);
+		    jsonObj.put("rCnt", rCnt);
 
 		    response.setContentType("application/json; charset=UTF-8");
 		    response.getWriter().write(jsonObj.toString());
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 		} finally {
@@ -362,15 +498,34 @@ public class BoardController {
 		UserVO user = (UserVO)session.getAttribute("loginUser");
 		String uno = user.getUno();
 		String bno = request.getParameter("bno"); 
-
+		
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		String sql = "";
+		String sqlA = "";
 
+		String tuno = "";
+		PreparedStatement psmtT = null;
+		ResultSet rsT = null;
+		PreparedStatement psmtA = null;
 
+		PreparedStatement psmtL = null;
+		ResultSet rsL = null;
 		try {
 		    conn = DBConn.conn();
+		    
+		    String sqlT = "select * from board where bno=?";
+		    psmtT = conn.prepareStatement(sqlT);
+		    psmtT.setString(1, bno);
+
+		    rsT = psmtT.executeQuery();
+
+		    if (rsT.next()) {
+		    	tuno = rsT.getString("uno");
+		    }
+		    
+		    
 
 		    sql = "select lno from love where uno = ? and bno = ?";
 		    psmt = conn.prepareStatement(sql);
@@ -385,14 +540,38 @@ public class BoardController {
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        psmt.executeUpdate();
+		        
+		        sqlA = "delete from alram where no = ? and type=? ";
+		        psmtA = conn.prepareStatement(sqlA);
+		        psmtA.setString(1, rs.getString("lno"));
+		        psmtA.setString(2, "L");
+		        psmtA.executeUpdate();
 		    } else {
 		        // 추천이 없으면 insert
 		        sql = "insert into love (uno, bno) values (?, ?)";
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        psmt.executeUpdate();
+		        
+		        sql = "select last_insert_id() as lno";
+		        
+		        psmtL = conn.prepareStatement(sql);
+		        String lno = "";
+			    rsL = psmtL.executeQuery();
+			    if(rsL.next()) {
+			    	lno = rsL.getString("lno");
+			    }
+		        
+		        sqlA = "insert into alram (uno, no, type) values (?, ?, ?)";
+		        psmtA = conn.prepareStatement(sqlA);
+		        psmtA.setString(1, tuno);
+		        psmtA.setString(2, lno);
+		        psmtA.setString(3, "L");
+		        psmtA.executeUpdate();
 		    }
-		    psmt.executeUpdate();
+		    	
 
 		} catch (Exception e) {
 		    e.printStackTrace();
@@ -521,12 +700,37 @@ public class BoardController {
 		
 		Connection conn = null;			
 		PreparedStatement psmt = null;
+
+		String existingFilename = null;
+		String existingPhyename = null;
+		PreparedStatement psmtExist = null;
+		ResultSet rsExist = null;  
+		
 		
 		Connection connAttach = null;			
 		PreparedStatement psmtAttach = null;
 		int resultAttach =0;
 		try {
 			conn = DBConn.conn();
+			
+			String sqlExist = "select * from attach where bno =?";
+			psmtExist = conn.prepareStatement(sqlExist);
+			psmtExist.setInt(1,bno);
+			rsExist = psmtExist.executeQuery();
+			
+			if(rsExist.next()) {
+				existingFilename = rsExist.getString("fname");
+				existingPhyename = rsExist.getString("pname");
+			}
+			
+			if (phyname == null || phyname.isEmpty()) 
+			{
+				phyname =  existingPhyename ;
+			} 
+			if (filename == null || filename.isEmpty()){
+				filename = existingFilename ;
+			} 
+			
 			String sql = " UPDATE board SET title = ?, content = ? "
 					+ " WHERE bno =?";
 			// sql을 담고, 리턴 키를 받음
@@ -536,7 +740,7 @@ public class BoardController {
 			psmt.setInt(3, bno);
 			int result = psmt.executeUpdate();
 			if(result>0) {
-				if (filename != null ) {
+				if (filename != null && phyname != null ) {
 				String sql1 = " UPDATE attach SET pname = ? , fname = ? "
 						+ " WHERE bno = ?";
 				// select last_insert_id()를 받아와서 , bno를 대입 
@@ -586,6 +790,8 @@ public class BoardController {
 		}finally {
 			try {
 				DBConn.close(psmt, conn);
+		        DBConn.close(rsExist, psmtExist, conn);
+		        DBConn.close(psmtAttach, connAttach);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
