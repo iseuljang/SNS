@@ -12,12 +12,13 @@
 		</a>
     </div>
 	<div class="user_inner">
+		<form action="findPw.do" method="post">
 		<table>
 			<tr>
 				<td>
 					<div class="user-container">
                            <i class="fas fa-user" id="user_itag7"></i>
-                           <input type="text" name="uid" id="login_uid" placeholder="아이디">
+                           <input type="text" name="uid" id="find_uid" placeholder="아이디">
 	           		</div>
 				</td>
 			</tr>
@@ -26,7 +27,7 @@
 					<div class="user-container">
 		               <i class="fas fa-envelope" id="user_itag6"></i>
 		          	   <input type="email" name="uemail" id="uemail" placeholder="이메일">
-		          	   <button type="button" class="usersBtn" onclick="SendMail();">인증하기</button>
+		          	   <button type="button" class="usersBtn" id="emailBtn" onclick="SendMail();">인증하기</button>
 		            </div>
 				</td>
 			</tr>
@@ -35,7 +36,7 @@
 					<div class="user-container">
 		              	<i class="fas fa-check" id="user_itag9"></i>
 						<input type="text" id="code" name="code" placeholder="인증코드 확인">
-						<button type="button" class="usersBtn" onclick="DoEmail();" id="code" name="code">인증확인</button>
+						<button type="button" class="usersBtn" onclick="DoEmail();">인증확인</button>
 		            </div>
 				</td>
 			</tr>
@@ -46,9 +47,10 @@
             </tr>
 			<tr>
 				<td>
-					<input  class="userBtn"  type="button" value="비밀번호찾기" onclick="findPage('pwChange');">
+					<input  class="userBtn"  type="button" value="비밀번호찾기" onclick="findPage('findPwOk');">
 				</td>
 			</tr>
 		</table>
+		</form>
 	</div>
 </div>

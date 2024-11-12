@@ -56,23 +56,21 @@ window.onload = function(){
 	$('#resetBtn').click(function(){
 	    // 파일 선택 초기화
 	    $('#file').val('');
-	    
-	    // 프로필 이미지 미리보기 원래대로 복원
-	    $('#profilePreview').attr('src', '<%= request.getContextPath() %>/upload/<%= userPname %>');
-	    $('#profilePreview').css('visibility', 'visible');
-	    
-	    // 삭제 체크박스 해제 및 숨김
+
+	    // 파일이 없을 경우 기본 프로필 닉네임 div 표시, 이미지 숨기기
+	    if ('<%= userPname %>' === "") {
+	        $('#profilePreview').css('display', 'none');   // 이미지 미리보기 숨기기
+	        $('#defaultProfile').css('display', 'flex');   // 기본 프로필 div 표시
+	    } else {
+	        // 기존 프로필 이미지가 있는 경우 이미지 미리보기 복원
+	        $('#profilePreview').attr('src', '<%= request.getContextPath() %>/upload/<%= userPname %>');
+	        $('#profilePreview').css('display', 'block');
+	        $('#defaultProfile').css('display', 'none');  // 기본 프로필 div 숨기기
+	    }
+
+	    // 삭제 체크박스 해제 및 표시 상태 조정
 	    $("input[name='deleteFile']").prop('checked', false);
 	    $(".deleteFile").css("visibility", "visible");
-
-	    // 파일 선택 해제시 기본 프로필 이미지 설정
-	    if ('<%= userPname %>' === "") {
-	        $("#profilePreview").css("visibility", "hidden");
-	        $("#defaultProfile").css("display", "flex");
-	    } else {
-	        $("#profilePreview").css("display", "block");
-	        $("#defaultProfile").css("display", "none");
-	    }
 	});
 
 	
