@@ -53,9 +53,16 @@
 🖥담당한 기능
 -
   - **회원가입 및 로그인**
-    - 
+    - 모달창을 띄워 회원가입을 진행하고 회원가입 성공시 로그인 모달창으로 변경됩니다
+    ![image](https://github.com/user-attachments/assets/2b77bb69-bbca-4e5a-8ce2-97c95f931bea)
+    ![image](https://github.com/user-attachments/assets/46b6fbe1-e83f-44b8-9b4f-4e5fca22c089)
+
   - **이메일 인증**
-    - 
+    - 이메일인증하기 버튼 클릭시 메일발송중으로 변경되며 발송완료시 다시 인증하기로 변경됩니다
+    - 6자리의 랜덤한 코드가 발송되며 발송한 코드와 회원이 입력한 코드가 일치해야 가입가능합니다
+    - 회원가입, 아이디찾기/비밀번호 찾기를 할때 모두 이메일인증을 거쳐야 가능합니다
+    ![image](https://github.com/user-attachments/assets/22299720-ba6f-44a2-bb70-95bc854d6cd2)
+
   - **아이디 찾기/비밀번호 찾기**
     - 
   - **게시글 좋아요, 신고**
