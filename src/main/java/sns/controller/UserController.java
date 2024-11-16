@@ -103,7 +103,7 @@ public class UserController {
 		
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
-		// Æû µ¥ÀÌÅÍ °¡Á®¿À±â
+		// í¼ ë°ì´í„° ê°€ì ¸ì˜¤ê¸°
 		String uno = loginUser.getUno();
 		int tuno = Integer.parseInt(request.getParameter("tuno"));
 
@@ -129,7 +129,7 @@ public class UserController {
 		    if(rs.next()) cnt = rs.getInt("cnt");
 
 		    if (cnt>0) {
-		        // ÃßÃµÀÌ ÀÌ¹Ì Á¸ÀçÇÏ¸é delete
+		        // ì¶”ì²œì´ ì´ë¯¸ ì¡´ì¬í•˜ë©´ delete
 		    	sql = "delete from follow where uno = ? and tuno = ?";
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
@@ -143,7 +143,7 @@ public class UserController {
 		        psmt.executeUpdate();
 		        
 		    } else {
-		        // ÃßÃµÀÌ ¾øÀ¸¸é insert
+		        // ì¶”ì²œì´ ì—†ìœ¼ë©´ insert
 		        sql = "insert into follow (uno, tuno) values (?, ?)";
 		        System.out.println(sql);
 		        psmt = conn.prepareStatement(sql);
@@ -156,7 +156,7 @@ public class UserController {
 				 * conn.prepareStatement(sql); psmt.setString(1, uno); psmt.setInt(2, tuno);
 				 * psmt.executeUpdate();
 				 */
-		        //ÆÈ·Î¿ìÅ×ÀÌºí¿¡ »õ·Îµé¾î°£ µ¥ÀÌÅÍÀÇ pk¸¦ °¡Á®¿Â
+		        //íŒ”ë¡œìš°í…Œì´ë¸”ì— ìƒˆë¡œë“¤ì–´ê°„ ë°ì´í„°ì˜ pkë¥¼ ê°€ì ¸ì˜¨
 		        sql = "insert into alram (uno, no, type) values (?, ?, ?)";
 		        System.out.println(sql);
 		        psmt = conn.prepareStatement(sql);
@@ -191,11 +191,11 @@ public class UserController {
 		String uid = request.getParameter("uid");
 		String upw = request.getParameter("upw");
 
-		Connection conn = null; // DB ¿¬°á
-		PreparedStatement psmt = null; // SQL µî·Ï ¹× ½ÇÇà. º¸¾ÈÀÌ ´õ ÁÁÀ½!
-		ResultSet rs = null; // Á¶È¸ °á°ú¸¦ ´ãÀ½
+		Connection conn = null; // DB ì—°ê²°
+		PreparedStatement psmt = null; // SQL ë“±ë¡ ë° ì‹¤í–‰. ë³´ì•ˆì´ ë” ì¢‹ìŒ!
+		ResultSet rs = null; // ì¡°íšŒ ê²°ê³¼ë¥¼ ë‹´ìŒ
 
-		// try ¿µ¿ª
+		// try ì˜ì—­
 		try {
 			conn = DBConn.conn();
 
@@ -214,7 +214,7 @@ public class UserController {
 				loginUser.setUauthor(rs.getString("uauthor"));
 				loginUser.setPname(rs.getString("pname"));
 
-				// ·Î±×ÀÎ Á¤º¸ session¿¡ ÀúÀå
+				// ë¡œê·¸ì¸ ì •ë³´ sessionì— ì €ì¥
 				HttpSession session = request.getSession();
 				session.setAttribute("loginUser", loginUser);
 				/* response.sendRedirect(request.getContextPath()); */
@@ -261,13 +261,13 @@ public class UserController {
 		}
 		request.setCharacterEncoding("UTf-8");
 
-		Connection conn = null; // DB ¿¬°á
-		PreparedStatement psmt = null; // SQL µî·Ï ¹× ½ÇÇà. º¸¾ÈÀÌ ´õ ÁÁÀ½!
-		ResultSet rs = null; // Á¶È¸ °á°ú¸¦ ´ãÀ½
+		Connection conn = null; // DB ì—°ê²°
+		PreparedStatement psmt = null; // SQL ë“±ë¡ ë° ì‹¤í–‰. ë³´ì•ˆì´ ë” ì¢‹ìŒ!
+		ResultSet rs = null; // ì¡°íšŒ ê²°ê³¼ë¥¼ ë‹´ìŒ
 
 		PreparedStatement psmtFollow = null;
 		ResultSet rsFollow = null;
-		// try ¿µ¿ª
+		// try ì˜ì—­
 		try {
 			conn = DBConn.conn();
 			String sql = "";
@@ -284,7 +284,7 @@ public class UserController {
 			}
 			rs = psmt.executeQuery();
 			String isfollow="";
-			// ¼öÁ¤ÇÒ ºÎºĞ
+			// ìˆ˜ì •í•  ë¶€ë¶„
 			if(rs.next()) {
 				UserVO user = new UserVO();
 				user.setUno(rs.getString("uno"));
@@ -304,7 +304,7 @@ public class UserController {
 				request.setAttribute("user", user);
 			}
 			if(loginUser != null) {
-				// ¼¼¼Ç¿¡ ÀÖ´Â uno¿Í ÀÏÄ¡ÇÏ´Â ÆÈ·Î¿ì Å×ÀÌºíÀÇ uno¸¦ Ä«¿îÆ®¸¦ Á¶È¸ÇÑ´Ù
+				// ì„¸ì…˜ì— ìˆëŠ” unoì™€ ì¼ì¹˜í•˜ëŠ” íŒ”ë¡œìš° í…Œì´ë¸”ì˜ unoë¥¼ ì¹´ìš´íŠ¸ë¥¼ ì¡°íšŒí•œë‹¤
 				String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
 	
 				psmtFollow = conn.prepareStatement(sqlFollow);
@@ -348,47 +348,47 @@ public class UserController {
 		 * "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
 		 */
 		String uploadPath = request.getServletContext().getRealPath("/upload");
-		System.out.println("¼­¹öÀÇ ¾÷·Îµå Æú´õ °æ·Î : " + uploadPath);
+		System.out.println("ì„œë²„ì˜ ì—…ë¡œë“œ í´ë” ê²½ë¡œ : " + uploadPath);
 
 		int size = 10 * 1024 * 1024;
 		MultipartRequest multi;
 		try {
-			// ÆÄÀÏ ¾÷·Îµå Ã³¸®
+			// íŒŒì¼ ì—…ë¡œë“œ ì²˜ë¦¬
 			multi = new MultipartRequest(request, uploadPath, size, "UTF-8", new DefaultFileRenamePolicy());
 		} catch (Exception e) {
-			// ÆÄÀÏ ¾÷·Îµå ½ÇÆĞ ½Ã Ã³¸®
+			// íŒŒì¼ ì—…ë¡œë“œ ì‹¤íŒ¨ ì‹œ ì²˜ë¦¬
 			response.sendRedirect(request.getContextPath());
 			return;
 		}
 
-		// ¾÷·ÎµåµÈ ÆÄÀÏ¸í ¾ò±â
+		// ì—…ë¡œë“œëœ íŒŒì¼ëª… ì–»ê¸°
 		Enumeration files = multi.getFileNames();
-		String filename = null; // ¿øº» ÆÄÀÏ ÀÌ¸§
-		String phyname = null; // ¼­¹ö¿¡ ÀúÀåµÉ ÆÄÀÏ ÀÌ¸§
+		String filename = null; // ì›ë³¸ íŒŒì¼ ì´ë¦„
+		String phyname = null; // ì„œë²„ì— ì €ì¥ë  íŒŒì¼ ì´ë¦„
 
 		if (files.hasMoreElements()) {
 			String fileid = (String) files.nextElement();
-			filename = multi.getFilesystemName(fileid); // ¿øº» ÆÄÀÏ ÀÌ¸§ °¡Á®¿À±â
+			filename = multi.getFilesystemName(fileid); // ì›ë³¸ íŒŒì¼ ì´ë¦„ ê°€ì ¸ì˜¤ê¸°
 
 			if (filename != null) {
-				System.out.println("¾÷·ÎµåµÈ ÆÄÀÏ ÀÌ¸§: " + filename);
+				System.out.println("ì—…ë¡œë“œëœ íŒŒì¼ ì´ë¦„: " + filename);
 
-				// ¹°¸® ÆÄÀÏ ÀÌ¸§ »ı¼º (UUID »ç¿ë)
+				// ë¬¼ë¦¬ íŒŒì¼ ì´ë¦„ ìƒì„± (UUID ì‚¬ìš©)
 				phyname = UUID.randomUUID().toString();
 
-				// ÆÄÀÏ °æ·Î ¼³Á¤
+				// íŒŒì¼ ê²½ë¡œ ì„¤ì •
 				String srcName = uploadPath + "/" + filename;
 				String targetName = uploadPath + "/" + phyname;
 
-				// ÆÄÀÏ ÀÌ¸§ º¯°æ (UUID·Î ÀúÀå)
+				// íŒŒì¼ ì´ë¦„ ë³€ê²½ (UUIDë¡œ ì €ì¥)
 				File srcFile = new File(srcName);
 				File targetFile = new File(targetName);
 
 				boolean renamed = srcFile.renameTo(targetFile);
 				if (!renamed) {
-					System.out.println("ÆÄÀÏ ÀÌ¸§ º¯°æ ½ÇÆĞ");
+					System.out.println("íŒŒì¼ ì´ë¦„ ë³€ê²½ ì‹¤íŒ¨");
 				} else {
-					System.out.println("ÆÄÀÏ ÀÌ¸§ º¯°æ ¼º°ø: " + phyname);
+					System.out.println("íŒŒì¼ ì´ë¦„ ë³€ê²½ ì„±ê³µ: " + phyname);
 				}
 			}
 		}
@@ -398,7 +398,7 @@ public class UserController {
 		String unick = multi.getParameter("unick");
 		String uemail = multi.getParameter("uemail");
 
-		// ÆÄÀÏ ÀÌ¸§ÀÌ ¾øÀ¸¸é ºó °ª Ã³¸®
+		// íŒŒì¼ ì´ë¦„ì´ ì—†ìœ¼ë©´ ë¹ˆ ê°’ ì²˜ë¦¬
 		if (phyname == null)
 			phyname = "";
 		if (filename == null)
@@ -417,8 +417,8 @@ public class UserController {
 			psmt.setString(2, upw);
 			psmt.setString(3, unick);
 			psmt.setString(4, uemail);
-			psmt.setString(5, phyname); // ¹°¸® ÆÄÀÏ ÀÌ¸§ (¼­¹ö¿¡ ÀúÀåµÈ ÆÄÀÏ ÀÌ¸§)
-			psmt.setString(6, filename); // ¿øº» ÆÄÀÏ ÀÌ¸§ (»ç¿ëÀÚ°¡ ¾÷·ÎµåÇÑ ÆÄÀÏ ÀÌ¸§)
+			psmt.setString(5, phyname); // ë¬¼ë¦¬ íŒŒì¼ ì´ë¦„ (ì„œë²„ì— ì €ì¥ëœ íŒŒì¼ ì´ë¦„)
+			psmt.setString(6, filename); // ì›ë³¸ íŒŒì¼ ì´ë¦„ (ì‚¬ìš©ìê°€ ì—…ë¡œë“œí•œ íŒŒì¼ ì´ë¦„)
 
 			psmt.executeUpdate();
 
@@ -462,11 +462,11 @@ public class UserController {
 			rs = psmt.executeQuery();
 
 			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter out = response.getWriter(); // Å¬¶óÀÌ¾ğÆ®·Î ÀÀ´äÀ» º¸³¾ ÁØºñ
+			PrintWriter out = response.getWriter(); // í´ë¼ì´ì–¸íŠ¸ë¡œ ì‘ë‹µì„ ë³´ë‚¼ ì¤€ë¹„
 			if (rs.next()) {
-				out.print("01"); // Áßº¹µÈ ¾ÆÀÌµğ
+				out.print("01"); // ì¤‘ë³µëœ ì•„ì´ë””
 			} else {
-				out.print("00"); // »ç¿ë °¡´ÉÇÑ ¾ÆÀÌµğ
+				out.print("00"); // ì‚¬ìš© ê°€ëŠ¥í•œ ì•„ì´ë””
 			}
 			out.flush();
 			out.close();
@@ -501,7 +501,7 @@ public class UserController {
 			rs = psmt.executeQuery();
 
 			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter out = response.getWriter(); // Å¬¶óÀÌ¾ğÆ®·Î ÀÀ´äÀ» º¸³¾ ÁØºñ
+			PrintWriter out = response.getWriter(); // í´ë¼ì´ì–¸íŠ¸ë¡œ ì‘ë‹µì„ ë³´ë‚¼ ì¤€ë¹„
 			if (rs.next()) {
 				out.print("01");
 			} else {
@@ -528,34 +528,34 @@ public class UserController {
 		if (email == null || email.equals("")) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
-			out.print("¿Ã¹Ù¸¥ ¸ŞÀÏÁÖ¼Ò°¡ ¾Æ´Õ´Ï´Ù.");
+			out.print("ì˜¬ë°”ë¥¸ ë©”ì¼ì£¼ì†Œê°€ ì•„ë‹™ë‹ˆë‹¤.");
 			return;
 		}
-		// -------------------- ÀÌ¸ŞÀÏ ÁÖ¼Ò·Î ÀÎÁõ¹øÈ£ Àü¼Û -----------------------
-		// ÀÌ¸ŞÀÏ °´Ã¼ »ı¼º
+		// -------------------- ì´ë©”ì¼ ì£¼ì†Œë¡œ ì¸ì¦ë²ˆí˜¸ ì „ì†¡ -----------------------
+		// ì´ë©”ì¼ ê°ì²´ ìƒì„±
 		Sendmail sender = new Sendmail();
-		// ÀÎÁõÄÚµå¸¦ ¾ò´Â´Ù.
+		// ì¸ì¦ì½”ë“œë¥¼ ì–»ëŠ”ë‹¤.
 		String code = sender.AuthCode(6);
-		sender.setFrom("gyr0204@naver.com");
-		sender.setAccount("gyr0204", "zxcv1234!!");
+		sender.setFrom("ë³´ë‚´ëŠ” ì´ë©”ì¼");
+		sender.setAccount("ì•„ì´ë””", "ë¹„ë°€ë²ˆí˜¸");
 
-		// ¹Ş´ÂÀÌ¸¦ À¯Àú°¡ ÀÔ·ÂÇÑ ÀÌ¸ŞÀÏ ÁÖ¼Ò·Î ¼³Á¤
+		// ë°›ëŠ”ì´ë¥¼ ìœ ì €ê°€ ì…ë ¥í•œ ì´ë©”ì¼ ì£¼ì†Œë¡œ ì„¤ì •
 		sender.setTo(email);
 
-		sender.setMail("ÀÌ¸ŞÀÏ ÀÎÁõÄÚµåÀÔ´Ï´Ù.", "ÀÎÁõÄÚµå : " + code);
+		sender.setMail("ì´ë©”ì¼ ì¸ì¦ì½”ë“œì…ë‹ˆë‹¤.", "ì¸ì¦ì½”ë“œ : " + code);
 
 		if (sender.sendMail() == true) {
-			// ÇØ´ç ÁÖ¼Ò·Î ¸ŞÀÏ Àü¼ÛÀÌ ¼º°øÇßÀ» °æ¿ì
+			// í•´ë‹¹ ì£¼ì†Œë¡œ ë©”ì¼ ì „ì†¡ì´ ì„±ê³µí–ˆì„ ê²½ìš°
 			HttpSession session = request.getSession();
 			session.setAttribute("code", code);
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
-			out.println("¸ŞÀÏÀ» ¹ß¼ÛÇÏ¿´½À´Ï´Ù.");
+			out.println("ë©”ì¼ì„ ë°œì†¡í•˜ì˜€ìŠµë‹ˆë‹¤.");
 		} else {
-			// ½ÇÆĞÇßÀ» °æ¿ì
+			// ì‹¤íŒ¨í–ˆì„ ê²½ìš°
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
-			out.println("¸ŞÀÏ ¹ß¼Û¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+			out.println("ë©”ì¼ ë°œì†¡ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 		}
 	}
 
@@ -565,7 +565,7 @@ public class UserController {
 
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		out.print(code); // ¼¼¼Ç¿¡ ÀúÀåµÈ ÀÎÁõÄÚµå¸¦ Å¬¶óÀÌ¾ğÆ®·Î ¹İÈ¯
+		out.print(code); // ì„¸ì…˜ì— ì €ì¥ëœ ì¸ì¦ì½”ë“œë¥¼ í´ë¼ì´ì–¸íŠ¸ë¡œ ë°˜í™˜
 	}
 
 	public void profileModify(HttpServletRequest request, HttpServletResponse response)
@@ -575,11 +575,11 @@ public class UserController {
 		String uno = loginUser.getUno();
 		System.out.println("profileModify uno : " + uno);
 
-		Connection conn = null; // DB ¿¬°á
-		PreparedStatement psmt = null; // SQL µî·Ï ¹× ½ÇÇà. º¸¾ÈÀÌ ´õ ÁÁÀ½!
-		ResultSet rs = null; // Á¶È¸ °á°ú¸¦ ´ãÀ½
+		Connection conn = null; // DB ì—°ê²°
+		PreparedStatement psmt = null; // SQL ë“±ë¡ ë° ì‹¤í–‰. ë³´ì•ˆì´ ë” ì¢‹ìŒ!
+		ResultSet rs = null; // ì¡°íšŒ ê²°ê³¼ë¥¼ ë‹´ìŒ
 
-		// try ¿µ¿ª
+		// try ì˜ì—­
 		try {
 			conn = DBConn.conn();
 
@@ -589,7 +589,7 @@ public class UserController {
 
 			rs = psmt.executeQuery();
 			if (rs.next()) {
-				System.out.println("profileModify rs : rs.next() ½ÇÇàµÊ");
+				System.out.println("profileModify rs : rs.next() ì‹¤í–‰ë¨");
 				UserVO userModify = new UserVO();
 				userModify.setUno(rs.getString("uno"));
 				userModify.setUid(rs.getString("uid"));
@@ -604,7 +604,7 @@ public class UserController {
 				request.setAttribute("userModify", userModify);
 				request.getRequestDispatcher("/WEB-INF/user/profileModify.jsp").forward(request, response);
 			} else {
-				// È¸¿øÁ¶È¸ ½ÇÆĞÇÒ °æ¿ì
+				// íšŒì›ì¡°íšŒ ì‹¤íŒ¨í•  ê²½ìš°
 				response.sendRedirect(request.getContextPath() + "/user/login.do");
 			}
 		} catch (Exception e) {
@@ -626,9 +626,9 @@ public class UserController {
 		 */
 		/* String uploadPath = "C:\\DEV\\GIT\\ -SNS\\sns\\src\\main\\webapp\\upload"; */
 		String uploadPath = request.getServletContext().getRealPath("/upload");
-		System.out.println("¼­¹öÀÇ ¾÷·Îµå Æú´õ °æ·Î : " + uploadPath);
+		System.out.println("ì„œë²„ì˜ ì—…ë¡œë“œ í´ë” ê²½ë¡œ : " + uploadPath);
 
-		int size = 10 * 1024 * 1024; // ÃÖ´ë 10MB ÆÄÀÏ Çã¿ë
+		int size = 10 * 1024 * 1024; // ìµœëŒ€ 10MB íŒŒì¼ í—ˆìš©
 		MultipartRequest multi;
 
 		try {
@@ -639,25 +639,25 @@ public class UserController {
 			return;
 		}
 
-		// ¾÷·ÎµåµÈ ÆÄÀÏ¸í °¡Á®¿À±â
+		// ì—…ë¡œë“œëœ íŒŒì¼ëª… ê°€ì ¸ì˜¤ê¸°
 		Enumeration<String> files = multi.getFileNames();
-		String filename = null; // ¿øº»ÆÄÀÏ
-		String phyname = null; // ¹Ù²ïÀÌ¸§
+		String filename = null; // ì›ë³¸íŒŒì¼
+		String phyname = null; // ë°”ë€ì´ë¦„
 
 		if (files.hasMoreElements()) {
 			String fileid = files.nextElement();
 			filename = multi.getFilesystemName(fileid);
 
 			if (filename != null) {
-				System.out.println("¾÷·ÎµåµÈ ÆÄÀÏ ÀÌ¸§: " + filename);
-				phyname = UUID.randomUUID().toString(); // UUID »ı¼º
+				System.out.println("ì—…ë¡œë“œëœ íŒŒì¼ ì´ë¦„: " + filename);
+				phyname = UUID.randomUUID().toString(); // UUID ìƒì„±
 				File srcFile = new File(uploadPath + "/" + filename);
 				File targetFile = new File(uploadPath + "/" + phyname);
 
 				if (!srcFile.renameTo(targetFile)) {
-					System.out.println("ÆÄÀÏ ÀÌ¸§ º¯°æ ½ÇÆĞ");
+					System.out.println("íŒŒì¼ ì´ë¦„ ë³€ê²½ ì‹¤íŒ¨");
 				} else {
-					System.out.println("ÆÄÀÏ ÀÌ¸§ º¯°æ ¼º°ø: " + phyname);
+					System.out.println("íŒŒì¼ ì´ë¦„ ë³€ê²½ ì„±ê³µ: " + phyname);
 				}
 			}
 		}
@@ -668,9 +668,9 @@ public class UserController {
 		String upw = multi.getParameter("upw");
 
 		if (upw == null || upw.trim().isEmpty()) {
-			System.out.println("ºñ¹Ğ¹øÈ£°¡ Àü¼ÛµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+			System.out.println("ë¹„ë°€ë²ˆí˜¸ê°€ ì „ì†¡ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 			PrintWriter out = response.getWriter();
-			out.println("<script>alert('ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.'); history.back();</script>");
+			out.println("<script>alert('ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”.'); history.back();</script>");
 			return;
 		}
 
@@ -685,25 +685,25 @@ public class UserController {
 			psmt.setString(1, uno);
 			psmt.setString(2, upw);
 
-			System.out.println("ºñ¹Ğ¹øÈ£ È®ÀÎ SQL: " + sql);
+			System.out.println("ë¹„ë°€ë²ˆí˜¸ í™•ì¸ SQL: " + sql);
 
 			try (ResultSet rs = psmt.executeQuery()) {
 				if (rs.next()) {
-					// ÇÁ·ÎÇÊ »èÁ¦ Ã³¸®
+					// í”„ë¡œí•„ ì‚­ì œ ì²˜ë¦¬
 					if ("Y".equals(deleteFile)) {
 						String sqlDelete = "UPDATE user SET pname = '', fname = '' WHERE uno = ?";
 						try (PreparedStatement psmtFile = conn.prepareStatement(sqlDelete)) {
 							psmtFile.setInt(1, Integer.parseInt(uno));
 							int deleteCount = psmtFile.executeUpdate();
-							System.out.println("ÇÁ·ÎÇÊ »èÁ¦ SQL: " + sqlDelete);
-							System.out.println("ÇÁ·ÎÇÊ »èÁ¦ °á°ú: " + deleteCount);
+							System.out.println("í”„ë¡œí•„ ì‚­ì œ SQL: " + sqlDelete);
+							System.out.println("í”„ë¡œí•„ ì‚­ì œ ê²°ê³¼: " + deleteCount);
 
-							// ¼¼¼Ç¿¡¼­ ÇÁ·ÎÇÊ Á¤º¸ Á¦°Å
+							// ì„¸ì…˜ì—ì„œ í”„ë¡œí•„ ì •ë³´ ì œê±°
 							user.setPname("");
 							user.setFname("");
 						}
 					} else if (filename != null) {
-						// ÆÄÀÏ ¾÷·Îµå Ã³¸®
+						// íŒŒì¼ ì—…ë¡œë“œ ì²˜ë¦¬
 						String sqlFile = "UPDATE user SET pname = ?, fname = ? WHERE uno = ?";
 						try (PreparedStatement psmtFile = conn.prepareStatement(sqlFile)) {
 							psmtFile.setString(1, phyname);
@@ -711,8 +711,8 @@ public class UserController {
 							psmtFile.setInt(3, Integer.parseInt(uno));
 
 							int fileUpdateCount = psmtFile.executeUpdate();
-							System.out.println("ÇÁ·ÎÇÊ ¾÷µ¥ÀÌÆ® SQL: " + sqlFile);
-							System.out.println("ÇÁ·ÎÇÊ ¾÷µ¥ÀÌÆ® °á°ú: " + fileUpdateCount);
+							System.out.println("í”„ë¡œí•„ ì—…ë°ì´íŠ¸ SQL: " + sqlFile);
+							System.out.println("í”„ë¡œí•„ ì—…ë°ì´íŠ¸ ê²°ê³¼: " + fileUpdateCount);
 
 							if (fileUpdateCount > 0) {
 								user.setPname(phyname);
@@ -721,7 +721,7 @@ public class UserController {
 						}
 					}
 
-					// ´Ğ³×ÀÓ ¾÷µ¥ÀÌÆ® Ã³¸®
+					// ë‹‰ë„¤ì„ ì—…ë°ì´íŠ¸ ì²˜ë¦¬
 					if (unick != null && !unick.trim().isEmpty()) {
 						String sqlUpdate = "UPDATE user SET unick = ? WHERE uno = ?";
 						try (PreparedStatement psmtUpdate = conn.prepareStatement(sqlUpdate)) {
@@ -729,8 +729,8 @@ public class UserController {
 							psmtUpdate.setInt(2, Integer.parseInt(uno));
 
 							int nickUpdateCount = psmtUpdate.executeUpdate();
-							System.out.println("´Ğ³×ÀÓ ¾÷µ¥ÀÌÆ® SQL: " + sqlUpdate);
-							System.out.println("´Ğ³×ÀÓ ¾÷µ¥ÀÌÆ® °á°ú: " + nickUpdateCount);
+							System.out.println("ë‹‰ë„¤ì„ ì—…ë°ì´íŠ¸ SQL: " + sqlUpdate);
+							System.out.println("ë‹‰ë„¤ì„ ì—…ë°ì´íŠ¸ ê²°ê³¼: " + nickUpdateCount);
 
 							if (nickUpdateCount > 0) {
 								user.setUnick(unick);
@@ -738,7 +738,7 @@ public class UserController {
 						}
 					}
 
-					// ¼¼¼Ç¿¡ º¯°æµÈ »ç¿ëÀÚ Á¤º¸ ÀúÀå
+					// ì„¸ì…˜ì— ë³€ê²½ëœ ì‚¬ìš©ì ì •ë³´ ì €ì¥
 					session.setAttribute("loginUser", user);
 					/*
 					 * request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request,
@@ -758,12 +758,12 @@ public class UserController {
 
 	public void findIdResult(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Connection conn = null; // DB ¿¬°á
-		PreparedStatement psmt = null; // SQL µî·Ï ¹× ½ÇÇà. º¸¾ÈÀÌ ´õ ÁÁÀ½!
-		ResultSet rs = null; // Á¶È¸ °á°ú¸¦ ´ãÀ½
+		Connection conn = null; // DB ì—°ê²°
+		PreparedStatement psmt = null; // SQL ë“±ë¡ ë° ì‹¤í–‰. ë³´ì•ˆì´ ë” ì¢‹ìŒ!
+		ResultSet rs = null; // ì¡°íšŒ ê²°ê³¼ë¥¼ ë‹´ìŒ
 		List<String> idList = new ArrayList<>();
 		String email = request.getParameter("uemail");
-		// try ¿µ¿ª
+		// try ì˜ì—­
 		try {
 			conn = DBConn.conn();
 
@@ -773,7 +773,7 @@ public class UserController {
 
 			rs = psmt.executeQuery();
 			while (rs.next()) {
-				System.out.println("findIdOk rs : rs.next() ½ÇÇàµÊ");
+				System.out.println("findIdOk rs : rs.next() ì‹¤í–‰ë¨");
 				idList.add(rs.getString("uid"));
 				request.setAttribute("idList", idList);
 			}
@@ -796,16 +796,16 @@ public class UserController {
 
 	public void findPwOk(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Connection conn = null; // DB ¿¬°á
-		PreparedStatement psmt = null; // SQL µî·Ï ¹× ½ÇÇà. º¸¾ÈÀÌ ´õ ÁÁÀ½!
-		ResultSet rs = null; // Á¶È¸ °á°ú¸¦ ´ãÀ½
+		Connection conn = null; // DB ì—°ê²°
+		PreparedStatement psmt = null; // SQL ë“±ë¡ ë° ì‹¤í–‰. ë³´ì•ˆì´ ë” ì¢‹ìŒ!
+		ResultSet rs = null; // ì¡°íšŒ ê²°ê³¼ë¥¼ ë‹´ìŒ
 
 		String uid = request.getParameter("uid");
 		String email = request.getParameter("uemail");
 
 		System.out.println("findPwOk uid:" + uid + ", email : " + email);
 
-		// try ¿µ¿ª
+		// try ì˜ì—­
 		try {
 			conn = DBConn.conn();
 
@@ -833,16 +833,16 @@ public class UserController {
 
 	public void pwChangeOk(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Connection conn = null; // DB ¿¬°á
-		PreparedStatement psmt = null; // SQL µî·Ï ¹× ½ÇÇà. º¸¾ÈÀÌ ´õ ÁÁÀ½!
-		ResultSet rs = null; // Á¶È¸ °á°ú¸¦ ´ãÀ½
+		Connection conn = null; // DB ì—°ê²°
+		PreparedStatement psmt = null; // SQL ë“±ë¡ ë° ì‹¤í–‰. ë³´ì•ˆì´ ë” ì¢‹ìŒ!
+		ResultSet rs = null; // ì¡°íšŒ ê²°ê³¼ë¥¼ ë‹´ìŒ
 
 		String uid = request.getParameter("uid");
 		String email = request.getParameter("uemail");
 		String upw = request.getParameter("upw");
 		System.out.println("pwChangeOk");
 		System.out.println("pwChangeOk uid : " + uid + ", email:" + email + ", upw:" + upw);
-		// try ¿µ¿ª
+		// try ì˜ì—­
 		try {
 			conn = DBConn.conn();
 
@@ -856,7 +856,7 @@ public class UserController {
 			int result = psmt.executeUpdate();
 
 			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter out = response.getWriter(); // Å¬¶óÀÌ¾ğÆ®·Î ÀÀ´äÀ» º¸³¾ ÁØºñ
+			PrintWriter out = response.getWriter(); // í´ë¼ì´ì–¸íŠ¸ë¡œ ì‘ë‹µì„ ë³´ë‚¼ ì¤€ë¹„
 			if (result > 0) {
 				out.print("success");
 			} else {
@@ -878,22 +878,22 @@ public class UserController {
 
 	public void alramCount(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
-		// ÆÄ¶ó¸ŞÅ¸·Î ³Ñ¾î¿Â uno¸¦ ¹Ş½À´Ï´Ù
+		// íŒŒë¼ë©”íƒ€ë¡œ ë„˜ì–´ì˜¨ unoë¥¼ ë°›ìŠµë‹ˆë‹¤
 		request.setCharacterEncoding("UTF-8");
 		String uno = request.getParameter("uno");
 		System.out.println("alramCount() : uno :" + uno);
 		
-		// DB ¿¬°á Á¶°Ç
+		// DB ì—°ê²° ì¡°ê±´
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
-		// SB¿¬°á°ú ÀÛ¼º »çÀÌ 
+		// SBì—°ê²°ê³¼ ì‘ì„± ì‚¬ì´ 
 		try {
-			// DB¿¬°á
+			// DBì—°ê²°
 			conn = DBConn.conn();
-			// SQL ÀÛ¼º
-			// ÇØ´ç uno¿¡°Ô ¿Â ¾Ë¸²ÀÇ °¹¼ö¸¦ ¼Á´Ï´Ù
+			// SQL ì‘ì„±
+			// í•´ë‹¹ unoì—ê²Œ ì˜¨ ì•Œë¦¼ì˜ ê°¯ìˆ˜ë¥¼ ì…‰ë‹ˆë‹¤
 			
 			String sql = " select count(*) as count from alram where uno = ? and state = 'N' ";
 			
@@ -904,11 +904,11 @@ public class UserController {
 			int result = 0;
 			
 			if(rs.next()){
-				//  json °´Ã¼¿¡ µ¥ÀÌÅÍ ³Ö±â
+				//  json ê°ì²´ì— ë°ì´í„° ë„£ê¸°
 				result = rs.getInt("count");
 			}
 			
-			// °¹¼ö¸¦ ¹İÈ¯ÇÕ´Ï´Ù
+			// ê°¯ìˆ˜ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤
 			PrintWriter out = response.getWriter();
 			out.print(result);
 			
@@ -928,22 +928,22 @@ public class UserController {
 	public void alramList(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		
-		// ÆÄ¶ó¸ŞÅ¸·Î ³Ñ¾î¿Â uno¸¦ ¹Ş½À´Ï´Ù
+		// íŒŒë¼ë©”íƒ€ë¡œ ë„˜ì–´ì˜¨ unoë¥¼ ë°›ìŠµë‹ˆë‹¤
 		request.setCharacterEncoding("UTF-8");
 		String uno = request.getParameter("uno");
 		System.out.println("alramCount() : uno :" + uno);
 		
-		// DB ¿¬°á Á¶°Ç
+		// DB ì—°ê²° ì¡°ê±´
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
-		// SB¿¬°á°ú ÀÛ¼º »çÀÌ 
+		// SBì—°ê²°ê³¼ ì‘ì„± ì‚¬ì´ 
 		try {
-			// DB¿¬°á
+			// DBì—°ê²°
 			conn = DBConn.conn();
-			// SQL ÀÛ¼º
-			// ÇØ´ç uno¿¡°Ô ¿Â ¸Ş¼¼Áö ¸®½ºÆ®¸¦ ¿äÃ»ÇÕ´Ï´Ù
+			// SQL ì‘ì„±
+			// í•´ë‹¹ unoì—ê²Œ ì˜¨ ë©”ì„¸ì§€ ë¦¬ìŠ¤íŠ¸ë¥¼ ìš”ì²­í•©ë‹ˆë‹¤
 			
 			String sql  = " select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
 						+" 		(select u.unick from user u where u.uno = f.uno) as funo , 0 as bno"
@@ -994,30 +994,30 @@ public class UserController {
 			
 			List<JSONObject> list = new ArrayList<JSONObject>();
 			
-			// ¸®½ºÆ® »ı¼º
+			// ë¦¬ìŠ¤íŠ¸ ìƒì„±
 			while(rs.next()){
-				//	json °´Ã¼ »ı¼º
+				//	json ê°ì²´ ìƒì„±
 				JSONObject json = new JSONObject();
-				//  json °´Ã¼¿¡ µ¥ÀÌÅÍ ³Ö±â
-				json.put("alno", rs.getInt("alno"));		// ¾Ë¶÷ ¹øÈ£
-				json.put("uno", rs.getInt("uno"));			// ¾Ë¶÷À» ¹ŞÀ» À¯Àú ¹øÈ£
+				//  json ê°ì²´ì— ë°ì´í„° ë„£ê¸°
+				json.put("alno", rs.getInt("alno"));		// ì•ŒëŒ ë²ˆí˜¸
+				json.put("uno", rs.getInt("uno"));			// ì•ŒëŒì„ ë°›ì„ ìœ ì € ë²ˆí˜¸
 				json.put("rdate", rs.getString("rdate"));
-				json.put("state", rs.getString("state"));	// ÀĞÀ½ ¿©ºÎ
-				json.put("type", rs.getString("type"));		// ¾Ë¶÷ Á¾·ù
-				json.put("tuno", rs.getString("tuno"));		// ÆÈ·Î¿ì º¸³½ »ç¶÷
-				json.put("funo", rs.getString("funo"));		// ÆÈ·Î¿ì ´çÇÑ»ç¶÷
-				json.put("no", rs.getInt("no"));			// ¾î´À ±Û¿¡¼­ ÆÈ·Î¿ì ½ÅÃ»À» Çß´Â°¡
-				json.put("bno", rs.getInt("bno"));			// ¾î´À ±Û¿¡¼­ ÆÈ·Î¿ì ½ÅÃ»À» Çß´Â°¡
-				//  ¸®½ºÆ®¿¡ json °´Ã¼ ³Ö±â
+				json.put("state", rs.getString("state"));	// ì½ìŒ ì—¬ë¶€
+				json.put("type", rs.getString("type"));		// ì•ŒëŒ ì¢…ë¥˜
+				json.put("tuno", rs.getString("tuno"));		// íŒ”ë¡œìš° ë³´ë‚¸ ì‚¬ëŒ
+				json.put("funo", rs.getString("funo"));		// íŒ”ë¡œìš° ë‹¹í•œì‚¬ëŒ
+				json.put("no", rs.getInt("no"));			// ì–´ëŠ ê¸€ì—ì„œ íŒ”ë¡œìš° ì‹ ì²­ì„ í–ˆëŠ”ê°€
+				json.put("bno", rs.getInt("bno"));			// ì–´ëŠ ê¸€ì—ì„œ íŒ”ë¡œìš° ì‹ ì²­ì„ í–ˆëŠ”ê°€
+				//  ë¦¬ìŠ¤íŠ¸ì— json ê°ì²´ ë„£ê¸°
 				list.add(json);
 			//}
 			}
 			
-			// ÀÀ´äÀÇ Content-TypeÀ» JSONÀ¸·Î ¼³Á¤
+			// ì‘ë‹µì˜ Content-Typeì„ JSONìœ¼ë¡œ ì„¤ì •
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			
-			// ¸®½ºÆ®¸¦ ¹®ÀÚ¿­·Î ¹Ù²ã¼­ ¹İÈ¯
+			// ë¦¬ìŠ¤íŠ¸ë¥¼ ë¬¸ìì—´ë¡œ ë°”ê¿”ì„œ ë°˜í™˜
 			PrintWriter out = response.getWriter();
 			out.print(list.toString());
 			out.flush();
@@ -1039,22 +1039,22 @@ public class UserController {
 	
 	public void updateState(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
-		// ÆÄ¶ó¸ŞÅ¸·Î ³Ñ¾î¿Â uno¸¦ ¹Ş½À´Ï´Ù
+		// íŒŒë¼ë©”íƒ€ë¡œ ë„˜ì–´ì˜¨ unoë¥¼ ë°›ìŠµë‹ˆë‹¤
 		request.setCharacterEncoding("UTF-8");
 		String alno = request.getParameter("alno");
 		System.out.println("updateState() : alno :" + alno);
 		
-		// DB ¿¬°á Á¶°Ç
+		// DB ì—°ê²° ì¡°ê±´
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		
-		// SB¿¬°á°ú ÀÛ¼º »çÀÌ 
+		// SBì—°ê²°ê³¼ ì‘ì„± ì‚¬ì´ 
 		try {
-			// DB¿¬°á
+			// DBì—°ê²°
 			conn = DBConn.conn();
-			// SQL ÀÛ¼º
+			// SQL ì‘ì„±
 			
-			// ¹ŞÀº alno·Î ¾Ë¶÷ÀÇ »óÅÂ¸¦ º¯°æÇÏ´Â sql¹®À» ÀÛ¼º
+			// ë°›ì€ alnoë¡œ ì•ŒëŒì˜ ìƒíƒœë¥¼ ë³€ê²½í•˜ëŠ” sqlë¬¸ì„ ì‘ì„±
 			
 			String sql = " update alram "
 					   + "    set state = 'Y' "
@@ -1068,10 +1068,10 @@ public class UserController {
 			PrintWriter out = response.getWriter();
 
 			if(result > 0){
-				//»óÅÂ°¡ ¾÷µ¥ÀÌÆ® µÊ.
+				//ìƒíƒœê°€ ì—…ë°ì´íŠ¸ ë¨.
 				out.print("ok");
 			}else {
-				//º¯°æµÈ µ¥ÀÌÅÍ°¡ ¾øÀ½.
+				//ë³€ê²½ëœ ë°ì´í„°ê°€ ì—†ìŒ.
 				out.print("fail");
 			}
 			
