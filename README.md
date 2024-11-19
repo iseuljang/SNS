@@ -64,7 +64,15 @@
     ![image](https://github.com/user-attachments/assets/22299720-ba6f-44a2-bb70-95bc854d6cd2)
 
   - **아이디 찾기/비밀번호 찾기**
-    - 
+    - 회원가입 시 사용했던 이메일로 인증번호를 받아 가입한 아이디를 조회
+    ![findId](https://github.com/user-attachments/assets/c4c3a8e4-2115-4de9-9266-d7c8e74ab0bc)
+    - 가입한 아이디가 있을경우 아이디를 보여주고, 없을 경우 가입한 내역이 없음을 안내
+    ![findIdResult](https://github.com/user-attachments/assets/5f1b1588-ccda-4866-9f24-6ac9c0387170)
+    - 비밀번호 찾기할 아이디와 그 아이디를 가입할 때 사용했던 이메일 인증을 통해 비밀번호 찾기 실행
+    ![findPw](https://github.com/user-attachments/assets/06d54b6e-2ac9-4761-8c3e-f09fbd75cb30)
+    - 이메일 인증 완료 후 비밀번호 재설정으로 넘어감
+    ![pwChange](https://github.com/user-attachments/assets/fe512b98-2ddc-4d78-91e7-8033a3237f80)
+
   - **게시글 좋아요, 신고**
     - 
   - **내정보조회 및 수정**
