@@ -74,11 +74,22 @@
     ![pwChange](https://github.com/user-attachments/assets/fe512b98-2ddc-4d78-91e7-8033a3237f80)
 
   - **게시글 좋아요, 신고**
-    - 
+    - 게시글을 조회할 경우 하트 아이콘을 눌러 게시글 좋아요
+    ![image](https://github.com/user-attachments/assets/c238ce65-7307-4b16-8196-f5b0d9d57ebc)
+    - 햄버거 메뉴를 눌러 게시글 신고
+    ![image](https://github.com/user-attachments/assets/b1284f7f-3c24-4c3c-bef3-fe276a7d4ab3)
+
   - **내정보조회 및 수정**
-    - 
+    - 회원가입할 때 기입한 아이디와 이메일 주소, 닉네임, 프로필 사진을 확인할 수 있고 닉네임과 프로필 사진을 변경. 비밀번호 확인을 거쳐야만 변경 가능
+    ![image](https://github.com/user-attachments/assets/0a3b0010-ce31-4bd4-b355-54b08579776f)
+    - 프로필 이미지 없이 가입하거나 내정보수정에서 프로필 이미지를 삭제할 경우 닉네임의 첫글자가 프로필 이미지를 대신
+    ![image](https://github.com/user-attachments/assets/b999bef2-670b-4029-9dd5-ba4c644453b1)
+
   - **인덱스 무한스크롤**
-    - 
+    - 처음 메인페이지에서 24개의 게시글이 조회되고 스크롤이 맨밑으로 내려갈때 추가로 게시글 목록을 조회하여 추가함
+    ![image](https://github.com/user-attachments/assets/b0a3ca1c-5254-46da-95a5-80e3982835a7)
+    - 추가 조회시 스크롤 변경
+    ![image](https://github.com/user-attachments/assets/a61b374e-0e4e-41ba-b9bf-efb5572ab9eb)
 
 <br>
 
