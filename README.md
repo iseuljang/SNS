@@ -7,6 +7,15 @@
 
 <br>
 
+🔗 PPT
+-
+<!--
+<a href="http://jjezen.cafe24.com/bteam" target="_blank">http://jjezen.cafe24.com/bteam</a>
+-->
+[AWS실습프로젝트(sns).pptx](https://github.com/user-attachments/files/18312751/AWS.sns.pptx)
+
+<br>
+
 ## 목차
   - [개발기간](#개발기간)
   - [팀 구성](#팀-구성)
