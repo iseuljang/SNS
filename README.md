@@ -7,11 +7,14 @@
 
 <br>
 
+🔗 완성된 웹 애플리케이션 보기
+-
+<a href="http://3.39.239.157:8080/SNS" target="_blank">SNS</a>
+
+<br>
+
 🔗 PPT
 -
-<!--
-<a href="http://jjezen.cafe24.com/bteam" target="_blank">http://jjezen.cafe24.com/bteam</a>
--->
 [AWS실습프로젝트(sns).pptx](https://github.com/user-attachments/files/18312751/AWS.sns.pptx)
 
 <br>
