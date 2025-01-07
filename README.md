@@ -66,6 +66,12 @@
 -
   - **회원가입 및 로그인**
     - 모달창을 띄워 회원가입을 진행하고 회원가입 성공시 로그인 모달창으로 변경됩니다
+    - https://github.com/iseuljang/SNS/blob/main/src/main/webapp/WEB-INF/include/header.jsp
+    	- DoLogin();
+     	- DoJoin();
+     	- 회원가입 후 로그인 모달 : openLoginModal();
+    - https://github.com/iseuljang/SNS/blob/main/src/main/java/sns/controller/UserController.java
+    	- login, loginOk, logout, join, joinOk, idCheck, nickCheck
     ![image](https://github.com/user-attachments/assets/2b77bb69-bbca-4e5a-8ce2-97c95f931bea)
     ![image](https://github.com/user-attachments/assets/46b6fbe1-e83f-44b8-9b4f-4e5fca22c089)
 
@@ -73,6 +79,11 @@
     - 이메일인증하기 버튼 클릭시 메일발송중으로 변경되며 발송완료시 다시 인증하기로 변경됩니다
     - 6자리의 랜덤한 코드가 발송되며 발송한 코드와 회원이 입력한 코드가 일치해야 가입가능합니다
     - 회원가입, 아이디찾기/비밀번호 찾기를 할때 모두 이메일인증을 거쳐야 가능합니다
+    - https://github.com/iseuljang/SNS/blob/main/src/main/webapp/WEB-INF/include/header.jsp
+    	- SendMail();
+     	- DoEmail();
+     - https://github.com/iseuljang/SNS/blob/main/src/main/java/sns/controller/UserController.java
+     	- sendmail, getcode
     ![image](https://github.com/user-attachments/assets/22299720-ba6f-44a2-bb70-95bc854d6cd2)
 
   - **아이디 찾기/비밀번호 찾기**
@@ -84,25 +95,48 @@
     ![findPw](https://github.com/user-attachments/assets/06d54b6e-2ac9-4761-8c3e-f09fbd75cb30)
     - 이메일 인증 완료 후 비밀번호 재설정으로 넘어감
     ![pwChange](https://github.com/user-attachments/assets/fe512b98-2ddc-4d78-91e7-8033a3237f80)
+    - https://github.com/iseuljang/SNS/blob/main/src/main/webapp/WEB-INF/include/header.jsp
+    	- findPage(type);
+     	- 비밀번호 변경 : DoChange();
+    - https://github.com/iseuljang/SNS/blob/main/src/main/webapp/WEB-INF/user
+    	- findId.jsp, findIdResult.jsp, findPw.jsp, pwChange.jsp
+    - https://github.com/iseuljang/SNS/blob/main/src/main/java/sns/controller/UserController.java
+    	- findId, findIdResult, findPw, findPwOk, pwChangeOk
 
   - **게시글 좋아요, 신고**
     - 게시글을 조회할 경우 하트 아이콘을 눌러 게시글 좋아요
     ![image](https://github.com/user-attachments/assets/c238ce65-7307-4b16-8196-f5b0d9d57ebc)
     - 햄버거 메뉴를 눌러 게시글 신고
     ![image](https://github.com/user-attachments/assets/b1284f7f-3c24-4c3c-bef3-fe276a7d4ab3)
+    - https://github.com/iseuljang/SNS/blob/main/src/main/webapp/WEB-INF/include/header.jsp
+    	- loadReco(bno);
+     	- recoAdd(bno);
+      	- loadComplain(bno);
+      	- complainAdd(bno);
+    - https://github.com/iseuljang/SNS/blob/main/src/main/java/sns/controller/BoardController.java
+    	- loadReco, recoAdd,
+    - https://github.com/iseuljang/SNS/blob/main/src/main/java/sns/controller/AdminController.java
+    	- loadComplain, complainAdd
 
   - **내정보조회 및 수정**
     - 회원가입할 때 기입한 아이디와 이메일 주소, 닉네임, 프로필 사진을 확인할 수 있고 닉네임과 프로필 사진을 변경. 비밀번호 확인을 거쳐야만 변경 가능
     ![image](https://github.com/user-attachments/assets/0a3b0010-ce31-4bd4-b355-54b08579776f)
     - 프로필 이미지 없이 가입하거나 내정보수정에서 프로필 이미지를 삭제할 경우 닉네임의 첫글자가 프로필 이미지를 대신
     ![image](https://github.com/user-attachments/assets/b999bef2-670b-4029-9dd5-ba4c644453b1)
+    - https://github.com/iseuljang/SNS/blob/main/src/main/webapp/WEB-INF/user/profileModify.jsp
+    - https://github.com/iseuljang/SNS/blob/main/src/main/java/sns/controller/UserController.java
+    	-  mypage, profileModify, profileModifyOk
 
   - **인덱스 무한스크롤**
     - 처음 메인페이지에서 24개의 게시글이 조회되고 스크롤이 맨밑으로 내려갈때 추가로 게시글 목록을 조회하여 추가함
     ![image](https://github.com/user-attachments/assets/b0a3ca1c-5254-46da-95a5-80e3982835a7)
     - 추가 조회시 스크롤 변경
     ![image](https://github.com/user-attachments/assets/a61b374e-0e4e-41ba-b9bf-efb5572ab9eb)
-
+    - https://github.com/iseuljang/SNS/blob/main/src/main/java/sns/controller/BoardController.java
+    	- loadMore
+    - https://github.com/iseuljang/SNS/blob/main/src/main/webapp/index.jsp
+    
+    
 <br>
 
 <h2 id="ui-ux-개선사례">📈UI/UX 개선사례</h2>
