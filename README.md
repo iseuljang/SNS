@@ -11,6 +11,9 @@
 -
 <a href="http://3.39.239.157:8080/SNS" target="_blank">SNS</a>
 
+관리자 아이디 : admin<br>
+관리자 비밀번호 : 1234<br>
+
 <br>
 
 🔗 PPT
