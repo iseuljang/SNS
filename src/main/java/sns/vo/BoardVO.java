@@ -18,6 +18,7 @@ public class BoardVO {
 	private String urdate;
 	private int cpno;
 	
+	private String isfollow;
 	
 	
 	
@@ -55,6 +56,7 @@ public class BoardVO {
 	public int getDeclaration() {return declaration;}
 	public String getUrdate() {return urdate;}
 	public int getCpno() {return cpno;}
+	public String getIsfollow() {return isfollow;}
 	
 	
 	
@@ -74,5 +76,6 @@ public class BoardVO {
 	public void setDeclaration(int declaration) {this.declaration = declaration;}
 	public void setUrdate(String urdate) {this.urdate = urdate;}
 	public void setCpno(int cpno) {this.cpno = cpno;}
+	public void setIsfollow(String isfollow) {this.isfollow = isfollow;}
 		
 }
