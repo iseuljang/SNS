@@ -12,10 +12,14 @@
 
 🔗 완성된 웹 애플리케이션 보기
 -
-⚠️ 현재 프로젝트 링크는 AWS 프리티어 종료로 인해 접속이 불가능합니다.<br>
-대신 하단의 캡처 화면을 통해 프로젝트 주요 기능과 UI를 확인해 주세요.<br><br>
+⚠️ 기존에는 AWS 프리 티어로 배포했으나, 무료 사용 기간 종료로 서비스를 중단했습니다. <br>
+현재는 Railway로 이전했으며, 아래 캡처 화면을 통해 프로젝트의 주요 기능과 UI를 확인하실 수 있습니다.<br><br>
 
+<a href="[http://3.39.239.157:8080/SNS](https://sns.up.railway.app/)" target="_blank">https://sns.up.railway.app/</a> <br>
+
+<!--
 <a href="http://3.39.239.157:8080/SNS" target="_blank">SNS</a>
+-->
 
 관리자 아이디 : admin<br>
 관리자 비밀번호 : 1234<br>
