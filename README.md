@@ -15,7 +15,7 @@
 ⚠️ 기존에는 AWS EC2와 RDS를 이용해 배포했으나, 무료 사용 기간 종료로 요금 부담이 예상되어 서비스를 중단했습니다. <br>
 현재는 Render와 Clever Cloud를 이용해 배포했으며, 아래 캡처 화면을 통해 프로젝트의 주요 기능과 UI를 확인하실 수 있습니다.<br><br>
 
-<a href="https://sns-yef2.onrender.com/" target="_blank">https://sns-yef2.onrender.com/</a> <br>
+<a href="https://sns-yef2.onrender.com/" target="_blank">https://sns-yef2.onrender.com</a> <br>
 
 <!--
 <a href="http://3.39.239.157:8080/SNS" target="_blank">SNS</a>
